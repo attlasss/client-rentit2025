@@ -1,7 +1,6 @@
 <template>
     <div class="app-container">
-      <h1>Holaaaaaaaaa</h1>
-      <div class="card">
+      <h1>Holaaaaaaaewefergtyhjmklytfdfaa</h1>
         <Input
           v-model="inputValue"
           placeholder="Enter text here..."
@@ -10,7 +9,6 @@
           :isRequired="true"
         />
       </div>
-    </div>
   </template>
   
   <script>
