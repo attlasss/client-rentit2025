@@ -15,6 +15,11 @@ const routes = [
     name: "about",
     component: () => import("../views/Casa.vue"),
   },
+  {
+    path: "/createAccount",
+    name: "createAccount",
+    component: () => import("../views/CreateAccount.vue"),
+  },
 ];
 
 const router = createRouter({
