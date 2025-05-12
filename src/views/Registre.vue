@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-container p-4">
-          <h2 class="text-center mb-4">Crear Compte</h2>
+          <h2 class="text-center mb-5">Crear Compte</h2>
           <form @submit.prevent="registrarUsuari" class="d-flex flex-column gap-3">
             <div>
               <label class="form-label">Nom</label>
@@ -22,7 +22,8 @@
 
             <div>
               <label class="form-label">Data de naixement</label>
-              <Input v-model="form.data_naixement" type="date" placeholder="Selecciona la teva data de naixement" required />
+              <Input v-model="form.data_naixement" type="date" placeholder="Selecciona la teva data de naixement"
+                required />
             </div>
 
             <div>
@@ -86,18 +87,30 @@ export default {
   methods: {
     async registrarUsuari() {
       if (this.form.password !== this.confirmPassword) {
-            this.toastMessage = "Les contrasenyes no coincideixen";
-            this.toastColor = "danger";
-            this.toast = true;
-            setTimeout(() => {
-              this.toast = false;
-            }, 2000);
+        this.toastMessage = "Les contrasenyes no coincideixen";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => {
+          this.toast = false;
+        }, 2000);
         return;
       }
 
       try {
         const response = await axiosConn.post("/crearUser", this.form);
-        alert("Usuari creat amb èxit! ID: " + response.data.id);
+        if (response.status === 200) {
+          this.toastMessage = "Usuari creat amb èxit!";
+          this.toastColor = "success";
+          this.toast = true;
+          setTimeout(() => {
+            this.toast = false;
+            this.$router.push("/login");
+          }, 2000);
+        } else {
+          this.toastMessage = "Error al crear l'usuari";
+          this.toastColor = "danger";
+          this.toast = true;
+        }
       } catch (error) {
         console.error("Error al registrar usuari:", error);
         alert("Error al registrar usuari.");
@@ -113,5 +126,11 @@ export default {
   border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  text-align: left;
+  display: block;
+  font-weight: 600;
 }
 </style>

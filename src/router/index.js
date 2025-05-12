@@ -21,6 +21,7 @@ const routes = [
     component: () => import("../views/Registre.vue"),
   },
   {
+<<<<<<< Updated upstream
     path: "/Orders",
     name: "Orders",
     component: () => import("../views/Orders.vue"),
@@ -30,6 +31,12 @@ const routes = [
     name: "Return",
     component: () => import("../views/Return.vue"),
   },
+=======
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
+  }
+>>>>>>> Stashed changes
 ];
 
 const router = createRouter({
