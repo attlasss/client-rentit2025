@@ -16,9 +16,9 @@ const routes = [
     component: () => import("../views/Casa.vue"),
   },
   {
-    path: "/createAccount",
-    name: "createAccount",
-    component: () => import("../views/CreateAccount.vue"),
+    path: "/registre",
+    name: "Registre",
+    component: () => import("../views/Registre.vue"),
   },
 ];
 
