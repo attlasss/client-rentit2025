@@ -21,22 +21,20 @@ const routes = [
     component: () => import("../views/Registre.vue"),
   },
   {
-<<<<<<< Updated upstream
-    path: "/Orders",
-    name: "Orders",
-    component: () => import("../views/Orders.vue"),
-  },
-  {
-    path: "/Return",
-    name: "Return",
-    component: () => import("../views/Return.vue"),
-  },
-=======
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),
-  }
->>>>>>> Stashed changes
+  },
+  {
+    path: "/comandes",
+    name: "Comandes",
+    component: () => import("../views/Comandes/Comandes.vue"),
+  },
+  {
+    path: "/devolucions",
+    name: "Devolucions",
+    component: () => import("../views/Devolucions.vue"),
+  },
 ];
 
 const router = createRouter({
