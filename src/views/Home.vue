@@ -84,7 +84,6 @@ import Input from "@/components/Input.vue";
 import axiosConn from "../axios/axios";
 
 export default {
-  name:'ArticlesClient',
   components: {
     Input,
   },
@@ -109,3 +108,4 @@ export default {
   }
 };
 </script>
+

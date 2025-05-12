@@ -62,6 +62,6 @@ html, body {
   font-family: 'Urbanist', sans-serif;
   font-weight: 400;
   font-size: 2.5rem;
-  color: #0F7BEB;
+  color: #578FCA;
 }
 </style>
