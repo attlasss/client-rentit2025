@@ -36,9 +36,9 @@ const routes = [
     component: () => import("../views/Devolucions.vue"),
   },
   {
-    path: "/valoracions",
-    name: "Valoracions",
-    component: () => import("../views/Valoracions.vue"),
+    path: "/fervaloracions",
+    name: "FerValoracions",
+    component: () => import("../views/FerValoracions.vue"),
   },
 ];
 
