@@ -40,6 +40,12 @@ const routes = [
     name: "FerValoracions",
     component: () => import("../views/FerValoracions.vue"),
   },
+  {
+    path: "/perfilusuari/:id",
+    name: "perfilusuari",
+    component: () => import("../views/PerfilUsuari.vue"),
+  },
+  
 ];
 
 const router = createRouter({
