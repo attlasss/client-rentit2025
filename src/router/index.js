@@ -26,6 +26,11 @@ const routes = [
     component: () => import("../views/Login.vue"),
   },
   {
+    path: "/recuperar-contrasenya",
+    name: "RecuperarContrasenya",
+    component: () => import("../views/RecuperarContrasenya.vue"),
+  },
+  {
     path: "/comandes",
     name: "Comandes",
     component: () => import("../views/Comandes/Comandes.vue"),

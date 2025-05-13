@@ -15,21 +15,39 @@
           <form @submit.prevent="loginUser" class="d-flex flex-column gap-3">
             <div>
               <label class="form-label">Nom d'usuari</label>
-              <Input v-model="form.username" placeholder="Introdueix el teu nom d'usuari" required />
+              <Input v-model="username" placeholder="Introdueix el teu nom d'usuari" required />
             </div>
             <div>
               <label class="form-label">Contrasenya</label>
-              <Input v-model="form.password" type="password" placeholder="************" required />
+              <Input v-model="password" type="password" placeholder="************" required />
+              <!-- Has olvidado la contraseña -->
+              <p>
+                <a href="/recuperar-contrasenya" class="text-start fst-italic text-primary text-decoration-none d-block">
+                  Has oblidat la contrasenya?
+                </a>
+              </p>
             </div>
 
-            <div class="text-center mt-3">
-                <Button color="blue" variant="outline" @click="$router.push('/login')">Iniciar sessió</Button>
-                <Button color="blue" variant="fill" @click="$router.push('/registre')">Registra't</Button>
+            <div class="row text-center mt-3">
+              <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <Button class="w-100" color="blue" variant="outline"
+                  @click="$router.push('/registre')">Registra't</Button>
+              </div>
+              <div class="col-12 col-md-6">
+                <Button class="w-100" color="blue" variant="fill" type="submit">Iniciar sessió</Button>
+              </div>
             </div>
+
           </form>
         </div>
       </div>
     </div>
+    <transition name="fade">
+      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+        {{ toastMessage }}
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -45,25 +63,39 @@ export default {
   },
   data() {
     return {
-      form: {
-        username: "",
-        password: "",
-      },
+      username: "",
+      password: "",
+      toast: false,
+      toastMessage: "",
+      toastColor: "success",
     };
   },
   methods: {
     async loginUser() {
-      try {
-        const response = await axiosConn.post("/login", this.form);
-        if (response.status === 200) {
-          this.$router.push("/dashboard");
+      await axiosConn.post('/loginClient', {
+        username: this.username,
+        password: this.password
+      }).then(response => {
+        if (response.data.success) {
+          sessionStorage.setItem("user", JSON.stringify(response.data.user));
+          sessionStorage.setItem("token", response.data.token);
+          this.$router.push({ name: "home" });
         } else {
-          alert("Error en iniciar sessió");
+          this.toastMessage = response.data.message; 
+          this.toastColor = "danger";
+          this.toast = true;
+          setTimeout(() => {
+            this.toast = false;
+          }, 2000);
         }
-      } catch (error) {
-        console.error("Error en iniciar sessió:", error);
-        alert("Error en iniciar sessió");
-      }
+      }).catch(error => {
+        this.toastMessage = "Error intern" + error;
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => {
+          this.toast = false;
+        }, 2000);
+      });
     },
   },
 };
@@ -72,7 +104,8 @@ export default {
 <style scoped>
 .container-fluid {
   background: linear-gradient(145deg, #21339A 4%, #659FF1 39%, #FFFFFF 88%);
-  height: 100vh; /* Ensure it covers the full viewport height */
+  height: 100vh;
+  /* Ensure it covers the full viewport height */
 }
 
 .image-container img {
@@ -91,4 +124,5 @@ export default {
   display: block;
   font-weight: 600;
 }
+
 </style>

@@ -44,9 +44,19 @@ export default {
   },
   data() {
     return {
-      isLoggedIn: false // cámbialo según tu lógica de sesión
+      isLoggedIn: false, 
     };
-  }
+  }, 
+  created() {
+    this.checkLoginStatus();
+  },
+  methods: {
+    checkLoginStatus() {
+      // Mira si esta inciado sesion para mostrar el menu correcto 
+      const token = sessionStorage.getItem("token");
+      this.isLoggedIn = !!token; 
+    },
+  },
 };
 </script>
 
