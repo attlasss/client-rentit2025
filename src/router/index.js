@@ -41,9 +41,9 @@ const routes = [
     component: () => import("../views/FerValoracions.vue"),
   },
   {
-    path: "/perfilusuari/:id",
-    name: "perfilusuari",
-    component: () => import("../views/PerfilUsuari.vue"),
+    path: "/perfilusuarimitja/:id",
+    name: "perfilusuarimitja",
+    component: () => import("../views/PerfilUsuariMitja.vue"),
   },
   
 ];
