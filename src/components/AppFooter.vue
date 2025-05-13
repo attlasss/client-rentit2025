@@ -36,5 +36,7 @@
 </template>
 
 <style scoped>
-
+footer {
+  border-top: 0.5px solid black;
+}
 </style>

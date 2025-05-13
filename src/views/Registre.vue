@@ -113,7 +113,12 @@ export default {
         }
       } catch (error) {
         console.error("Error al registrar usuari:", error);
-        alert("Error al registrar usuari.");
+        this.toastMessage = "Error al crear l'usuari";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => {
+          this.toast = false;
+        }, 2000);
       }
     },
   },

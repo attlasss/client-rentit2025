@@ -84,30 +84,52 @@ export default {
   transform: translateY(-2px);
 }
 
+/* Blue Fill Button */
+.btn-blue {
+  background-color: #578FCA;
+  color: white;
+  border: none;
+}
+
+.btn-blue:hover {
+  background-color: #578FCA;
+  color: white;
+  border: none;
+}
 
 .btn-white {
   background-color: white;
-  color: #21339A;
-  border: 2px solid white;
+  color: #578FCA;
+  border: none;
 }
 
 .btn-white:hover {
-  background-color: #f0f0f0;
+  background-color: white;
+  color: #578FCA;
+  border: none;
+}
+
+/* Blue Outline Button */
+.btn-outline-blue {
+  background-color: white;
+  color: #578FCA;
+  border: 2px solid #578FCA;
+}
+
+.btn-outline-blue:hover {
+  background-color: white;
+  color: #578FCA;
+  border: 2px solid #578FCA;
 }
 
 .btn-outline-white {
-  background-color: transparent;
   color: white;
   border: 2px solid white;
 }
-.btn-outline-white:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
 
-/* Gradient (si quieres más, puedes añadir) */
-.bg-gradient-white {
-  background: linear-gradient(90deg, white 0%, #f0f0f0 100%);
-  color: #21339A;
+.btn-outline-white:hover {
+  color: white;
+  border: 2px solid white;
 }
 
 /* Tamaños */
@@ -122,16 +144,6 @@ export default {
 .btn-lg {
   font-size: 1.125rem;
   padding: 0.6rem 1.5rem;
-}
-
-.btn-blue {
-  background-color: #578FCA;
-  color: white;
-  border: none;
-}
-
-.btn-blue:hover {
-  background-color: #4a7eb5;
 }
 
 </style>
