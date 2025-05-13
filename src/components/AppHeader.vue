@@ -14,7 +14,9 @@
               <router-link class="nav-link text-white" to="/">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link text-white" to="/about">El meu Compte</router-link>
+              <router-link class="nav-link text-white" :to="`/perfil/${this.username}`">
+                El meu Compte
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link text-white" to="/about">Les meves comandes</router-link>
@@ -38,23 +40,30 @@
 
 <script>
 import Button from "@/components/Button.vue";
+
 export default {
   components: {
     Button,
   },
   data() {
     return {
-      isLoggedIn: false, 
+      isLoggedIn: false,
+      username: "",
+      userID: "",
     };
-  }, 
+  },
   created() {
     this.checkLoginStatus();
   },
   methods: {
     checkLoginStatus() {
       // Mira si esta inciado sesion para mostrar el menu correcto 
-      const token = sessionStorage.getItem("token");
-      this.isLoggedIn = !!token; 
+      const token = localStorage.getItem("token");
+      const username = localStorage.getItem("user");
+      if (username) {
+        this.username = JSON.parse(username).username;
+      }
+      this.isLoggedIn = !!token;
     },
   },
 };

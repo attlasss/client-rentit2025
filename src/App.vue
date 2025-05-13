@@ -64,4 +64,11 @@ html, body {
   font-size: 2.5rem;
   color: #578FCA;
 }
+
+.form-label {
+  text-align: left;
+  display: block;
+  font-weight: 600;
+}
+
 </style>
