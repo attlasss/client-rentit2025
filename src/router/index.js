@@ -35,6 +35,11 @@ const routes = [
     name: "Devolucions",
     component: () => import("../views/Devolucions.vue"),
   },
+  {
+    path: "/valoracions",
+    name: "Valoracions",
+    component: () => import("../views/Valoracions.vue"),
+  },
 ];
 
 const router = createRouter({
