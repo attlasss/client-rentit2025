@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="['btn', computedClasses]"
+    :class="['btn', computedClasses, { 'no-focus': noFocus }]"
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
@@ -29,6 +29,10 @@ export default {
       default: false,
     },
     active: {
+      type: Boolean,
+      default: false,
+    },
+    noFocus: {
       type: Boolean,
       default: false,
     },
@@ -67,7 +71,6 @@ export default {
 </script>
 
 <style scoped>
-
 .btn {
   padding: 0.5rem 1.25rem;
   border-radius: 6px;
@@ -76,15 +79,12 @@ export default {
   cursor: pointer;
   font-size: 1rem;
   border: none;
-  
 }
 
-/* Hover animation */
 .btn:hover {
   transform: translateY(-2px);
 }
 
-/* Blue Fill Button */
 .btn-blue {
   background-color: #578FCA;
   color: white;
@@ -109,7 +109,6 @@ export default {
   border: none;
 }
 
-/* Blue Outline Button */
 .btn-outline-blue {
   background-color: white;
   color: #578FCA;
@@ -132,18 +131,24 @@ export default {
   border: 2px solid white;
 }
 
-/* Tamaños */
 .btn-md {
   font-size: 1rem;
   padding: 0.5rem 1.25rem;
 }
+
 .btn-sm {
   font-size: 0.875rem;
   padding: 0.4rem 1rem;
 }
+
 .btn-lg {
   font-size: 1.125rem;
   padding: 0.6rem 1.5rem;
 }
 
+/* 🔕 No focus */
+.no-focus:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
 </style>

@@ -1,15 +1,21 @@
 <template>
   <div>
-    <input
-      :type="type"
-      class="input"
-      :placeholder="placeholder"
+    <select
+      class="select"
       :disabled="disabled"
       :required="isRequired"
-      v-model="inputValue"
-      :style="[ { width: width }, noFocus ? noFocusStyle : {} ]"
-      :tabindex="noFocus ? -1 : 0"
-    />
+      v-model="selectValue"
+      :style="{ width: width }"
+    >
+      <option disabled value="">{{ placeholder }}</option>
+      <option
+        v-for="(option, index) in options"
+        :key="index"
+        :value="option.value"
+      >
+        {{ option.label }}
+      </option>
+    </select>
   </div>
 </template>
 
@@ -22,11 +28,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: '',
-    },
-    type: {
-      type: String,
-      default: 'text',
+      default: 'Selecciona una opció',
     },
     disabled: {
       type: Boolean,
@@ -40,13 +42,13 @@ export default {
       type: String,
       default: '100%',
     },
-    noFocus: {
-      type: Boolean,
-      default: false,
+    options: {
+      type: Array,
+      required: true, // [{ value: 'valor1', label: 'Mostrar esto' }]
     },
   },
   computed: {
-    inputValue: {
+    selectValue: {
       get() {
         return this.modelValue;
       },
@@ -54,28 +56,22 @@ export default {
         this.$emit('update:modelValue', value);
       },
     },
-    noFocusStyle() {
-      return {
-        outline: 'none',
-        boxShadow: 'none',
-        borderBottom: '1px solid #6C6B6B',
-      };
-    },
   },
 };
 </script>
 
 <style scoped>
-.input {
+.select {
   background-color: #F1F1F1;
   padding: 15px;
   border-radius: 5px;
   border: none;
   border-bottom: 1px solid #6C6B6B;
   transition: all 0.3s ease;
+  font-size: 1rem;
 }
 
-.input:focus {
+.select:focus {
   outline: none;
   border-bottom: 1px solid #578FCA;
   box-shadow: 0 4px 6px rgba(87, 143, 202, 0.5);

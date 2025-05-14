@@ -1,7 +1,7 @@
 <template>
   <header class="header navbar navbar-expand-lg">
     <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-      <h1 class="logo mb-2 mb-lg-0">Rent IT</h1>
+      <span class="logo mb-2 mb-lg-0">Rent IT</span>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -14,16 +14,20 @@
               <router-link class="nav-link text-white" to="/">Home</router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link text-white" to="/about">
+                <span data-feather="heart"></span>
+              </router-link>
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link text-white" :to="`/perfil/${this.username}`">
                 El meu Compte
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link text-white" to="/about">Les meves comandes</router-link>
+            
+            <li class="nav-item ms-4">
+              <Button color="white" variant="fill" @click="$router.push('/publicar-article')">Publicar Article</Button>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link text-white" to="/about">Articles Preferits</router-link>
-            </li>
+            
           </ul>
         </template>
         <template v-else>
@@ -33,17 +37,31 @@
           </div>
         </template>
       </nav>
+      <!-- Buscador -->
     </div>
   </header>
+  
+<div class="input-icon-wrapper position-relative">
+  <Input
+    type="text"
+    class="form-control search-input"
+    placeholder="Cerca un producte..."
+    v-model="searchQuery"
+    :noFocus="true"
+  />
+  <span data-feather="search" class="search-icon"></span>
+</div>
+
 </template>
 
 
 <script>
 import Button from "@/components/Button.vue";
-
+import Input from "@/components/Input.vue";
+import feather from "feather-icons";
 export default {
   components: {
-    Button,
+    Button, Input,
   },
   data() {
     return {
@@ -54,6 +72,10 @@ export default {
   },
   created() {
     this.checkLoginStatus();
+
+    this.$nextTick(() => {
+      feather.replace(); // Recargar íconos Feather en el DOM
+    });
   },
   methods: {
     checkLoginStatus() {
@@ -77,7 +99,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30px 75px;
+  padding: 15px 75px;
 }
 
 li {
@@ -90,6 +112,26 @@ li {
 
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.input-icon-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 15px; /* Posiciona el ícono a la izquierda dentro del input */
+  transform: translateY(-50%);
+  color: #6C6B6B;
+  font-size: 1.2rem;
+  pointer-events: none; /* Evita que el ícono interfiera con el clic */
+  z-index: 2;
+}
+
+.search-input {
+  padding-left: 2.5rem; /* Asegura espacio para el ícono dentro del input */
 }
 
 /* Responsive */

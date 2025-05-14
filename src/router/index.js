@@ -58,6 +58,10 @@ const routes = [
     path: "/verPerfil",
     name: "VerPerfil",
     component: () => import("../views/PerfilUsuariMitja.vue"),
+  }, {
+    path:"/publicar-article",
+    name:"PublicarArticle",
+    component: () => import("../views/Article/PublicarArticle.vue"),
   }
 ];
 
