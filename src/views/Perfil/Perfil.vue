@@ -14,69 +14,83 @@
 
       <div class="col-md-9">
         <div class="row">
-          <div class="col-4">
+          <div class="col-2">
             <div class="text-center mb-4">
               <img :src="usuari.foto_perfil || 'https://via.placeholder.com/150'" alt="Foto de perfil"
-                class="rounded-circle" />
+                class="rounded-circle" height="100px" width="100px" />
             </div>
             <!-- Boton editar foto -->
-            <Button class="w-50 mt-5" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
+            <Button class="w-100 mt-1" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
           </div>
-          <div class="col-8">
+          <div class="col-10">
             <h2 class="mb-4">{{ usuari.nom }} {{ usuari.cognoms }}</h2>
-            <!-- Valoraciones -->
-            <p><strong>Valoracions:</strong></p>
-            <ul class="list-unstyled">
-              <li v-for="(valoracio, index) in usuari.valoracions" :key="index">
-                {{ valoracio.titol }}: {{ valoracio.puntuacio }} estrelles
-              </li>
-            </ul>
           </div>
-          <div class="row text-left mt-5 border-top pt-3 p-5">
-            <h2>Dades Personals</h2>
+        </div>
+
+        <div class="row text-left mt-5 border-top pt-3 p-5">
+          <h2>Dades Personals</h2>
+          <form @submit.prevent="updateUser" class="d-flex flex-column gap-3 mb-5">
             <!-- Formulario con los datos del usuario -->
-            <form @submit.prevent="updateUser" class="d-flex flex-column gap-3 mb-5">
-              <div>
-                <label class="form-label">Username</label>
-                <Input v-model="usuari.username" required :disabled="disableDades" />
-              </div>
-              <div>
-                <label class="form-label">Nom</label>
-                <Input v-model="usuari.nom" required :disabled="disableDades" />
-              </div>
-              <div>
-                <label class="form-label">Cognom</label>
-                <Input v-model="usuari.cognoms" required :disabled="disableDades" />
-              </div>
-              <div>
-                <label class="form-label">Correu electrònic</label>
-                <Input v-model="usuari.email" type="email" required :disabled="disableDades" />
-              </div>
-              <div>
-                <label class="form-label">DNI</label>
-                <Input v-model="usuari.dni" required :disabled="disableDades" />
-              </div>
-              <div>
-                <label class="form-label">Data Naixement</label>
-                <Input type="date" v-model="usuari.data_naixement" required :disabled="disableDades" />
-              </div>
+            <div>
+              <label class="form-label">Username</label>
+              <Input v-model="usuari.username" required :disabled="disableDades" />
+            </div>
+            <div>
+              <label class="form-label">Nom</label>
+              <Input v-model="usuari.nom" required :disabled="disableDades" />
+            </div>
+            <div>
+              <label class="form-label">Cognom</label>
+              <Input v-model="usuari.cognoms" required :disabled="disableDades" />
+            </div>
+            <div>
+              <label class="form-label">Correu electrònic</label>
+              <Input v-model="usuari.email" type="email" required :disabled="disableDades" />
+            </div>
+            <div>
+              <label class="form-label">DNI</label>
+              <Input v-model="usuari.dni" required :disabled="disableDades" />
+            </div>
+            <div>
+              <label class="form-label">Data Naixement</label>
+              <Input type="date" v-model="usuari.data_naixement" required :disabled="disableDades" />
+            </div>
 
-              <div class="row text-center mt-3">
-                <div class="col-12 col-md-6 mb-2 mb-md-0">
-                  <Button class="w-100" color="danger" variant="" v-if="disableDades"
-                    @click="modificarDades">Desactivar Compte</Button>
-                </div>
-                <div class="col-12 col-md-6 mb-2 mb-md-0">
-                    <Button class="w-100" color="blue" variant="outline" v-if="disableDades"
-                    @click="modificarDades">Modificar Dades</Button>
-                  <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades"
-                    @click="guardarDades">
-                    Guardar Dades
-                  </Button>
-                </div>
+            <div class="row text-center mt-3">
+              <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <Button class="w-100" color="danger" variant="" v-if="disableDades" @click="openDeactivateModal">
+                  Desactivar Compte
+                </Button>
               </div>
-            </form>
+              <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <Button class="w-100" color="blue" variant="outline" v-if="disableDades" @click="modificarDades">
+                  Modificar Dades
+                </Button>
+                <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades" @click="guardarDades">
+                  Guardar Dades
+                </Button>
+              </div>
+            </div>
+          </form>
+        </div>
 
+        <!-- Modal for Deactivating Account -->
+        <div class="modal fade" id="desactivarCompteModal" tabindex="-1" aria-labelledby="desactivarCompteModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="desactivarCompteModalLabel">Desactivar Compte</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <p>Estàs segur que vols desactivar el teu compte? Aquesta acció no es pot desfer.</p>
+              </div>
+              <div class="modal-footer">
+                <Button color="secondary" variant="outline" data-bs-dismiss="modal">Cancel·lar</Button>
+                <Button color="danger" variant="fill" @click="desactivarCompte">Desactivar</Button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -92,7 +106,7 @@
                 <form @submit.prevent="updatePhoto">
                   <div class="mb-3">
                     <label for="profilePhoto" class="form-label">Selecciona una nova foto</label>
-                    <input type="file" class="form-control" id="profilePhoto" @change="onFileChange" accept="image/*"/>
+                    <input type="file" class="form-control" id="profilePhoto" @change="onFileChange" accept="image/"/>
                   </div>
                   <div class="text-center">
                     <Button color="blue" variant="fill" type="submit">Actualitzar Foto</Button>
@@ -154,6 +168,10 @@ export default {
         const res = await axiosConn.get(`/infoUsuario/${userID}`);
         this.usuari = res.data.usuari;
         this.usuari.data_naixement = new Date(this.usuari.data_naixement).toISOString().split("T")[0];
+        
+        // Gestionamos la imagen 
+        
+
       } catch (err) {
         console.error("Error carregant usuari:", err);
       }
@@ -218,7 +236,7 @@ export default {
       formData.append("user_id", this.usuari.ID);
 
       try {
-        const res = await axiosConn.post("/updatePhoto", formData, {
+        const res = await axiosConn.post("/canviarFotoPerfil", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -228,6 +246,7 @@ export default {
           this.toastColor = "success";
           this.toast = true;
           this.usuari.foto_perfil = res.data.foto_perfil;
+          window.location.reload();
           setTimeout(() => {
             this.toast = false;
           }, 2000);
@@ -239,6 +258,34 @@ export default {
       } catch (err) {
         console.error("Error actualitzant la foto:", err);
         this.toastMessage = "Error actualitzant la foto.";
+        this.toastColor = "danger";
+        this.toast = true;
+      }
+    },
+    openDeactivateModal() {
+      const modal = new bootstrap.Modal(document.getElementById("desactivarCompteModal"));
+      modal.show();
+    },
+    async desactivarCompte() {
+      try {
+        const res = await axiosConn.post("/desactivarCompte", { user_id: this.usuari.ID });
+        if (res.status === 200) {
+          this.toastMessage = "Compte desactivat amb èxit!";
+          this.toastColor = "success";
+          this.toast = true;
+          setTimeout(() => {
+            this.toast = false;
+            this.$router.push("/login");
+          }, 2000);
+          window.location.reload();
+        } else {
+          this.toastMessage = "Error desactivant el compte.";
+          this.toastColor = "danger";
+          this.toast = true;
+        }
+      } catch (err) {
+        console.error("Error desactivant el compte:", err);
+        this.toastMessage = "Error desactivant el compte.";
         this.toastColor = "danger";
         this.toast = true;
       }

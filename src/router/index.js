@@ -54,6 +54,11 @@ const routes = [
     name: "Perfil",
     component: () => import("../views/Perfil/Perfil.vue"),
   },
+  {
+    path: "/verPerfil",
+    name: "VerPerfil",
+    component: () => import("../views/PerfilUsuariMitja.vue"),
+  }
 ];
 
 const router = createRouter({
