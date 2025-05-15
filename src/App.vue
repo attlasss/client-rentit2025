@@ -11,11 +11,16 @@
 <script>
 import AppHeader from "@/components/AppHeader.vue";
 import AppFooter from "@/components/AppFooter.vue";
-
+import feather from "feather-icons";
 export default {
   components: {
     AppHeader,
     AppFooter
+  },
+  mounted() {
+    this.$nextTick(() => {
+      feather.replace(); // Recargar íconos Feather en el DOM
+    });
   }
 };
 </script>
@@ -56,6 +61,7 @@ html, body {
   font-family: 'Urbanist', sans-serif;
   font-weight: 400;
   font-size: 2.5rem;
+  color:white;
 }
 
 .logo-color {
@@ -71,4 +77,12 @@ html, body {
   font-weight: 600;
 }
 
+.nav-link.active {
+  background-color: #578FCA;
+  color: white;
+}
+
+.nav-link {
+  color: #578FCA;
+}
 </style>

@@ -58,11 +58,17 @@ const routes = [
     path: "/verPerfil",
     name: "VerPerfil",
     component: () => import("../views/PerfilUsuariMitja.vue"),
-  }, {
+  }, 
+  {
+    path: "/perfilArticles/:username",
+    name: "PerfilArticles",
+    component: () => import("../views/Perfil/PerfilArticles.vue"),
+  }, 
+  {
     path:"/publicar-article",
     name:"PublicarArticle",
     component: () => import("../views/Article/PublicarArticle.vue"),
-  }
+  },
 ];
 
 const router = createRouter({

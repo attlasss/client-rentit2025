@@ -41,7 +41,7 @@
     </div>
   </header>
   
-<div class="input-icon-wrapper position-relative">
+<div class="input-icon-wrapper position-relative" v-if="isLoggedIn">
   <Input
     type="text"
     class="form-control search-input"

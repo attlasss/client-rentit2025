@@ -4,11 +4,15 @@
     @mouseover="hover = true"
     @mouseleave="hover = false"
   >
+    <!-- Si se pasa el ícono, lo renderizamos -->
+    <span v-if="icon" :data-feather="icon" class="icon"></span>
     <slot />
   </button>
 </template>
 
 <script>
+import feather from "feather-icons";
+
 export default {
   name: "Button",
   props: {
@@ -22,7 +26,7 @@ export default {
     },
     variant: {
       type: String,
-      default: "fill", // fill | outline | gradient
+      default: "fill",
     },
     fullWidth: {
       type: Boolean,
@@ -36,6 +40,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    icon: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -46,7 +54,6 @@ export default {
     computedClasses() {
       const base = [];
 
-      // Variant
       if (this.variant === "gradient") {
         base.push("text-white", `bg-gradient-${this.color}`);
       } else if (this.variant === "outline") {
@@ -55,19 +62,21 @@ export default {
         base.push(`btn-${this.color}`);
       }
 
-      // Size
       if (this.size) base.push(`btn-${this.size}`);
-
-      // Full Width
       if (this.fullWidth) base.push("w-100");
-
-      // Active
       if (this.active) base.push("active");
 
       return base.join(" ");
     },
   },
+  mounted() {
+    feather.replace(); // Renderiza íconos después del montaje
+  },
+  updated() {
+    feather.replace(); // Por si cambia dinámicamente el DOM
+  },
 };
+
 </script>
 
 <style scoped>
@@ -79,6 +88,9 @@ export default {
   cursor: pointer;
   font-size: 1rem;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover {
@@ -150,5 +162,10 @@ export default {
 .no-focus:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.icon {
+  margin-right: 8px;
+  display: inline-block;
 }
 </style>

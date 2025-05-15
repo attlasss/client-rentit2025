@@ -54,8 +54,11 @@
                     </div>
 
                     <div class="text-center mt-3">
-                        <Button color="blue" variant="fill" type="submit">Afegir article</Button>
+                        <Button class="w-100 w-md-auto" color="blue" variant="fill" type="submit">
+                            Publicar article
+                        </Button>
                     </div>
+
                 </form>
             </div>
         </div>
