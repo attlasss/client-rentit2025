@@ -233,7 +233,6 @@ export default {
 
       // Obtenemos el mimetype del archivo
       const mimetype = this.selectedFile.type;
-      console.log("Mimetype:", mimetype);
       const formData = new FormData();
       formData.append("foto_perfil", this.selectedFile);
       formData.append("user_id", this.usuari.ID);

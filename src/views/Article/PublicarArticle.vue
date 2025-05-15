@@ -17,35 +17,35 @@
                     <div>
                         <label class="form-label">Categoria</label>
                         <!-- Select de las categorias -->
-                        <Select v-model="article.categoria"
-                            :options="categories.map(category => ({ value: category.id, label: category.nom }))"
+                        <Select v-model="article.id_categoria"
+                            :options="categories.map(category => ({ value: category.id_categoria, label: category.nom }))"
                             placeholder="Selecciona una categoria" required />
                     </div>
 
                     <div>
                         <label class="form-label">Preu per mes</label>
                         <Input v-model="article.preu" type="number" min="0" placeholder="Ex: 15€" required />
-                        <div>
-                            <label class="form-label">Mesos</label>
-                            <Select v-model="article.mesos"
-                                :options="Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: `${i + 1} mesos` }))"
-                                placeholder="Selecciona una durada" required />
-                        </div>
+
                     </div>
 
+                    <div>
+                        <label class="form-label">Mesos</label>
+                        <Select v-model="article.mesos"
+                            :options="Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: `${i + 1} mesos` }))"
+                            placeholder="Selecciona una durada" required />
 
-
+                    </div>
 
                     <div>
-                        <label class="form-label">Imatge (URL)</label>
+                        <label class="form-label">Imatge</label>
                         <div class="input-container">
                             <div class="image-upload">
                                 <input type="file" class="d-none" id="image-upload" @change="previewImage"
                                     accept="image/*" />
                                 <label for="image-upload" class="image-upload-label">
                                     <div class="image-upload-box">
-                                        <img v-if="img" :src="img" alt="Previsualització de la imatge"
-                                            class="image-preview" />
+                                        <img v-if="selectedImatge" :src="selectedImatge"
+                                            alt="Previsualització de la imatge" class="image-preview" />
                                         <span v-else>Fes clic per afegir una imatge</span>
                                     </div>
                                 </label>
@@ -88,15 +88,16 @@ export default {
             article: {
                 nom: "",
                 descripcio: "",
-                categoria: "",
+                id_categoria: "",
                 preu: "",
+                mesos: "",
                 imatge: "",
             },
             categories: [],
             toast: false,
             toastMessage: "",
             toastColor: "success",
-            img: null,
+            selectedImatge: null,
         };
     },
     created() {
@@ -104,17 +105,63 @@ export default {
     },
     methods: {
         afegirarticle() {
-            // Aquí puedes hacer el post al backend ✨
-            if (this.article.nom && this.article.preu) {
-                this.toastMessage = "article afegit correctament!";
-                this.toastColor = "success";
-            } else {
-                this.toastMessage = "Omple tots els camps!";
+            if (!this.article.nom || !this.article.descripcio || !this.article.id_categoria || !this.article.preu
+                || !this.article.mesos || !this.article.imatge) {
+
+                // Console log para depuración
+                console.log("Verificando campos del artículo:");
+                console.log("Nombre del artículo:", this.article.nom);
+                console.log("Descripción:", this.article.descripcio);
+                console.log("Categoría:", this.article.id_categoria);
+                console.log("Precio por mes:", this.article.preu);
+                console.log("Mesos:", this.article.mesos);
+                console.log("Imagen seleccionada:", this.article.imatge);
+
+                this.toastMessage = "Si us plau, ompliu tots els camps.";
                 this.toastColor = "danger";
+                this.toast = true;
+                return;
             }
 
-            this.toast = true;
-            setTimeout(() => (this.toast = false), 3000);
+
+            const userID = localStorage.getItem("userID");
+
+            const formData = new FormData();
+            formData.append("foto_article", this.article.imatge); // <<-- Usa el archivo real
+            formData.append("mimetype", this.article.imatge.type);
+            formData.append("user_id", userID);
+            formData.append("articleData", JSON.stringify(this.article));
+
+            try {
+                const res = axiosConn.post("/crearArticle", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+                console.log("Response:", res.status);
+                if (res.status === 200) {
+
+                    this.toastMessage = "Article creat amb èxit!";
+                    this.toastColor = "success";
+                    this.toast = true;
+                    // Redirigir a la pàgina d'articles
+                    this.$router.push({ name: "articles" });
+                    setTimeout(() => {
+                        this.toast = false;
+                    }, 2000);
+                } else {
+                    this.toastMessage = "Error actualitzant la foto.";
+                    this.toastColor = "danger";
+                    this.toast = true;
+                }
+            } catch (err) {
+                console.error("qqq", err);
+                this.toastMessage = "qq";
+                this.toastColor = "danger";
+                this.toast = true;
+            }
+
+
         },
         getData() {
             axiosConn
@@ -129,30 +176,19 @@ export default {
         previewImage(event) {
             const file = event.target.files[0];
 
-            // Depuración: Verifica que se haya seleccionado un archivo
-            console.log("Archivo seleccionado:", file);
-
             if (file) {
                 const reader = new FileReader();
 
                 reader.onload = (e) => {
-                    // Depuración: Verifica el resultado de la lectura del archivo
-                    console.log("Imagen cargada con éxito:", e.target.result);
-
-                    this.img = e.target.result;  // Guardar la imagen en el estado
+                    this.selectedImatge = e.target.result; // Solo para mostrar en pantalla (base64)
                 };
 
-                reader.onerror = (error) => {
-                    // Depuración: Si ocurre un error al leer el archivo
-                    console.log("Error al leer la imagen:", error);
-                };
+                this.article.imatge = file; // <<--- Guarda el File aquí
 
                 reader.readAsDataURL(file);
-            } else {
-                // Depuración: Si no se seleccionó un archivo
-                console.log("No se ha seleccionado ningún archivo.");
             }
         }
+
 
     },
 };
