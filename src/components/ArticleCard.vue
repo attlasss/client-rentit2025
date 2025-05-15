@@ -2,30 +2,65 @@
   <div class="vinted-card">
     <div class="image-container">
       <img :src="foto" :alt="nom" v-if="foto" />
-      <button class="fav-button" @click="$emit('toggle-fav')">
-        <span :class="{ active: isFavorited }">♥</span>
-      </button>
     </div>
 
-    <div class="info">
-      <h3 class="title">{{ nom }}</h3>
-      <p class="price">{{ preu }}€/mes</p>
-      <p class="duration">{{ mesos }} mesos disponibles</p>
-      <button class="view-more" @click="$emit('view-more')">Veure més</button>
+    <div class="info text-start">
+      <div class="header">
+        <!-- Título en una columna -->
+        <h3 class="title">{{ nom }}</h3>
+
+        <!-- Botón de Favorito en la segunda columna -->
+        <button class="fav-button" @click="this.$emit('toggleFav', this.id_article);">
+          <span v-if="isFaved" data-feather="heart"></span>
+          <span v-else data-feather="heart"></span>
+        </button>
+      </div>
+      <p class="price mb-0">{{ preu }}€/mes</p>
+      <p class="duration mb-0">{{ mesos }} mesos disponibles</p>
+      <p><a href="">@{{ username }}</a></p>
+      <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.userID);">Veure més</Button>
     </div>
   </div>
+  <transition name="fade">
+      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+        {{ toastMessage }}
+      </div>
+    </transition>
 </template>
 
 <script>
+import Button from "@/components/Button.vue";
+import feather from "feather-icons";
+
 export default {
-  name: "ArticleCard",
+  components: {
+    Button,
+  },
+  name: 'ArticleCard',
   props: {
-    user: { type: String, required: true },
+    id_article: { type: Number, required: true }, 
     nom: { type: String, required: true },
+    foto: { type: String, required: true },
     preu: { type: Number, required: true },
     mesos: { type: Number, required: true },
-    foto: { type: String, default: "" },
-    mimeType: { type: String, default: "image/jpeg" },
+    username: { type: String, required: true },
+    userID: { type: Number, required: true },
+    isFaved: { type: [Number,Boolean], default: false },
+  },
+  emits: ['addFav'],
+  data() {
+    return {
+      toast: false,
+      toastMessage: "",
+      toastColor: "success",
+    };
+  },
+  mounted() {
+    feather.replace(); // Renderiza íconos después del montaje
+  },
+  updated() {
+    feather.replace(); // Por si cambia dinámicamente el DOM
   },
 };
 </script>
@@ -60,29 +95,6 @@ export default {
   object-fit: cover;
 }
 
-.fav-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: white;
-  border: none;
-  border-radius: 50%;
-  padding: 6px 10px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-}
-
-.fav-button .active {
-  color: red;
-}
-
-.fav-button span {
-  font-size: 18px;
-  color: #aaa;
-  transition: color 0.2s;
-}
-
 .info {
   padding: 1rem;
   display: flex;
@@ -90,11 +102,34 @@ export default {
   gap: 6px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .title {
   font-size: 1.2rem;
   font-weight: 600;
   margin: 0;
-  color: #21339A;
+  color: #578FCA;
+}
+
+.fav-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.fav-button:hover {
+  color: red;
+}
+
+.color-red {
+  color: red;
 }
 
 .price {
@@ -105,5 +140,11 @@ export default {
 .duration {
   font-size: 0.9rem;
   color: #777;
+}
+
+a {
+  text-decoration: none;
+  color: #578FCA;
+  font-style: italic;
 }
 </style>

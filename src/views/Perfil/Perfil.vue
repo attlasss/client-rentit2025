@@ -223,6 +223,9 @@ export default {
             this.toast = true;
             this.toastMessage = "Error actualitzant usuari";
             this.toastColor = "danger";
+            setTimeout(() => {
+              this.toast = false;
+            }, 2000);
           }
         })
         .catch(error => {

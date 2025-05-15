@@ -16,9 +16,9 @@
       <div class="col-md-9">
         <div class="row">
           <div class="col-md-4 mb-4" v-for="(article, index) in articles" :key="index">
-            <ArticleCard :user="article.user" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-              :foto="article.foto" :mimeType="article.mimeType" @toggle-fav="toggleFavorite(article)"
-              @view-more="viewMore(article)" />
+            <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
+              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="usuari.userID"
+              :isFaved="article.is_favorite" @toggleFav="toggleFav(article)" />
 
           </div>
         </div>
@@ -43,8 +43,9 @@ export default {
   },
   data() {
     return {
-      articles: [], // Aquí se almacenarán los artículos del usuario
+      // articles: [], // Aquí se almacenarán los artículos del usuario
       usuari: {},
+      articles: [],
       toast: false,
       toastMessage: "",
       toastColor: "success",
@@ -59,6 +60,7 @@ export default {
         { label: "Lloguers Pendents", path: "/perfil/pendents" },
       ];
     },
+    // Aquí se almacenarán los artículos del usuario
   },
   mounted() {
     // Obtener los artículos del usuario al montar el componente
@@ -84,17 +86,53 @@ export default {
           this.toastMessage = "Error al carregar els articles";
           this.toastColor = "danger";
           this.toast = true;
+          setTimeout(() => {
+            this.toast = false;
+          }, 3000);
         }
       } catch (error) {
         this.toastMessage = "Error al carregar els articles";
-          this.toastColor = "danger";
-          this.toast = true;
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => {
+          this.toast = false;
+        }, 3000);
       }
     },
     // Alternar el estado de favorito de un artículo
-    toggleFavorite(article) {
-      article.isFavorited = !article.isFavorited;
-      this.showToast(article.isFavorited ? "Article agregado a favoritos" : "Article eliminado de favoritos");
+    toggleFav(article) {
+      axiosConn.post("/afegirArticlesPreferits", {
+        id_article: article.id_article,
+        id_usuari: this.usuari.ID,
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            if (response.data.function === "add") {
+              this.toastMessage = "Article afegit a favorits!";
+              this.toastColor = "success";
+            } else if (response.data.function === "delete") {
+              this.toastMessage = "Article eliminat de favorits";
+              this.toastColor = "danger";
+            }
+
+            // Mostrar el toast
+            this.toast = true;
+            setTimeout(() => {
+              this.toast = false;
+            }, 2000);
+          } else {
+            this.toast = true;
+            this.toastMessage = "Error al afegir a favorits";
+            this.toastColor = "danger";
+            setTimeout(() => {
+              this.toast = false;
+            }, 2000);
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding favorite:", error);
+          this.showToast("Error al afegir a favorits");
+        });
     },
     // Acción para ver más detalles de un artículo
     viewMore(article) {
