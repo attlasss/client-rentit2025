@@ -10,14 +10,14 @@
         <h3 class="title">{{ nom }}</h3>
 
         <!-- Botón de Favorito en la segunda columna -->
-        <button class="fav-button" @click="this.$emit('toggleFav', this.id_article);">
+        <button class="fav-button" @click="this.$emit('toggleFav', { id_article: this.id_article, isFaved: this.isFaved });">
           <span v-if="isFaved" data-feather="heart" class="color-red"></span>
           <span v-else data-feather="heart"></span>
         </button>
       </div>
       <p class="price mb-0">{{ preu }}€/mes</p>
       <p class="duration mb-0">{{ mesos }} mesos disponibles</p>
-      <p><a :href="this.$emit('toggleFav', this.id_article)">@{{ username }}</a></p>
+      <p><a :href="this.$emit('verMas', this.id_article)">@{{ username }}</a></p>
       <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.userID);">Veure més</Button>
     </div>
   </div>
@@ -48,14 +48,7 @@ export default {
     userID: { type: Number, required: true },
     isFaved: { type: [Number,Boolean], default: false },
   },
-  emits: ['addFav'],
-  data() {
-    return {
-      toast: false,
-      toastMessage: "",
-      toastColor: "success",
-    };
-  },
+  emits: ['toggleFav','verMas'],
   mounted() {
     feather.replace(); // Renderiza íconos después del montaje
   },

@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-md-4 mb-4" v-for="(article, index) in articles" :key="index">
             <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="usuari.userID"
+              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="article.user_id"
               :isFaved="article.is_favorite" @toggleFav="toggleFav(article.id_article)" />
 
           </div>
