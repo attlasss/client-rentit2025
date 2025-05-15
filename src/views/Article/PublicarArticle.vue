@@ -104,7 +104,7 @@ export default {
         this.getData();
     },
     methods: {
-        afegirarticle() {
+        async afegirarticle() {
             if (!this.article.nom || !this.article.descripcio || !this.article.id_categoria || !this.article.preu
                 || !this.article.mesos || !this.article.imatge) {
 
@@ -133,33 +133,35 @@ export default {
             formData.append("articleData", JSON.stringify(this.article));
 
             try {
-                const res = axiosConn.post("/crearArticle", formData, {
+                const res = await axiosConn.post("/crearArticle", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 });
-                console.log("Response:", res.status);
-                if (res.status === 200) {
 
+                console.log("Response:", res.status);
+
+                if (res.status === 200) {
                     this.toastMessage = "Article creat amb èxit!";
                     this.toastColor = "success";
                     this.toast = true;
-                    // Redirigir a la pàgina d'articles
                     this.$router.push({ name: "articles" });
+
                     setTimeout(() => {
                         this.toast = false;
                     }, 2000);
                 } else {
-                    this.toastMessage = "Error actualitzant la foto.";
+                    this.toastMessage = "Error creant l'article.";
                     this.toastColor = "danger";
                     this.toast = true;
                 }
             } catch (err) {
-                console.error("qqq", err);
-                this.toastMessage = "qq";
+                console.error("Error al crear article:", err);
+                this.toastMessage = "Error creant l'article.";
                 this.toastColor = "danger";
                 this.toast = true;
             }
+
 
 
         },
