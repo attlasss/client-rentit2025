@@ -11,13 +11,13 @@
 
         <!-- Botón de Favorito en la segunda columna -->
         <button class="fav-button" @click="this.$emit('toggleFav', this.id_article);">
-          <span v-if="isFaved" data-feather="heart"></span>
+          <span v-if="isFaved" data-feather="heart" class="color-red"></span>
           <span v-else data-feather="heart"></span>
         </button>
       </div>
       <p class="price mb-0">{{ preu }}€/mes</p>
       <p class="duration mb-0">{{ mesos }} mesos disponibles</p>
-      <p><a href="">@{{ username }}</a></p>
+      <p><a :href="this.$emit('toggleFav', this.id_article)">@{{ username }}</a></p>
       <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.userID);">Veure més</Button>
     </div>
   </div>

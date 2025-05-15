@@ -1,7 +1,18 @@
 <template>
   <div class="container-fluid mt-4">
     <div class="row">
-      
+
+      <!-- Artículos -->
+      <div class="col-md-9">
+        <div class="row">
+          <div class="col-md-4 mb-4" v-for="(article, index) in articles" :key="index">
+            <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
+              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="usuari.userID"
+              :isFaved="article.is_favorite" @toggleFav="toggleFav(article.id_article)" />
+
+          </div>
+        </div>
+      </div>
     </div>
     <transition name="fade">
       <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
@@ -13,162 +24,144 @@
 </template>
 
 <script>
+import ArticleCard from "@/components/ArticleCard.vue"; // Importar el componente ArticleCard
 import axiosConn from "@/axios/axios";
-import Input from "@/components/Input.vue";
-import Button from "@/components/Button.vue";
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js"; 
 
 export default {
   components: {
-    Input,
-    Button,
+    ArticleCard
   },
   data() {
     return {
-      currentView: "dadesPersonals",
+      // articles: [], // Aquí se almacenarán los artículos del usuario
       usuari: {},
-      
+      articles: [],
+      toast: false,
+      toastMessage: "",
+      toastColor: "success",
     };
   },
+  computed: {
+    menuItems() {
+      return [
+        { label: "Dades Personals", path: `/perfil/${this.usuari.username || ""}` },
+        { label: "Articles", path: `/perfilArticles/${this.usuari.username || ""}` },
+        { label: "Lloguers Actius", path: "/perfil/actius" },
+        { label: "Lloguers Pendents", path: "/perfil/pendents" },
+      ];
+    },
+    // Aquí se almacenarán los artículos del usuario
+  },
   mounted() {
-    this.getData();
+    // Obtener los artículos del usuario al montar el componente
+    this.getArticles();
   },
   methods: {
-    async getData() {
+    // Realiza la solicitud a la API para obtener los artículos
+    async getArticles() {
+      // Obtenemos el user 
       const userID = localStorage.getItem("userID");
       try {
         const res = await axiosConn.get(`/infoUsuario/${userID}`);
         this.usuari = res.data.usuari;
-        this.usuari.data_naixement = new Date(this.usuari.data_naixement).toISOString().split("T")[0];
-        
-        // Gestionamos la imagen 
-        
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
 
-      } catch (err) {
-        console.error("Error carregant usuari:", err);
+      try {
+        const response = await axiosConn.get(`/getArticles/${userID}`);
+        if (response.status === 200) {
+          this.articles = response.data;
+        } else {
+          this.toastMessage = "Error al carregar els articles";
+          this.toastColor = "danger";
+          this.toast = true;
+          setTimeout(() => {
+            this.toast = false;
+          }, 3000);
+        }
+      } catch (error) {
+        this.toastMessage = "Error al carregar els articles";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => {
+          this.toast = false;
+        }, 3000);
       }
     },
-    modificarDades() {
-      this.disableDades = false
-    },
-    guardarDades() {
-      this.disableDades = true
-      axiosConn.put(`/updateUser`,
-        {
-          user_id: this.usuari.ID,
-          username: this.usuari.username,
-          nom: this.usuari.nom,
-          cognoms: this.usuari.cognoms,
-          email: this.usuari.email,
-          dni: this.usuari.dni,
-          data_naixement: this.usuari.data_naixement,
-        }
-      )
-        .then(response => {
+    // Alternar el estado de favorito de un artículo
+    toggleFav(articleId) {
+      axiosConn.post("/afegirArticlesPreferits", {
+        id_article: articleId,
+        id_usuari: this.usuari.ID,
+      })
+        .then((response) => {
           if (response.status === 200) {
+            if (response.data.function === "add") {
+              this.toastMessage = "Article afegit a favorits!";
+              this.toastColor = "success";
+            } else if (response.data.function === "delete") {
+              this.toastMessage = "Article eliminat de favorits";
+              this.toastColor = "danger";
+            }
+
+            // Mostrar el toast
             this.toast = true;
-            this.toastMessage = "Usuari actualitzat amb èxit!";
-            this.toastColor = "success";
             setTimeout(() => {
               this.toast = false;
             }, 2000);
           } else {
             this.toast = true;
-            this.toastMessage = "Error actualitzant usuari";
+            this.toastMessage = "Error al afegir a favorits";
             this.toastColor = "danger";
+            setTimeout(() => {
+              this.toast = false;
+            }, 2000);
           }
         })
-        .catch(error => {
-          console.error("Error actualitzant usuari:", error);
-          this.toast = true;
-          this.toastMessage = "Error actualitzant usuari";
-          this.toastColor = "danger";
+        .catch((error) => {
+          console.error("Error adding favorite:", error);
+          this.showToast("Error al afegir a favorits");
         });
     },
-    openModal() {
-      const modal = new bootstrap.Modal(document.getElementById("editPhotoModal"));
-      modal.show();
+    // Acción para ver más detalles de un artículo
+    viewMore(article) {
+      this.$router.push(`/article/${article.id}`);
     },
-    onFileChange(event) {
-      this.selectedFile = event.target.files[0];
-    },
-    async updatePhoto() {
-      if (!this.selectedFile) {
-        this.toastMessage = "Selecciona una foto abans de continuar.";
-        this.toastColor = "danger";
-        this.toast = true;
-        setTimeout(() => {
-          this.toast = false;
-        }, 2000);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("foto_perfil", this.selectedFile);
-      formData.append("user_id", this.usuari.ID);
-
-      try {
-        const res = await axiosConn.post("/canviarFotoPerfil", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        if (res.status === 200) {
-          this.toastMessage = "Foto actualitzada amb èxit!";
-          this.toastColor = "success";
-          this.toast = true;
-          this.usuari.foto_perfil = res.data.foto_perfil;
-          window.location.reload();
-          setTimeout(() => {
-            this.toast = false;
-          }, 2000);
-        } else {
-          this.toastMessage = "Error actualitzant la foto.";
-          this.toastColor = "danger";
-          this.toast = true;
-        }
-      } catch (err) {
-        console.error("Error actualitzant la foto:", err);
-        this.toastMessage = "Error actualitzant la foto.";
-        this.toastColor = "danger";
-        this.toast = true;
-      }
-    },
-    openDeactivateModal() {
-      const modal = new bootstrap.Modal(document.getElementById("desactivarCompteModal"));
-      modal.show();
-    },
-    async desactivarCompte() {
-      try {
-        const res = await axiosConn.post("/desactivarCompte", { user_id: this.usuari.ID });
-        if (res.status === 200) {
-          this.toastMessage = "Compte desactivat amb èxit!";
-          this.toastColor = "success";
-          this.toast = true;
-          setTimeout(() => {
-            this.toast = false;
-            this.$router.push("/login");
-          }, 2000);
-          window.location.reload();
-        } else {
-          this.toastMessage = "Error desactivant el compte.";
-          this.toastColor = "danger";
-          this.toast = true;
-        }
-      } catch (err) {
-        console.error("Error desactivant el compte:", err);
-        this.toastMessage = "Error desactivant el compte.";
-        this.toastColor = "danger";
-        this.toast = true;
-      }
-    },
-  },
+    // Mostrar un mensaje tipo toast
+    showToast(message) {
+      this.toastMessage = message;
+      this.toastColor = "success";
+      this.toast = true;
+      setTimeout(() => {
+        this.toast = false;
+      }, 3000);
+    }
+  }
 };
 </script>
 
 <style scoped>
+.toast-message {
+  animation: fade-in 0.5s ease-out;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .nav-link.active {
-  background-color: #0d6efd;
+  background-color: #578FCA;
   color: white;
+}
+
+.nav-link {
+  color: #578FCA;
 }
 </style>
