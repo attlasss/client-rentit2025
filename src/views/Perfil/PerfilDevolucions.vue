@@ -12,19 +12,18 @@
         </ul>
       </div>
 
-      <div class="col-md-9 text-start">
-        <div class="row ps-5">
+      <div class="col-md-9">
+        <div class="row">
           <div class="col-2">
-            <div class="text-start mb-4">
+            <div class="text-center mb-4">
               <img :src="usuari.foto_perfil || 'https://via.placeholder.com/150'" alt="Foto de perfil"
                 class="rounded-circle" height="100px" width="100px" />
             </div>
             <!-- Boton editar foto -->
+            <Button class="w-100 mt-1" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
           </div>
           <div class="col-10">
-            <p class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</p>
-            <p>{{ usuari.email }}</p>
-            <Button icon="edit" class=" mt-1" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
+            <h2 class="mb-4">{{ usuari.nom }} {{ usuari.cognoms }}</h2>
           </div>
         </div>
 
@@ -46,11 +45,11 @@
             </div>
             <div>
               <label class="form-label">Correu electrònic</label>
-              <Input v-model="usuari.email" type="email" required disabled />
+              <Input v-model="usuari.email" type="email" required :disabled="disableDades" />
             </div>
             <div>
               <label class="form-label">DNI</label>
-              <Input v-model="usuari.dni" required disabled/>
+              <Input v-model="usuari.dni" required :disabled="disableDades" />
             </div>
             <div>
               <label class="form-label">Data Naixement</label>
@@ -59,35 +58,19 @@
 
             <div class="row text-center mt-3">
               <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="blue" variant="outline" v-if="disableDades" @click="modificarDades">
-                  Modificar Dades
-                </Button>
-                <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades"
-                  @click="guardarDades">
-                  Guardar Dades
-                </Button>
-              </div>
-            </div>
-
-            <p class="text-start mt-3 m-0 border-top p-2">Accions del compte </p>
-            <div class="row text-center">
-              <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="blue" variant="fill" @click="tancarSessio">
-                  Tancar Sessió
-                </Button>
-              </div>
-            </div>
-
-
-            <div class="row text-center">
-              <div class="col-12 col-md-6 mb-2 mb-md-0">
                 <Button class="w-100" color="danger" variant="" v-if="disableDades" @click="openDeactivateModal">
                   Desactivar Compte
                 </Button>
               </div>
+              <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <Button class="w-100" color="blue" variant="outline" v-if="disableDades" @click="modificarDades">
+                  Modificar Dades
+                </Button>
+                <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades" @click="guardarDades">
+                  Guardar Dades
+                </Button>
+              </div>
             </div>
-
-
           </form>
         </div>
 
@@ -112,8 +95,7 @@
         </div>
 
         <!-- Modal for editing profile picture -->
-        <div class="modal fade" id="editPhotoModal" tabindex="-1" aria-labelledby="editPhotoModalLabel"
-          aria-hidden="true">
+        <div class="modal fade" id="editPhotoModal" tabindex="-1" aria-labelledby="editPhotoModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -124,7 +106,7 @@
                 <form @submit.prevent="updatePhoto">
                   <div class="mb-3">
                     <label for="profilePhoto" class="form-label">Selecciona una nova foto</label>
-                    <input type="file" class="form-control" id="profilePhoto" @change="onFileChange" accept="image/" />
+                    <input type="file" class="form-control" id="profilePhoto" @change="onFileChange" accept="image/"/>
                   </div>
                   <div class="text-center">
                     <Button color="blue" variant="fill" type="submit">Actualitzar Foto</Button>
@@ -149,8 +131,7 @@
 import axiosConn from "@/axios/axios";
 import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
-import feather from "feather-icons";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js"; 
 
 export default {
   components: {
@@ -161,6 +142,13 @@ export default {
     return {
       currentView: "dadesPersonals",
       usuari: {},
+      menuItems: [
+        { label: "Dades Personals", path: `/perfil/${this.username}-${this.userID}` },
+        { label: "Articles Preferits", path: `/perfil/${this.username}-${this.userID}/preferits` },
+        { label: "Les meves Comandes", path: `/perfil/${this.username}-${this.userID}/comandes` },
+        { label: "Els meus Articles", path: `/perfil/${this.username}-${this.userID}/articles` },
+        { label: "Les meves Valoracions", path: `/perfil/${this.username}-${this.userID}/valoracions` },
+      ],
       username: "",
       userID: "",
       disableDades: true,
@@ -170,22 +158,8 @@ export default {
       selectedFile: null,
     };
   },
-  computed: {
-    menuItems() {
-      return [
-        { label: "Dades Personals", path: `/perfil/${this.usuari.username || ""}` },
-        { label: "Articles", path: `/perfilArticles/${this.usuari.username || ""}` },
-        { label: "Comandes", path: `/perfilComandes/${this.usuari.username || ""}` },
-        { label: "Devolucions", path: `/perfilDevolucions/${this.usuari.username || ""}` },
-        { label: "Ventes", path: `/perfilVentes/${this.usuari.username || ""}` },
-        { label: "Valoracions", path: `/perfilValoracions/${this.usuari.username || ""}` },
-        { label: "Preferits", path: `/preferits/${this.usuari.username || ""}` },
-      ];
-    },
-  },
   mounted() {
     this.getData();
-    feather.replace();
   },
   methods: {
     async getData() {
@@ -194,8 +168,10 @@ export default {
         const res = await axiosConn.get(`/infoUsuario/${userID}`);
         this.usuari = res.data.usuari;
         this.usuari.data_naixement = new Date(this.usuari.data_naixement).toISOString().split("T")[0];
+        
+        // Gestionamos la imagen 
+        
 
-        // Gestionamos la imagen
       } catch (err) {
         console.error("Error carregant usuari:", err);
       }
@@ -228,9 +204,6 @@ export default {
             this.toast = true;
             this.toastMessage = "Error actualitzant usuari";
             this.toastColor = "danger";
-            setTimeout(() => {
-              this.toast = false;
-            }, 2000);
           }
         })
         .catch(error => {
@@ -258,12 +231,9 @@ export default {
         return;
       }
 
-      // Obtenemos el mimetype del archivo
-      const mimetype = this.selectedFile.type;
       const formData = new FormData();
       formData.append("foto_perfil", this.selectedFile);
       formData.append("user_id", this.usuari.ID);
-      formData.append("mimetype", mimetype);
 
       try {
         const res = await axiosConn.post("/canviarFotoPerfil", formData, {
@@ -320,23 +290,13 @@ export default {
         this.toast = true;
       }
     },
-    tancarSessio() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userID");
-      localStorage.removeItem("user");
-      this.$router.push("/login");
-    },
   },
 };
 </script>
 
 <style scoped>
 .nav-link.active {
-  background-color: #578FCA;
+  background-color: #0d6efd;
   color: white;
-}
-
-.nav-link {
-  color: #578FCA;
 }
 </style>

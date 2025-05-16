@@ -14,46 +14,46 @@
 
       <!-- Comandes -->
       <div class="col-md-9">
-        <h1 class="mb-4">Les meves comandes</h1>
-        <div v-if="comandes.length === 0" class="text-center text-muted mt-5">
-          Encara no tens cap comanda.
+        <h1 class="mb-4">Les meves ventes</h1>
+        <div v-if="ventes.length === 0" class="text-center text-muted mt-5">
+          Encara no tens cap venta.
         </div>
         <div v-else class="row gy-4">
           <div
             class="col-12"
-            v-for="comanda in comandes"
-            :key="comanda.id_comanda"
+            v-for="venta in ventes"
+            :key="venta.id_venta"
           >
             <div class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
               <img
-                :src="comanda.foto"
+                :src="venta.foto"
                 alt="Imatge article"
                 class="order-img me-md-4 mb-3 mb-md-0"
               />
               <div class="flex-grow-1">
                 <p class="mb-1 text-muted">
-                  <strong>Preu:</strong> {{ comanda.preu_mes }}€/mes
+                  <strong>Preu:</strong> {{ venta.preu_mes }}€/mes
                   &nbsp; | &nbsp;
-                  <strong>Duració:</strong> {{ comanda.mesos }} mesos
+                  <strong>Duració:</strong> {{ venta.mesos }} mesos
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
-                  <span class="badge bg-success" v-if="comanda.estat === 'activa'">Activa</span>
-                  <span class="badge bg-secondary" v-else> {{ comanda.estat }}</span>
+                  <span class="badge bg-success" v-if="venta.estat === 'activa'">Activa</span>
+                  <span class="badge bg-secondary" v-else> {{ venta.estat }}</span>
                 </p>
                 <p class="mb-1">
-                  <strong>Data inici:</strong> {{ comanda.data_inici }}<br>
-                  <strong>Data fi:</strong> {{ comanda.data_fi }}
+                  <strong>Data inici:</strong> {{ venta.data_inici }}<br>
+                  <strong>Data fi:</strong> {{ venta.data_fi }}
                 </p>
                 <p class="mb-1">
-                  <strong>Preu Total</strong> {{ comanda.preu_total }}<br>
+                  <strong>Preu Total</strong> {{ venta.preu_total }}<br>
                 </p>
 
               </div>
               <div class="ms-md-4 mt-3 mt-md-0 d-flex flex-column align-items-end">
                 <Button
                   color="blue" variant="outline"
-                  :to="`/comanda/${comanda.id_comanda}`"
+                  :to="`/comanda/${venta.id_venta}`"
                 >
                   Veure més
                 </Button>
@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       usuari: {},
-      comandes: [],
+      ventes: [],
       toast: false,
       toastMessage: "",
       toastColor: "success",
@@ -105,10 +105,10 @@ export default {
     },
   },
   mounted() {
-    this.getComandes();
+    this.getVentes();
   },
   methods: {
-    async getComandes() {
+    async getVentes() {
       const userID = localStorage.getItem("userID");
       try {
         const res = await axiosConn.get(`/infoUsuario/${userID}`);
@@ -118,20 +118,20 @@ export default {
       }
 
       try {
-        // Suponiendo que el backend devuelve las comandes con el artículo relacionado
-        const response = await axiosConn.get(`/getComandesClient/${userID}`);
+        // Suponiendo que el backend devuelve las ventes con el artículo relacionado
+        const response = await axiosConn.get(`/getVentesClient/${userID}`);
         if (response.status === 200) {
-          this.comandes = response.data;
+          this.ventes = response.data;
           // Formatear la fecha
-          this.comandes.forEach((comanda) => {
-            const dataInici = new Date(comanda.data_inici);
-            const dataOrder = new Date(comanda.data_order);
-            comanda.data_inici = dataInici.toLocaleDateString("ca-ES");
-            comanda.data_order = dataOrder.toLocaleDateString("ca-ES");
-            // comanda.data_fi = dataFi.toLocaleDateString("ca-ES");
+          this.ventes.forEach((venta) => {
+            const dataInici = new Date(venta.data_inici);
+            const dataOrder = new Date(venta.data_order);
+            venta.data_inici = dataInici.toLocaleDateString("ca-ES");
+            venta.data_order = dataOrder.toLocaleDateString("ca-ES");
+            // venta.data_fi = dataFi.toLocaleDateString("ca-ES");
           });
         } else {
-          this.toastMessage = "Error al carregar les comandes";
+          this.toastMessage = "Error al carregar les ventes";
           this.toastColor = "danger";
           this.toast = true;
           setTimeout(() => {
@@ -139,7 +139,7 @@ export default {
           }, 3000);
         }
       } catch (error) {
-        this.toastMessage = "Error al carregar les comandes";
+        this.toastMessage = "Error al carregar les ventes";
         this.toastColor = "danger";
         this.toast = true;
         setTimeout(() => {

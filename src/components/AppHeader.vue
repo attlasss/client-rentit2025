@@ -14,7 +14,7 @@
               <router-link class="nav-link text-white" to="/">Home</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link text-white" to="/about">
+              <router-link class="nav-link text-white" :to="`/preferits/${this.username}`">
                 <span data-feather="heart"></span>
               </router-link>
             </li>

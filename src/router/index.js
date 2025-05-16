@@ -55,20 +55,45 @@ const routes = [
     component: () => import("../views/Perfil/Perfil.vue"),
   },
   {
-    path: "/verPerfil",
+    path: "/verPerfil/:username",
     name: "VerPerfil",
-    component: () => import("../views/PerfilUsuariMitja.vue"),
+    component: () => import("../views/PerfilUser.vue"),
+  }, 
+  {
+    path: "/perfilComandes/:username",
+    name: "perfilComandes",
+    component: () => import("../views/Perfil/PerfilComandes.vue"),
   }, 
   {
     path: "/perfilArticles/:username",
     name: "PerfilArticles",
     component: () => import("../views/Perfil/PerfilArticles.vue"),
-  }, 
+  },
+  {
+    path: "/perfilValoracions/:username",
+    name: "PerfilValoracions",
+    component: () => import("../views/Perfil/PerfilValoracions.vue"),
+  },
+  {
+    path: "/perfilVentes/:username",
+    name: "PerfilVentes",
+    component: () => import("../views/Perfil/PerfilVentes.vue"),
+  },
   {
     path:"/publicar-article",
     name:"PublicarArticle",
     component: () => import("../views/Article/PublicarArticle.vue"),
   },
+  {
+    path:"/article/:id",
+    name:"Article",
+    component: () => import("../views/Article/ArticleDetails.vue"),
+  },  
+  {
+    path:"/preferits/:username",
+    name:"Preferits",
+    component: () => import("../views/Preferits.vue"),
+  }
 ];
 
 const router = createRouter({

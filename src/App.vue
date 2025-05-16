@@ -76,13 +76,4 @@ html, body {
   display: block;
   font-weight: 600;
 }
-
-.nav-link.active {
-  background-color: #578FCA;
-  color: white;
-}
-
-.nav-link {
-  color: #578FCA;
-}
 </style>

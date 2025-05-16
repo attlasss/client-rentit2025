@@ -10,23 +10,18 @@
         <h3 class="title">{{ nom }}</h3>
 
         <!-- Botón de Favorito en la segunda columna -->
-        <button class="fav-button" @click="this.$emit('toggleFav', { id_article: this.id_article, isFaved: this.isFaved });">
-          <span v-if="isFaved" data-feather="heart" class="color-red"></span>
+        <button class="fav-button" @click="toggleFav">
+          <span v-if="isFavoriteLocal" data-feather="heart" class="color-red"></span>
           <span v-else data-feather="heart"></span>
         </button>
       </div>
       <p class="price mb-0">{{ preu }}€/mes</p>
       <p class="duration mb-0">{{ mesos }} mesos disponibles</p>
-      <p><a :href="this.$emit('verMas', this.id_article)">@{{ username }}</a></p>
-      <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.userID);">Veure més</Button>
+      <p><a>@{{ username }}</a></p>
+      <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.id_article);">Veure
+        més</Button>
     </div>
   </div>
-  <transition name="fade">
-      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
-        {{ toastMessage }}
-      </div>
-    </transition>
 </template>
 
 <script>
@@ -37,23 +32,42 @@ export default {
   components: {
     Button,
   },
+  watch: {
+    is_favorite(newValue) {
+      console.log('Nuevo valor de is_favorite:', newValue);
+      feather.replace(); // Solo actualiza el ícono cuando el estado cambie
+    }
+  },
+
   name: 'ArticleCard',
   props: {
-    id_article: { type: Number, required: true }, 
+    id_article: { type: Number, required: true },
     nom: { type: String, required: true },
     foto: { type: String, required: true },
     preu: { type: Number, required: true },
     mesos: { type: Number, required: true },
     username: { type: String, required: true },
     userID: { type: Number, required: true },
-    isFaved: { type: [Number,Boolean], default: false },
+    mimeType: { type: String, required: true },
+    is_favorite: { type: [Number, Boolean], default: false },
   },
-  emits: ['toggleFav','verMas'],
+  data() {
+    return {
+      isFavoriteLocal: this.is_favorite,
+    }
+  },
+  emits: ['toggleFav', 'verMas'],
   mounted() {
     feather.replace(); // Renderiza íconos después del montaje
   },
   updated() {
     feather.replace(); // Por si cambia dinámicamente el DOM
+  },
+  methods: {
+    toggleFav() {
+      // Emitir el evento con los datos necesario
+      this.$emit('toggleFav', this.id_article);
+    },
   },
 };
 </script>

@@ -1,19 +1,32 @@
 <template>
   <div class="container-fluid mt-4">
     <div class="row">
-
-      <!-- Artículos -->
-      <div class="col-md-9">
-        <div class="row">
-          <div class="col-md-4 mb-4" v-for="(article, index) in articles" :key="index">
-            <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="article.user_id"
-              :isFaved="article.is_favorite" @toggleFav="toggleFav(article.id_article)" />
-
-          </div>
-        </div>
+      <div class="col-12">
+        <h1 class="text-center mb-4">Articles Preferits</h1>
+        <p class="text-center">Els teus articles preferits. </p>
       </div>
     </div>
+
+    <!-- Artículos -->
+    <div class="row justify-content-center g-3">
+      <div class="col-12 col-md-2 mb-4" v-for="(article, index) in articles" :key="article.id_article">
+        <ArticleCard 
+          :username="article.username" 
+          :nom="article.nom" 
+          :preu="article.preu" 
+          :mesos="article.mesos"
+          :foto="article.foto" 
+          :mimeType="article.mimeType" 
+          :id_article="article.id_article" 
+          :userID="article.user_id"
+          :is_favorite="article.is_favorite" 
+          @toggleFav="toggleFav(article.id_article, index)" 
+          @verMas="viewMore(article.id_article)"
+        />
+      </div>
+    </div>
+
+    <!-- Mensaje tipo toast -->
     <transition name="fade">
       <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
         :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
@@ -22,6 +35,7 @@
     </transition>
   </div>
 </template>
+
 
 <script>
 import ArticleCard from "@/components/ArticleCard.vue"; // Importar el componente ArticleCard
@@ -33,7 +47,6 @@ export default {
   },
   data() {
     return {
-      // articles: [], // Aquí se almacenarán los artículos del usuario
       usuari: {},
       articles: [],
       toast: false,
@@ -41,25 +54,12 @@ export default {
       toastColor: "success",
     };
   },
-  computed: {
-    menuItems() {
-      return [
-        { label: "Dades Personals", path: `/perfil/${this.usuari.username || ""}` },
-        { label: "Articles", path: `/perfilArticles/${this.usuari.username || ""}` },
-        { label: "Lloguers Actius", path: "/perfil/actius" },
-        { label: "Lloguers Pendents", path: "/perfil/pendents" },
-      ];
-    },
-    // Aquí se almacenarán los artículos del usuario
-  },
   mounted() {
-    // Obtener los artículos del usuario al montar el componente
     this.getArticles();
   },
   methods: {
-    // Realiza la solicitud a la API para obtener los artículos
+    // Obtener los artículos del usuario
     async getArticles() {
-      // Obtenemos el user 
       const userID = localStorage.getItem("userID");
       try {
         const res = await axiosConn.get(`/infoUsuario/${userID}`);
@@ -69,7 +69,7 @@ export default {
       }
 
       try {
-        const response = await axiosConn.get(`/getArticles/${userID}`);
+        const response = await axiosConn.get(`/getArticlesPreferits/${userID}`);
         if (response.status === 200) {
           this.articles = response.data;
         } else {
@@ -90,7 +90,7 @@ export default {
       }
     },
     // Alternar el estado de favorito de un artículo
-    toggleFav(articleId) {
+    toggleFav(articleId, index) {
       axiosConn.post("/afegirArticlesPreferits", {
         id_article: articleId,
         id_usuari: this.usuari.ID,
@@ -100,9 +100,12 @@ export default {
             if (response.data.function === "add") {
               this.toastMessage = "Article afegit a favorits!";
               this.toastColor = "success";
+              this.articles[index].is_favorite = true;
             } else if (response.data.function === "delete") {
               this.toastMessage = "Article eliminat de favorits";
               this.toastColor = "danger";
+              // Eliminar el artículo de la lista si se elimina de favoritos
+              this.articles.splice(index, 1);
             }
 
             // Mostrar el toast
@@ -124,19 +127,10 @@ export default {
           this.showToast("Error al afegir a favorits");
         });
     },
-    // Acción para ver más detalles de un artículo
     viewMore(article) {
-      this.$router.push(`/article/${article.id}`);
+      this.$router.push(`/article/${article}`);
     },
     // Mostrar un mensaje tipo toast
-    showToast(message) {
-      this.toastMessage = message;
-      this.toastColor = "success";
-      this.toast = true;
-      setTimeout(() => {
-        this.toast = false;
-      }, 3000);
-    }
   }
 };
 </script>

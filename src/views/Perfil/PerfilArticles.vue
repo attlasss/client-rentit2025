@@ -12,17 +12,19 @@
         </ul>
       </div>
 
+
       <!-- Artículos -->
       <div class="col-md-9">
-        <div class="row">
-          <div class="col-md-4 mb-4" v-for="(article, index) in articles" :key="index">
+        <h1>Els meus articles</h1>
+        <div class="row px-4"> <!-- Agregar padding lateral con px-4 -->
+          <div class="col-md-3 mb-4" v-for="(article, index) in articles" :key="index">
             <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="usuari.userID"
-              :isFaved="article.is_favorite" @toggleFav="toggleFav(article)" />
-
+              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="article.user_id"
+              :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)" @verMas="viewMore(article.id_article)" />
           </div>
         </div>
       </div>
+
     </div>
     <transition name="fade">
       <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
@@ -56,8 +58,11 @@ export default {
       return [
         { label: "Dades Personals", path: `/perfil/${this.usuari.username || ""}` },
         { label: "Articles", path: `/perfilArticles/${this.usuari.username || ""}` },
-        { label: "Lloguers Actius", path: "/perfil/actius" },
-        { label: "Lloguers Pendents", path: "/perfil/pendents" },
+        { label: "Comandes", path: `/perfilComandes/${this.usuari.username || ""}` },
+        { label: "Devolucions", path: `/perfilDevolucions/${this.usuari.username || ""}` },
+        { label: "Ventes", path: `/perfilVentes/${this.usuari.username || ""}` },
+        { label: "Valoracions", path: `/perfilValoracions/${this.usuari.username || ""}` },
+        { label: "Preferits", path: `/preferits/${this.usuari.username || ""}` },
       ];
     },
     // Aquí se almacenarán los artículos del usuario
@@ -79,7 +84,7 @@ export default {
       }
 
       try {
-        const response = await axiosConn.get(`/getArticles/${userID}`);
+        const response = await axiosConn.get(`/getArticlesUser/${userID}`);
         if (response.status === 200) {
           this.articles = response.data;
         } else {
@@ -89,6 +94,7 @@ export default {
           setTimeout(() => {
             this.toast = false;
           }, 3000);
+          
         }
       } catch (error) {
         this.toastMessage = "Error al carregar els articles";
@@ -102,7 +108,7 @@ export default {
     // Alternar el estado de favorito de un artículo
     toggleFav(article) {
       axiosConn.post("/afegirArticlesPreferits", {
-        id_article: article.id_article,
+        id_article: article,
         id_usuari: this.usuari.ID,
       })
         .then((response) => {
@@ -110,9 +116,11 @@ export default {
             if (response.data.function === "add") {
               this.toastMessage = "Article afegit a favorits!";
               this.toastColor = "success";
+              window.location.reload();
             } else if (response.data.function === "delete") {
               this.toastMessage = "Article eliminat de favorits";
               this.toastColor = "danger";
+              window.location.reload();
             }
 
             // Mostrar el toast
@@ -136,26 +144,14 @@ export default {
     },
     // Acción para ver más detalles de un artículo
     viewMore(article) {
-      this.$router.push(`/article/${article.id}`);
+      this.$router.push(`/article/${article}`);
     },
     // Mostrar un mensaje tipo toast
-    showToast(message) {
-      this.toastMessage = message;
-      this.toastColor = "success";
-      this.toast = true;
-      setTimeout(() => {
-        this.toast = false;
-      }, 3000);
-    }
   }
 };
 </script>
 
 <style scoped>
-.toast-message {
-  animation: fade-in 0.5s ease-out;
-}
-
 @keyframes fade-in {
   0% {
     opacity: 0;
