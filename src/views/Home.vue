@@ -68,12 +68,6 @@
       </div>
     </div>
   </div>
-  <transition name="fade">
-    <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-      :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
-      {{ toastMessage }}
-    </div>
-  </transition>
 </template>
 
 <script>
@@ -107,7 +101,7 @@ export default {
       }
 
       try {
-        const response = await axiosConn.get('/getArticlesHome');
+        const response = await axiosConn.get(`/getArticlesHome/${userID}`);
         this.articles = response.data;
       } catch (error) {
         console.error("Error al cargar los artículos:", error);

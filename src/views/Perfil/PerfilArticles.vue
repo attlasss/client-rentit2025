@@ -11,21 +11,39 @@
           </li>
         </ul>
       </div>
-
-
       <!-- Artículos -->
       <div class="col-md-9">
-        <h1>Els meus articles</h1>
-        <div class="row px-4"> <!-- Agregar padding lateral con px-4 -->
-          <div class="col-md-3 mb-4" v-for="(article, index) in articles" :key="index">
-            <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-              :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="article.user_id"
-              :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)" @verMas="viewMore(article.id_article)" />
+        <h1 class="mb-4">Els meus articles</h1>
+        <div class="row g-4 px-4">
+          <template v-if="articles && articles.length > 0">
+            <div
+              class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex"
+              v-for="article in articles"
+              :key="article.id_article"
+            >
+              <ArticleCard
+                :username="article.username"
+                :nom="article.nom"
+                :preu="article.preu"
+                :mesos="article.mesos"
+                :foto="article.foto"
+                :mimeType="article.mimeType"
+                :id_article="article.id_article"
+                :userID="article.user_id"
+                :is_favorite="article.is_favorite"
+                @toggleFav="toggleFav(article.id_article)"
+                @verMas="viewMore(article.id_article)"
+                class="w-100"
+              />
+            </div>
+          </template>
+          <div v-else>
+            <p>No hi ha articles.</p>
           </div>
         </div>
       </div>
-
     </div>
+
     <transition name="fade">
       <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
         :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
@@ -94,7 +112,7 @@ export default {
           setTimeout(() => {
             this.toast = false;
           }, 3000);
-          
+
         }
       } catch (error) {
         this.toastMessage = "Error al carregar els articles";

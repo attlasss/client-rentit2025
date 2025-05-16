@@ -148,7 +148,7 @@ export default {
                     this.toastMessage = "Article creat amb èxit!";
                     this.toastColor = "success";
                     this.toast = true;
-                    this.$router.push({ name: "articles" });
+                    this.$router.push({ name: "PerfilArticles" });
 
                     setTimeout(() => {
                         this.toast = false;
@@ -157,12 +157,16 @@ export default {
                     this.toastMessage = "Error creant l'article.";
                     this.toastColor = "danger";
                     this.toast = true;
+
+                    setTimeout(() => {
+                        this.toast = false;
+                    }, 2000);
                 }
             } catch (err) {
                 console.error("Error al crear article:", err);
-                this.toastMessage = "Error creant l'article.";
-                this.toastColor = "danger";
-                this.toast = true;
+                // this.toastMessage = "Error creant l'article.";
+                // this.toastColor = "danger";
+                // this.toast = true;
             }
 
 

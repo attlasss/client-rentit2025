@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid mt-4">
-    <div class="row">
+    <div class="row mb-4">
       <!-- Menú lateral -->
       <div class="col-md-3 border-end">
         <ul class="nav flex-column nav-pills">
@@ -19,17 +19,10 @@
           Encara no tens cap comanda.
         </div>
         <div v-else class="row gy-4">
-          <div
-            class="col-12"
-            v-for="comanda in comandes"
-            :key="comanda.id_comanda"
-          >
-            <div class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
-              <img
-                :src="comanda.foto"
-                alt="Imatge article"
-                class="order-img me-md-4 mb-3 mb-md-0"
-              />
+          <div class="col-12" v-for="comanda in comandes" :key="comanda.id_comanda">
+            <div
+              class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
+              <img :src="comanda.foto" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
               <div class="flex-grow-1">
                 <p class="mb-1 text-muted">
                   <strong>Preu:</strong> {{ comanda.preu_mes }}€/mes
@@ -42,21 +35,14 @@
                   <span class="badge bg-secondary" v-else> {{ comanda.estat }}</span>
                 </p>
                 <p class="mb-1">
-                  <strong>Data inici:</strong> {{ comanda.data_inici }}<br>
-                  <strong>Data fi:</strong> {{ comanda.data_fi }}
+                  <strong>Data Order:</strong> {{ comanda.data_order }}<br>
+                  <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}<br>
+                  <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
                 </p>
                 <p class="mb-1">
-                  <strong>Preu Total</strong> {{ comanda.preu_total }}<br>
+                  <strong>Preu Total</strong> {{ comanda.preu_total }}€<br>
                 </p>
 
-              </div>
-              <div class="ms-md-4 mt-3 mt-md-0 d-flex flex-column align-items-end">
-                <Button
-                  color="blue" variant="outline"
-                  :to="`/comanda/${comanda.id_comanda}`"
-                >
-                  Veure més
-                </Button>
               </div>
             </div>
           </div>
@@ -64,11 +50,8 @@
       </div>
     </div>
     <transition name="fade">
-      <div
-        v-if="toast"
-        class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'"
-      >
+      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
         {{ toastMessage }}
       </div>
     </transition>
@@ -77,11 +60,7 @@
 
 <script>
 import axiosConn from "@/axios/axios";
-import Button from "@/components/Button.vue";
 export default {
-  components: {
-    Button,
-  },
   data() {
     return {
       usuari: {},
@@ -124,12 +103,50 @@ export default {
           this.comandes = response.data;
           // Formatear la fecha
           this.comandes.forEach((comanda) => {
-            const dataInici = new Date(comanda.data_inici);
-            const dataOrder = new Date(comanda.data_order);
-            comanda.data_inici = dataInici.toLocaleDateString("ca-ES");
-            comanda.data_order = dataOrder.toLocaleDateString("ca-ES");
-            // comanda.data_fi = dataFi.toLocaleDateString("ca-ES");
+            // Verificamos si 'data_inici' no está vacío o es una fecha válida
+            if (comanda.data_inici) {
+              const dataInici = new Date(comanda.data_inici);
+              // Verificamos si la fecha es válida
+              if (!isNaN(dataInici)) {
+                comanda.data_inici = dataInici.toLocaleDateString("ca-ES");
+              } else {
+                comanda.data_inici = "Data no vàlida"; // O cualquier valor predeterminado que prefieras
+              }
+            } else {
+              comanda.data_inici = "";
+            }
+
+            // Hacemos lo mismo con 'data_order'
+            if (comanda.data_order) {
+              const dataOrder = new Date(comanda.data_order);
+              if (!isNaN(dataOrder)) {
+                comanda.data_order = dataOrder.toLocaleString("ca-ES", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false, 
+                });
+              } else {
+                comanda.data_order = "Data no vàlida";
+              }
+            } else {
+              comanda.data_order = ""; 
+            }
+
+            if (comanda.data_fi) {
+              const dataFi = new Date(comanda.data_fi);
+              if (!isNaN(dataFi)) {
+                comanda.data_fi = dataFi.toLocaleDateString("ca-ES");
+              } else {
+                comanda.data_fi = "Data no vàlida";
+              }
+            } else {
+              comanda.data_fi = "";
+            }
           });
+
         } else {
           this.toastMessage = "Error al carregar les comandes";
           this.toastColor = "danger";
@@ -155,9 +172,11 @@ export default {
 .order-card {
   transition: box-shadow 0.2s;
 }
+
 .order-card:hover {
-  box-shadow: 0 4px 24px 0 rgba(0,191,166,0.13);
+  box-shadow: 0 4px 24px 0 rgba(0, 191, 166, 0.13);
 }
+
 .order-img {
   width: 120px;
   height: 120px;
@@ -166,6 +185,7 @@ export default {
   background: #f2f2f2;
   border: 1px solid #e6e6e6;
 }
+
 .btn-outline-primary {
   border-radius: 8px;
   font-weight: 600;

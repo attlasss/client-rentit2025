@@ -44,8 +44,8 @@
 
               <!-- Botón para cambiar el estado de favorito -->
               <Button @click="toggleFav(article.id_article)" class="w-100" color="blue" variant="outline">
-                <span v-if="article.is_favorite">Quitar de Favoritos</span>
-                <span v-else>Añadir a Favoritos</span>
+                <span v-if="article.is_favorite">Treure de Preferits</span>
+                <span v-else>Afegir a preferits</span>
               </Button>
             </div>
 
@@ -53,16 +53,16 @@
             <div class="col-12 mb-4 border rounded-4 p-4 bg-white">	
               <!-- Imagen a la izquierda -->
               <div class="col-12 col-md-4 mb-3 mb-md-0 text-center text-md-left">
-                <img v-if="usuari.foto_perfil" :src="usuari.foto_perfil" alt="Foto de perfil"
+                <img v-if="usuari.foto_perfil" :src="vendedor.foto_perfil" alt="Foto de perfil"
                   class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover" />
               </div>
 
               <!-- Información del perfil a la derecha -->
               <div class="col-12 col-md-8 ">
                 <h3>Perfil del Venedor</h3>
-                <p><strong>Nom:</strong> {{ usuari.nom }} {{ usuari.cognom }}</p>
-                <p><strong>Username:</strong> {{ usuari.username || 'No disponible' }}</p>
-                <p><strong>Email:</strong> {{ usuari.email || 'No disponible' }}</p>
+                <p><strong>Nom:</strong> {{ vendedor.nom }} {{ vendedor.cognom }}</p>
+                <p><strong>Username:</strong> {{ vendedor.username || 'No disponible' }}</p>
+                <p><strong>Email:</strong> {{ vendedor.email || 'No disponible' }}</p>
               </div>
               <div class="col-12 text-center text-md-right">
                 <Button @click="viewProfile" color="blue" variant="outline">Veure perfil</Button>
@@ -125,6 +125,7 @@ export default {
       toastColor: '',
       toast: false,
       usuari: {},
+      vendedor: {},
       mesesSeleccionados: 1,
       direccio: "",
     };
@@ -150,6 +151,15 @@ export default {
       } catch (error) {
         console.error("Error al cargar los detalles del artículo:", error);
       }
+
+      console.log(this.article.id_vendedor)
+
+      try {
+        const res = await axiosConn.get(`/infoUsuario/${this.article.id_user}`);
+        this.vendedor = res.data.usuari;
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
     },
     toggleFav(articleId) {
       axiosConn.post("/afegirArticlesPreferits", {
@@ -161,9 +171,11 @@ export default {
             if (response.data.function === "add") {
               this.toastMessage = "Article afegit a favorits!";
               this.toastColor = "success";
+              this.article.is_favorite = true;
             } else if (response.data.function === "delete") {
               this.toastMessage = "Article eliminat de favorits";
               this.toastColor = "danger";
+              this.article.is_favorite = false;
             }
             this.toast = true;
             setTimeout(() => {
