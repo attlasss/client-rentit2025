@@ -17,6 +17,11 @@
       </div>
       <p class="price mb-0">{{ preu }}€/mes</p>
       <p class="duration mb-0">{{ mesos }} mesos disponibles</p>
+      <!-- Estado -->
+      <span class="badge bg-success" v-if="estat === 'disponible'">Disponible</span>
+      <span class="badge bg-warning" v-if="estat === 'en_lloguer'">En lloguer</span>
+      <span class="badge bg-danger" v-if="estat === 'inactiu'">Inactiu</span>
+      <span class="badge bg-info" v-if="estat === 'pendent'">Pendent</span>
       <p><a>@{{ username }}</a></p>
       <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.id_article);">Veure
         més</Button>
@@ -49,6 +54,7 @@ export default {
     username: { type: String, required: true },
     userID: { type: Number, required: true },
     mimeType: { type: String, required: true },
+    estat: { type: String, required: true },
     is_favorite: { type: [Number, Boolean], default: false },
   },
   data() {

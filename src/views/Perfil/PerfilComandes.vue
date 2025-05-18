@@ -28,6 +28,8 @@
                   <strong>Preu:</strong> {{ comanda.preu_mes }}€/mes
                   &nbsp; | &nbsp;
                   <strong>Duració:</strong> {{ comanda.mesos }} mesos
+                  &nbsp; | &nbsp;
+                  <strong>Vendedor:</strong> @{{ comanda.vendedor_username }}
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
@@ -36,8 +38,10 @@
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>
-                  <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}<br>
-                  <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
+                  <span>
+                    <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}<br>
+                    <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
+                  </span>
                 </p>
                 <p class="mb-1">
                   <strong>Preu Total</strong> {{ comanda.preu_total }}€<br>
@@ -90,7 +94,7 @@ export default {
     async getComandes() {
       const userID = localStorage.getItem("userID");
       try {
-        const res = await axiosConn.get(`/infoUsuario/${userID}`);
+        const res = axiosConn.get(`/infoUsuario/${userID}`);
         this.usuari = res.data.usuari;
       } catch (error) {
         console.error("Error fetching user info:", error);

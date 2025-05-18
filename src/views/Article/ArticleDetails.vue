@@ -17,6 +17,10 @@
               <p class="price"><strong>Preu:</strong> {{ article.preu }}€/mes</p>
               <p class="duration"><strong>Duració màxima:</strong> {{ article.mesos }} mesos</p>
               <p class="description"><strong>Descripció:</strong> {{ article.descripcio || 'No disponible' }}</p>
+              <span class="badge bg-success" v-if="estat === 'disponible'">Disponible</span>
+              <span class="badge bg-warning" v-if="estat === 'en_lloguer'">En lloguer</span>
+              <span class="badge bg-danger" v-if="estat === 'inactiu'">Inactiu</span>
+              <span class="badge bg-info" v-if="estat === 'pendent'">Pendent</span>
               <!-- <p class="seller">
                 <strong>Venedor:</strong>
                 <router-link :to="`/verPerfil/${article.username}`">@{{ article.username }}</router-link>
@@ -38,8 +42,13 @@
               </p>
 
               <!-- Botón para comprar -->
-              <Button class="w-100 mb-3" color="blue" variant="fill" @click="abrirModalComprar">
+              <Button v-if="article.id_user !== usuari.ID" class="w-100 mb-3" color="blue" variant="fill"
+                @click="abrirModalComprar">
                 Comprar
+              </Button>
+              <Button v-if="article.id_user === usuari.ID" class="w-100 mb-3" color="blue" variant="fill"
+                @click="editarArticle">
+                Editar Article
               </Button>
 
               <!-- Botón para cambiar el estado de favorito -->
@@ -50,7 +59,7 @@
             </div>
 
             <!-- Sección de información del perfil del vendedor -->
-            <div class="col-12 mb-4 border rounded-4 p-4 bg-white">	
+            <div class="col-12 mb-4 border rounded-4 p-4 bg-white">
               <!-- Imagen a la izquierda -->
               <div class="col-12 col-md-4 mb-3 mb-md-0 text-center text-md-left">
                 <img v-if="usuari.foto_perfil" :src="vendedor.foto_perfil" alt="Foto de perfil"
@@ -66,7 +75,7 @@
               </div>
               <div class="col-12 text-center text-md-right">
                 <Button @click="viewProfile" color="blue" variant="outline">Veure perfil</Button>
-            </div>
+              </div>
 
             </div>
           </div>
@@ -152,8 +161,6 @@ export default {
         console.error("Error al cargar los detalles del artículo:", error);
       }
 
-      console.log(this.article.id_vendedor)
-
       try {
         const res = await axiosConn.get(`/infoUsuario/${this.article.id_user}`);
         this.vendedor = res.data.usuari;
@@ -216,7 +223,7 @@ export default {
       }
 
       // Llamamos a axios para enviar la compra
-      
+
       axiosConn.post("/newComanda", {
         id_article: this.article.id_article,
         id_emissor: this.usuari.ID,
@@ -254,11 +261,14 @@ export default {
             this.toast = false;
           }, 2000);
         });
-      
+
     },
     viewProfile() {
       this.$router.push(`/verPerfil/${this.article.username}`);
-    }
+    },
+    editarArticle() {
+      this.$router.push(`/editarArticle/${this.article.id_article}`);
+    },
   },
 };
 </script>

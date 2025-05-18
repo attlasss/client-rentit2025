@@ -20,6 +20,7 @@
           :id_article="article.id_article" 
           :userID="article.user_id"
           :is_favorite="article.is_favorite" 
+          :estat="article.estat"
           @toggleFav="toggleFav(article.id_article, index)" 
           @verMas="viewMore(article.id_article)"
         />

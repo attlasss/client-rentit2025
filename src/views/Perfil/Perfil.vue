@@ -62,9 +62,14 @@
                 <Button class="w-100" color="blue" variant="outline" v-if="disableDades" @click="modificarDades">
                   Modificar Dades
                 </Button>
-                <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades"
+                <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades" icon="save"
                   @click="guardarDades">
                   Guardar Dades
+                </Button>
+              </div>
+              <div class="col-12 col-md-6 mb-2 mb-md-0">
+                <Button class="w-100" color="blue" variant="outline" icon="password" @click="canviarContrasenya">
+                  Canviar Contrasenya
                 </Button>
               </div>
             </div>
@@ -325,6 +330,9 @@ export default {
       localStorage.removeItem("userID");
       localStorage.removeItem("user");
       this.$router.push("/login");
+    },
+    canviarContrasenya() {
+      this.$router.push(`/canviarContrasenya/${this.usuari.username || ""}`);
     },
   },
 };

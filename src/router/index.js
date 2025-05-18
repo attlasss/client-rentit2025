@@ -35,6 +35,11 @@ const routes = [
     component: () => import("../views/RecuperarContrasenya.vue"),
   },
   {
+    path: "/canviarContrasenya/:username",
+    name: "CanviarContrasenya",
+    component: () => import("../views/Perfil/PerfilCanviarContrasenya.vue"),
+  },
+  {
     path: "/comandes",
     name: "Comandes",
     component: () => import("../views/Comandes/Comandes.vue"),
@@ -88,7 +93,12 @@ const routes = [
     path:"/article/:id",
     name:"Article",
     component: () => import("../views/Article/ArticleDetails.vue"),
-  },  
+  }, 
+  {
+    path:"/editarArticle/:id",
+    name:"EditarArticle",
+    component: () => import("../views/Article/EditarArticle.vue"),
+  },
   {
     path:"/preferits/:username",
     name:"Preferits",

@@ -86,10 +86,8 @@ export default {
           localStorage.setItem("userID", user.id);
           localStorage.setItem("token", token);
 
-          // Recargar la página y redirigir al home
-          window.location.reload();
-          this.$router.push({ name: "home" });
-          
+          // Redirigir al home
+          this.$router.push({ name: "home" });          
 
         } else {
           this.toastMessage = response.data.message; 

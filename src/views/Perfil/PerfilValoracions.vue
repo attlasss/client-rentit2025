@@ -21,6 +21,7 @@
               <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
                 :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
                 :userID="article.user_id" :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)"
+                :estat="article.estat"
                 @verMas="viewMore(article.id_article)" />
             </div>
           </div>

@@ -40,7 +40,8 @@
           <div class="col-12 col-md-2 mb-4" v-for="article in articles" :key="article.id_article">
             <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
               :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
-              :userID="article.user_id" :is_favorite="article.is_favorite" @verMas="viewMore(article.id_article)"/>
+              :userID="article.user_id" :is_favorite="article.is_favorite" 
+              :estat="article.estat" @verMas="viewMore(article.id_article)"/>
           </div>
         </div>
       </div>
