@@ -31,7 +31,7 @@
           </ul>
         </template>
         <template v-else>
-          <div class="d-flex gap-2">
+          <div class="d-flex gap-2 justify-content-center w-100 w-md-auto">
             <Button color="white" variant="outline" @click="$router.push('/login')">Iniciar sessió</Button>
             <Button color="white" variant="fill" @click="$router.push('/registre')">Registra't</Button>
           </div>
@@ -43,11 +43,11 @@
   
 <div class="input-icon-wrapper position-relative" v-if="isLoggedIn">
   <Input
-    type="text"
-    class="form-control search-input"
-    placeholder="Cerca un producte..."
-    v-model="searchQuery"
-    :noFocus="true"
+  type="text"
+  class="form-control search-input"
+  placeholder="Cerca un producte..."
+  v-model="searchQuery"
+  @keyup.enter="buscarProducte"
   />
   <span data-feather="search" class="search-icon"></span>
 </div>
@@ -86,6 +86,10 @@ export default {
         this.username = JSON.parse(username).username;
       }
       this.isLoggedIn = !!token;
+    },
+    buscarProducte() {
+      // Redirige a la página de búsqueda con el término de búsqueda
+      this.$router.push({ name: "Buscar", params: { query: this.searchQuery } });
     },
   },
 };
@@ -144,6 +148,10 @@ li {
 @media (max-width: 576px) {
   .header {
     padding: 20px 30px;
+  }
+  .navbar-collapse > .d-flex {
+    justify-content: center !important;
+    width: 100%;
   }
 }
 </style>

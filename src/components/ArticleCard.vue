@@ -11,7 +11,7 @@
 
         <!-- Botón de Favorito en la segunda columna  -->
         <button class="fav-button" @click="toggleFav">
-          <span v-if="isFavoriteLocal" data-feather="heart" class="color-red"></span>
+          <span v-if="is_favorite" data-feather="heart" class="color-red"></span>
           <span v-else data-feather="heart"></span>
         </button>
       </div>
@@ -56,11 +56,6 @@ export default {
     mimeType: { type: String, required: true },
     estat: { type: String, required: true },
     is_favorite: { type: [Number, Boolean], default: false },
-  },
-  data() {
-    return {
-      isFavoriteLocal: this.is_favorite,
-    }
   },
   emits: ['toggleFav', 'verMas'],
   mounted() {

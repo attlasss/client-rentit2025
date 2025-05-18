@@ -2,7 +2,7 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8 col-xl-7">
-                <h2 class="text-center mb-5">Afegir Article</h2>
+                <h2 class="text-center mb-5">Publicar Article</h2>
                 <form @submit.prevent="afegirarticle" class="d-flex flex-column gap-3">
                     <div>
                         <label class="form-label">Nom del article</label>

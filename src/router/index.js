@@ -22,17 +22,17 @@ const routes = [
   {
     path: "/registre",
     name: "Registre",
-    component: () => import("../views/Registre.vue"),
+    component: () => import("../views/User/Registre.vue"),
   },
   {
     path: "/login",
     name: "Login",
-    component: () => import("../views/Login.vue"),
+    component: () => import("../views/User/Login.vue"),
   },
   {
     path: "/recuperar-contrasenya",
     name: "RecuperarContrasenya",
-    component: () => import("../views/RecuperarContrasenya.vue"),
+    component: () => import("../views/User/RecuperarContrasenya.vue"),
   },
   {
     path: "/canviarContrasenya/:username",
@@ -103,6 +103,11 @@ const routes = [
     path:"/preferits/:username",
     name:"Preferits",
     component: () => import("../views/Preferits.vue"),
+  }, 
+  {
+    path: "/buscar/:query",
+    name: "Buscar",
+    component: () => import("../views/Buscar.vue"),
   }
 ];
 

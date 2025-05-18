@@ -1,13 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="row mt-5">
-      <div class="col-1"></div>
-      <div class="col-10">
-        <Input v-model="inputValue" placeholder="Busca un article..." type="text" :disabled="false" :isRequired="true"
-          width="100%" />
-      </div>
-      <div class="col-1"></div>
-    </div>
 
     <!-- Carrusel -->
     <div class="my-5">
@@ -69,16 +61,20 @@
       </div>
     </div>
   </div>
+  <transition name="fade">
+      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+        {{ toastMessage }}
+      </div>
+    </transition>
 </template>
 
 <script>
-import Input from "@/components/Input.vue";
 import ArticleCard from "@/components/ArticleCard.vue";
 import axiosConn from "../axios/axios";
 
 export default {
   components: {
-    Input,
     ArticleCard
   },
   data() {
@@ -86,6 +82,9 @@ export default {
       inputValue: "",
       articles: [],
       usuari: {},
+      toast: false,
+      toastMessage: "",
+      toastColor: "success",
     };
   },
   mounted() {
@@ -121,11 +120,9 @@ export default {
             if (response.data.function === "add") {
               this.toastMessage = "Article afegit a favorits!";
               this.toastColor = "success";
-              window.location.reload();
             } else if (response.data.function === "delete") {
               this.toastMessage = "Article eliminat de favorits";
               this.toastColor = "danger";
-              window.location.reload();
             }
 
             // Mostrar el toast

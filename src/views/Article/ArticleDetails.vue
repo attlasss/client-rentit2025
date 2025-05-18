@@ -17,10 +17,13 @@
               <p class="price"><strong>Preu:</strong> {{ article.preu }}€/mes</p>
               <p class="duration"><strong>Duració màxima:</strong> {{ article.mesos }} mesos</p>
               <p class="description"><strong>Descripció:</strong> {{ article.descripcio || 'No disponible' }}</p>
-              <span class="badge bg-success" v-if="estat === 'disponible'">Disponible</span>
-              <span class="badge bg-warning" v-if="estat === 'en_lloguer'">En lloguer</span>
-              <span class="badge bg-danger" v-if="estat === 'inactiu'">Inactiu</span>
-              <span class="badge bg-info" v-if="estat === 'pendent'">Pendent</span>
+              <p class="description"><strong>Estat: </strong> 
+                <span class="badge bg-success" v-if="article.estat === 'disponible'">Disponible</span>
+                <span class="badge bg-warning" v-if="article.estat === 'en_lloguer'">En lloguer</span>
+                <span class="badge bg-danger" v-if="article.estat === 'inactiu'">Inactiu</span>
+                <span class="badge bg-info" v-if="article.estat === 'pendent'">Pendent</span>
+              </p>	
+              
               <!-- <p class="seller">
                 <strong>Venedor:</strong>
                 <router-link :to="`/verPerfil/${article.username}`">@{{ article.username }}</router-link>

@@ -12,25 +12,30 @@
         </ul>
       </div>
 
-      <div class="col-md-9 text-start">
-        <div class="row ps-5">
-          <div class="col-2">
-            <div class="text-start mb-4">
-              <img :src="usuari.foto_perfil || 'https://via.placeholder.com/150'" alt="Foto de perfil"
-                class="rounded-circle" height="100px" width="100px" />
+      <div class="col-md-9 text-start mt-5">
+        <div class="row align-items-center ps-0 ps-md-5">
+          <div class="col-12 col-sm-3 col-md-2 text-center text-md-start mb-3 mb-sm-0">
+            <img
+              :src="usuari.foto_perfil || 'https://via.placeholder.com/150'"
+              alt="Foto de perfil"
+              class="rounded-circle profile-img"
+              height="100"
+              width="100"
+            />
+            <!-- Botón editar foto siempre centrado -->
+            <div class="d-flex justify-content-center mt-2">
+              <Button icon="edit" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
             </div>
-            <!-- Boton editar foto -->
           </div>
-          <div class="col-10">
+          <div class="col-12 col-sm-9 col-md-10 text-center text-md-start">
             <p class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</p>
             <p>{{ usuari.email }}</p>
-            <Button icon="edit" class=" mt-1" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
           </div>
         </div>
 
         <div class="row text-left mt-5 border-top pt-3 p-5">
           <h2>Dades Personals</h2>
-          <form @submit.prevent="updateUser" class="d-flex flex-column gap-3 mb-5">
+          <form @submit.prevent="updateUser" class="d-flex flex-column gap-3 mb-5 w-100">
             <!-- Formulario con los datos del usuario -->
             <div>
               <label class="form-label">Username</label>
@@ -59,7 +64,7 @@
 
             <div class="row text-center mt-3">
               <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="blue" variant="outline" v-if="disableDades" @click="modificarDades">
+                <Button class="w-100" color="blue" variant="outline" icon="edit" v-if="disableDades" @click="modificarDades">
                   Modificar Dades
                 </Button>
                 <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades" icon="save"
@@ -68,7 +73,7 @@
                 </Button>
               </div>
               <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="blue" variant="outline" icon="password" @click="canviarContrasenya">
+                <Button class="w-100" color="blue" variant="outline" icon="key" @click="canviarContrasenya">
                   Canviar Contrasenya
                 </Button>
               </div>
@@ -346,5 +351,16 @@ export default {
 
 .nav-link {
   color: #578FCA;
+}
+
+.profile-img {
+  object-fit: cover;
+  border: 2px solid #e6e6e6;
+  background: #f7f7f7;
+}
+@media (max-width: 767.98px) {
+  .profile-img {
+    margin-bottom: 10px;
+  }
 }
 </style>

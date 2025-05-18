@@ -9,7 +9,11 @@
 
     <!-- Artículos -->
     <div class="row justify-content-center g-3">
-      <div class="col-12 col-md-2 mb-4" v-for="(article, index) in articles" :key="article.id_article">
+      <div
+        class="d-flex justify-content-center align-items-stretch mb-4 col-12 col-sm-6 col-md-4 col-lg-3"
+        v-for="(article, index) in articles"
+        :key="article.id_article"
+      >
         <ArticleCard 
           :username="article.username" 
           :nom="article.nom" 
@@ -23,6 +27,7 @@
           :estat="article.estat"
           @toggleFav="toggleFav(article.id_article, index)" 
           @verMas="viewMore(article.id_article)"
+          class="w-100"
         />
       </div>
     </div>
@@ -62,12 +67,7 @@ export default {
     // Obtener los artículos del usuario
     async getArticles() {
       const userID = localStorage.getItem("userID");
-      try {
-        const res = await axiosConn.get(`/infoUsuario/${userID}`);
-        this.usuari = res.data.usuari;
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+      this.usuari = JSON.parse(localStorage.getItem("user"));
 
       try {
         const response = await axiosConn.get(`/getArticlesPreferits/${userID}`);
@@ -94,7 +94,7 @@ export default {
     toggleFav(articleId, index) {
       axiosConn.post("/afegirArticlesPreferits", {
         id_article: articleId,
-        id_usuari: this.usuari.ID,
+        id_usuari: this.usuari.id,
       })
         .then((response) => {
           if (response.status === 200) {

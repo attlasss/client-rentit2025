@@ -15,7 +15,7 @@
                     </div>
 
                     <div>
-                        <label class="form-label">Categoria</label>
+                        <label class="form-label">Categoría</label>
                         <!-- Select de las categorias -->
                         <Select v-model="article.id_categoria"
                             :options="categories.map(category => ({ value: category.id_categoria, label: category.nom }))"
@@ -57,12 +57,32 @@
                         <Button class="w-100 w-md-auto" color="blue" variant="fill" type="submit">
                             Editar article
                         </Button> <br>
-                        <Button class="w-100 w-md-auto" color="danger" variant="outline" type="submit">
+                        <Button class="w-100 w-md-auto" color="danger" variant="outline" type="button"
+                            @click="abrirModalBorrar">
                             Borrar article
                         </Button>
                     </div>
 
                 </form>
+            </div>
+        </div>
+
+        <!-- Modal de confirmación para borrar -->
+        <div class="modal fade" id="modalBorrar" tabindex="-1" aria-labelledby="modalBorrarLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalBorrarLabel">Confirmar esborrat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+                    </div>
+                    <div class="modal-body">
+                        Estàs segur que vols esborrar aquest article? Aquesta acció no es pot desfer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
+                        <button type="button" class="btn btn-danger" @click="borrarArticle">Esborrar</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -81,6 +101,7 @@ import Input from "@/components/Input.vue";
 import Button from "@/components/Button.vue";
 import Select from "@/components/Select.vue";
 import axiosConn from "@/axios/axios";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 export default {
     components: {
@@ -120,7 +141,10 @@ export default {
 
 
             const userID = localStorage.getItem("userID");
-
+            let user = localStorage.getItem("user");
+            if (user) {
+                user = JSON.parse(user);
+            }
             let imageFile;
             let mimeType;
             const foto = this.article.foto;
@@ -153,13 +177,11 @@ export default {
                     },
                 });
 
-                console.log("Response:", res.status);
-
                 if (res.status === 200) {
                     this.toastMessage = "Article editat amb èxit!";
                     this.toastColor = "success";
                     this.toast = true;
-                    this.$router.push({ name: "PerfilArticles" });
+                    this.$router.push({ name: "PerfilArticles", params: { username: user.username } });
 
                     setTimeout(() => {
                         this.toast = false;
@@ -179,6 +201,48 @@ export default {
                 // this.toastColor = "danger";
                 // this.toast = true;
             }
+        },
+        async borrarArticle() {
+            try {
+                let user = localStorage.getItem("user");
+                if (user) {
+                    user = JSON.parse(user);
+                }
+
+                const res = await axiosConn.post("/desactivarArticle", {
+                    id_article: this.article.id_article,
+                });
+                if (res.status === 200) {
+                    this.toastMessage = "Article esborrat amb èxit!";
+                    this.toastColor = "success";
+                    this.toast = true;
+                    setTimeout(() => {
+                        this.toast = false;
+                        this.$router.push({ name: "PerfilArticles", params: { username: user.username } });
+                    }, 1500);
+                } else {
+                    this.toastMessage = "Error esborrant l'article.";
+                    this.toastColor = "danger";
+                    this.toast = true;
+                    setTimeout(() => {
+                        this.toast = false;
+                    }, 2000);
+                }
+            } catch (err) {
+                this.toastMessage = "Error esborrant l'article.";
+                this.toastColor = "danger";
+                this.toast = true;
+                setTimeout(() => {
+                    this.toast = false;
+                }, 2000);
+            }
+            // Cerrar el modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById("modalBorrar"));
+            if (modal) modal.hide();
+        },
+        abrirModalBorrar() {
+            const modal = new bootstrap.Modal(document.getElementById("modalBorrar"));
+            modal.show();
         },
         async getData() {
             await axiosConn
