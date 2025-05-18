@@ -75,13 +75,7 @@ export default {
     },
     methods: {
         async getData() {
-            const userID = localStorage.getItem("userID");
-            try {
-                const res = await axiosConn.get(`/infoUsuario/${userID}`);
-                this.usuari = res.data.usuari;
-            } catch (error) {
-                console.error("Error fetching user info:", error);
-            }
+            this.usuari = JSON.parse(localStorage.getItem("user"));
         },
         // Función para verificar la contrasenya antiga
         async verificarAntigaContrasenya() {

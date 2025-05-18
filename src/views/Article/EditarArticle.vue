@@ -121,14 +121,33 @@ export default {
 
             const userID = localStorage.getItem("userID");
 
+            let imageFile;
+            let mimeType;
+            const foto = this.article.foto;
+
+            if (typeof foto === "string" && foto.startsWith("data:image/")) {
+                // Es una imagen en base64
+                mimeType = foto.match(/data:(image\/[^;]+);base64,/)[1];
+                const imageBlob = this.base64ToBlob(foto, mimeType);
+                imageFile = new File([imageBlob], "foto.jpg", { type: mimeType });
+            } else if (foto instanceof File) {
+                // Es un archivo ya cargado por el usuario (input type="file")
+                imageFile = foto;
+                mimeType = foto.type;
+            } else {
+                console.error("Formato de imagen no válido");
+                return;
+            }
+
+            // Crear FormData
             const formData = new FormData();
-            formData.append("foto_article", this.article.foto);
-            formData.append("mimetype", this.article.foto.type);
+            formData.append("foto_article", imageFile);
+            formData.append("mimetype", mimeType);
             formData.append("user_id", userID);
             formData.append("articleData", JSON.stringify(this.article));
 
             try {
-                const res = await axiosConn.put("/editarArticle", formData, {
+                const res = await axiosConn.post("/editarArticle", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -137,7 +156,7 @@ export default {
                 console.log("Response:", res.status);
 
                 if (res.status === 200) {
-                    this.toastMessage = "Article creat amb èxit!";
+                    this.toastMessage = "Article editat amb èxit!";
                     this.toastColor = "success";
                     this.toast = true;
                     this.$router.push({ name: "PerfilArticles" });
@@ -195,7 +214,19 @@ export default {
                 this.article.foto = file; // Guarda el archivo real
                 reader.readAsDataURL(file);
             }
+        },
+        base64ToBlob(base64, mimeType) {
+            const byteString = atob(base64.split(',')[1]); // Eliminar el encabezado "data:image/jpeg;base64,"
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+
+            return new Blob([ab], { type: mimeType });
         }
+
 
 
 

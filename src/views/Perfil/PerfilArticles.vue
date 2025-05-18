@@ -95,12 +95,14 @@ export default {
     async getArticles() {
       // Obtenemos el user 
       const userID = localStorage.getItem("userID");
-      try {
-        const res = await axiosConn.get(`/infoUsuario/${userID}`);
-        this.usuari = res.data.usuari;
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+      this.usuari = JSON.parse(localStorage.getItem("user"));
+
+      // try {
+      //   const res = await axiosConn.get(`/infoUsuario/${userID}`);
+      //   this.usuari = res.data.usuari;
+      // } catch (error) {
+      //   console.error("Error fetching user info:", error);
+      // }
 
       try {
         const response = await axiosConn.get(`/getArticlesUser/${userID}`);
@@ -128,7 +130,7 @@ export default {
     toggleFav(article) {
       axiosConn.post("/afegirArticlesPreferits", {
         id_article: article,
-        id_usuari: this.usuari.ID,
+        id_usuari: this.usuari.id,
       })
         .then((response) => {
           if (response.status === 200) {

@@ -9,7 +9,7 @@
         <!-- Título en una columna -->
         <h3 class="title">{{ nom }}</h3>
 
-        <!-- Botón de Favorito en la segunda columna -->
+        <!-- Botón de Favorito en la segunda columna  -->
         <button class="fav-button" @click="toggleFav">
           <span v-if="isFavoriteLocal" data-feather="heart" class="color-red"></span>
           <span v-else data-feather="heart"></span>

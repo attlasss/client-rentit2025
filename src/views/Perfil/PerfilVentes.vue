@@ -122,19 +122,13 @@ export default {
     this.getVentes();
   },
   methods: {
-    async getVentes() {
+    getVentes() {
       const userID = localStorage.getItem("userID");
-
-      try {
-        const res = await axiosConn.get(`/infoUsuario/${userID}`);
-        this.usuari = res.data.usuari;
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+      this.usuari = JSON.parse(localStorage.getItem("user"));
 
       try {
         // Suponiendo que el backend devuelve las ventes con el artículo relacionado
-        const response = await axiosConn.get(`/getVentesClient/${userID}`);
+        const response = axiosConn.get(`/getVentesClient/${userID}`);
         if (response.status === 200) {
           this.ventes = response.data;
 

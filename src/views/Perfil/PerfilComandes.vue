@@ -39,7 +39,7 @@
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>
                   <span>
-                    <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}<br>
+                    <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}
                     <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
                   </span>
                 </p>
@@ -93,12 +93,7 @@ export default {
   methods: {
     async getComandes() {
       const userID = localStorage.getItem("userID");
-      try {
-        const res = axiosConn.get(`/infoUsuario/${userID}`);
-        this.usuari = res.data.usuari;
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+      this.usuari = JSON.parse(localStorage.getItem("user"));
 
       try {
         // Suponiendo que el backend devuelve las comandes con el artículo relacionado
