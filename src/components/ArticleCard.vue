@@ -22,7 +22,8 @@
       <span class="badge bg-warning" v-if="estat === 'en_lloguer'">En lloguer</span>
       <span class="badge bg-danger" v-if="estat === 'inactiu'">Inactiu</span>
       <span class="badge bg-info" v-if="estat === 'pendent'">Pendent</span>
-      <p><a>@{{ username }}</a></p>
+      <p><a class="username-link" @click="irPerfil">@{{ username }}</a></p>
+
       <Button icon="arrow-up-right" color="blue" variant="outline" @click="this.$emit('verMas', this.id_article);">Veure
         més</Button>
     </div>
@@ -69,6 +70,9 @@ export default {
       // Emitir el evento con los datos necesario
       this.$emit('toggleFav', this.id_article);
     },
+    irPerfil() {
+      this.$router.push(`/verPerfil/${this.username}`);
+    }
   },
 };
 </script>
@@ -150,9 +154,17 @@ export default {
   color: #777;
 }
 
-a {
+.username-link {
   text-decoration: none;
   color: #578FCA;
   font-style: italic;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
 }
+
+.username-link:hover {
+  text-decoration: underline;
+}
+
 </style>
