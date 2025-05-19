@@ -11,27 +11,29 @@
           </li>
         </ul>
       </div>
-      <!-- Artículos -->
-      <div class="col-md-9">
-        <h1 class="mb-4">Els meus articles</h1>
-        <div class="row px-4">
-          <!-- Comprobamos si existen artículos antes de hacer el v-for -->
-          <div v-if="articles && articles.length > 0">
-            <div class="col-md-3 mb-4" v-for="(article, index) in articles" :key="index">
-              <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-                :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
-                :userID="article.user_id" :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)"
-                :estat="article.estat"
-                @verMas="viewMore(article.id_article)" />
+     <div class="col-md-9">
+            <h1 class="text-center mt-5">Les meves Valoracions</h1>
+            <div v-if="valoracions.length === 0" class="text-center">
+              No tens valoracions encara. 
+            </div>
+            <div v-else>
+              <div v-for="(val, index) in valoracions" :key="index" class="card my-3 shadow-sm">
+                <div class="card-body d-flex align-items-start text-start">
+                  <img :src="val.emissor_foto" alt="Foto perfil" class="rounded-circle me-3 profile-img" 
+                  height="60" width="60"
+                  />
+                  <div>
+                    <p class="mb-0 text-muted"><a class="username-link" @click="verPerfil(val.emissor_username)">@{{
+                      val.emissor_username }}</a></p>
+                    <p class="mb-1">Puntuació: {{ val.puntuacio }}/5</p>
+                    <p class="card-text mb-0">
+                      Comentari: {{ val.comentari || 'Sense comentari' }}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div v-else>
-            <p>No hi ha articles.</p>
-          </div>
-        </div>
-      </div>
-
-
     </div>
     <transition name="fade">
       <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
@@ -43,18 +45,13 @@
 </template>
 
 <script>
-import ArticleCard from "@/components/ArticleCard.vue"; // Importar el componente ArticleCard
 import axiosConn from "@/axios/axios";
 
 export default {
-  components: {
-    ArticleCard
-  },
   data() {
     return {
-      // articles: [], // Aquí se almacenarán los artículos del usuario
       usuari: {},
-      articles: [],
+      valoracions: [],
       toast: false,
       toastMessage: "",
       toastColor: "success",
@@ -72,44 +69,36 @@ export default {
         { label: "Preferits", path: `/preferits/${this.usuari.username || ""}` },
       ];
     },
+    valoracioMitja() {
+      if (!this.valoracions.length) return 0;
+      return this.valoracions.reduce((acc, v) => acc + v.puntuacio, 0) / this.valoracions.length;
+    },
+    valoracioMitjaRedondeada() {
+      // Para pintar estrellas enteras
+      return Math.round(this.valoracioMitja);
+    },
     // Aquí se almacenarán los artículos del usuario
   },
   mounted() {
     // Obtener los artículos del usuario al montar el componente
-    this.getArticles();
+    this.getData();
   },
   methods: {
     // Realiza la solicitud a la API para obtener los artículos
-    async getArticles() {
+    async getData() {
       // Obtenemos el user 
-      const userID = localStorage.getItem("userID");
+      this.usuari = JSON.parse(localStorage.getItem("user"));
+      console.log(this.usuari)
       try {
-        const res = await axiosConn.get(`/infoUsuario/${userID}`);
-        this.usuari = res.data.usuari;
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+        const response = await axiosConn.get(`/getValoracionsUsuari/${this.usuari.username}`);
+        this.valoracions = response.data;
 
-      try {
-        const response = await axiosConn.get(`/getArticlesUser/${userID}`);
-        if (response.status === 200) {
-          this.articles = response.data;
-        } else {
-          this.toastMessage = "Error al carregar els articles";
-          this.toastColor = "danger";
-          this.toast = true;
-          setTimeout(() => {
-            this.toast = false;
-          }, 3000);
-
-        }
+        // Calculamos la media de valoraciones
+        const totalPuntuacio = this.valoracions.reduce((acc, val) => acc + val.puntuacio, 0);
+        this.valoracioMitja = totalPuntuacio / this.valoracions.length;
+        this.valoracioMitjaRedondeada = Math.round(this.valoracioMitja);
       } catch (error) {
-        this.toastMessage = "Error al carregar els articles";
-        this.toastColor = "danger";
-        this.toast = true;
-        setTimeout(() => {
-          this.toast = false;
-        }, 3000);
+        console.error("Error al carregar les valoracions:", error);
       }
     },
     // Alternar el estado de favorito de un artículo
@@ -153,7 +142,9 @@ export default {
     viewMore(article) {
       this.$router.push(`/article/${article}`);
     },
-    // Mostrar un mensaje tipo toast
+    verPerfil(username) {
+      this.$router.push(`/verPerfil/${username}`);
+    },
   }
 };
 </script>

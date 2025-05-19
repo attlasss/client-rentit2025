@@ -50,11 +50,6 @@ const routes = [
     component: () => import("../views/Devolucions.vue"),
   },
   {
-    path: "/fervaloracions",
-    name: "FerValoracions",
-    component: () => import("../views/FerValoracions.vue"),
-  },
-  {
     path: "/perfil/:username",
     name: "Perfil",
     component: () => import("../views/Perfil/Perfil.vue"),

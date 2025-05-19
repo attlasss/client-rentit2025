@@ -29,14 +29,17 @@
                   &nbsp; | &nbsp;
                   <strong>Duració:</strong> {{ comanda.mesos }} mesos
                   &nbsp; | &nbsp;
-                  <strong>Vendedor:</strong> @{{ comanda.vendedor_username }}
+                  <strong>Venedor:</strong>
+                  <a @click="verPerfil(comanda.vendedor_username)" class="username-link">@{{ comanda.vendedor_username
+                    }}</a>
+
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
                   <span class="badge bg-success" v-if="comanda.estat === 'disponible'">Disponible</span>
-              <span class="badge bg-warning" v-if="comanda.estat === 'en_lloguer'">En lloguer</span>
-              <span class="badge bg-danger" v-if="comanda.estat === 'inactiu'">Inactiu</span>
-              <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
+                  <span class="badge bg-warning" v-if="comanda.estat === 'en_lloguer'">En lloguer</span>
+                  <span class="badge bg-danger" v-if="comanda.estat === 'inactiu'">Inactiu</span>
+                  <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>
@@ -127,13 +130,13 @@ export default {
                   year: "numeric",
                   hour: "2-digit",
                   minute: "2-digit",
-                  hour12: false, 
+                  hour12: false,
                 });
               } else {
                 comanda.data_order = "Data no vàlida";
               }
             } else {
-              comanda.data_order = ""; 
+              comanda.data_order = "";
             }
 
             if (comanda.data_fi) {
@@ -164,6 +167,9 @@ export default {
           this.toast = false;
         }, 3000);
       }
+    },
+    verPerfil(username) {
+      this.$router.push(`/verPerfil/${username}`);
     },
   },
 };

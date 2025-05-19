@@ -1,5 +1,5 @@
 <template>
-  <footer class="py-4">
+  <footer class="py-4 border-top">
     <div class="container">
       <div class="row text-center text-md-start">
         <div class="col-12 col-md-2 mb-3">
@@ -34,9 +34,3 @@
     </div>
   </footer>
 </template>
-
-<style scoped>
-footer {
-  border-top: 0.5px solid black;
-}
-</style>

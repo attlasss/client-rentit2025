@@ -76,4 +76,17 @@ html, body {
   display: block;
   font-weight: 600;
 }
+
+.username-link {
+  text-decoration: none;
+  color: #578FCA;
+  font-style: italic;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.username-link:hover {
+  text-decoration: underline;
+}
 </style>

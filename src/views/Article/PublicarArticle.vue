@@ -142,13 +142,16 @@ export default {
                     },
                 });
 
-                console.log("Response:", res.status);
+                let user = localStorage.getItem("user");
+                if (user) {
+                    user = JSON.parse(user);
+                }
 
                 if (res.status === 200) {
                     this.toastMessage = "Article creat amb èxit!";
                     this.toastColor = "success";
                     this.toast = true;
-                    this.$router.push({ name: "PerfilArticles" });
+                    this.$router.push({ name: "PerfilArticles", params: { username: user.username } });
 
                     setTimeout(() => {
                         this.toast = false;
