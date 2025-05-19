@@ -28,9 +28,14 @@
             </div>
           </div>
           <div class="col-12 col-sm-9 col-md-10 text-center text-md-start">
-            <p class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</p>
+            <h1 class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</h1>
             <p>{{ usuari.email }}</p>
             <p>@{{ usuari.username }}</p>
+            <div v-if="valoracions.length > 0" class="mb-2 d-flex align-items-center">
+                <span v-for="star in 5" :key="star" class="star" :class="{ selected: star <= valoracioMitjaRedondeada }">★</span>
+                <span class="ms-2">({{ valoracioMitja.toFixed(2) }})</span>
+                <span class="text-muted">· {{ valoracions.length }} valoracions</span>
+              </div>
           </div>
         </div>
 
@@ -172,6 +177,7 @@ export default {
     return {
       currentView: "dadesPersonals",
       usuari: {},
+      valoracions: [],
       username: "",
       userID: "",
       disableDades: true,
@@ -193,6 +199,14 @@ export default {
         { label: "Preferits", path: `/preferits/${this.usuari.username || ""}` },
       ];
     },
+    valoracioMitja() {
+      if (!this.valoracions.length) return 0;
+      return this.valoracions.reduce((acc, v) => acc + v.puntuacio, 0) / this.valoracions.length;
+    },
+    valoracioMitjaRedondeada() {
+      // Para pintar estrellas enteras
+      return Math.round(this.valoracioMitja);
+    },
   },
   mounted() {
     this.getData();
@@ -209,6 +223,18 @@ export default {
         // Gestionamos la imagen
       } catch (err) {
         console.error("Error carregant usuari:", err);
+      }
+
+      try {
+        const response = await axiosConn.get(`/getValoracionsUsuari/${this.$route.params.username}`);
+        this.valoracions = response.data;
+
+        // Calculamos la media de valoraciones
+        const totalPuntuacio = this.valoracions.reduce((acc, val) => acc + val.puntuacio, 0);
+        this.valoracioMitja = totalPuntuacio / this.valoracions.length;
+        this.valoracioMitjaRedondeada = Math.round(this.valoracioMitja);
+      } catch (error) {
+        console.error("Error al carregar les valoracions:", error);
       }
     },
     modificarDades() {
@@ -335,7 +361,9 @@ export default {
       localStorage.removeItem("token");
       localStorage.removeItem("userID");
       localStorage.removeItem("user");
-      this.$router.push("/login");
+      this.$router.push({ name: "Login" }).then(() => {
+            location.reload();
+          });
     },
     canviarContrasenya() {
       this.$router.push(`/canviarContrasenya/${this.usuari.username || ""}`);
@@ -359,6 +387,22 @@ export default {
   border: 2px solid #e6e6e6;
   background: #f7f7f7;
 }
+
+.star {
+  color: #ccc;
+  transition: color 0.2s;
+  font-size: 1.5rem;
+}
+
+.star.selected {
+  color: #FFD700;
+}
+
+.clickable-star {
+  cursor: pointer;
+  font-size: 2rem;
+}
+
 @media (max-width: 767.98px) {
   .profile-img {
     margin-bottom: 10px;

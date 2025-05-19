@@ -36,10 +36,9 @@
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
-                  <span class="badge bg-success" v-if="comanda.estat === 'disponible'">Disponible</span>
-                  <span class="badge bg-warning" v-if="comanda.estat === 'en_lloguer'">En lloguer</span>
-                  <span class="badge bg-danger" v-if="comanda.estat === 'inactiu'">Inactiu</span>
                   <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
+                  <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>

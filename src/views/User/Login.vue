@@ -22,7 +22,8 @@
               <Input v-model="password" type="password" placeholder="************" required />
               <!-- Has olvidado la contraseña -->
               <p>
-                <a href="/recuperar-contrasenya" class="text-start fst-italic text-primary text-decoration-none d-block">
+                <a href="/recuperar-contrasenya"
+                  class="text-start fst-italic text-primary text-decoration-none d-block">
                   Has oblidat la contrasenya?
                 </a>
               </p>
@@ -80,17 +81,20 @@ export default {
         if (response.data.success) {
           console.log(response.data);
           const { token, user } = response.data;
-          
+
           // Guardar en localStorage
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("userID", user.id);
           localStorage.setItem("token", token);
 
           // Redirigir al home
-          this.$router.push({ name: "home" });          
+          this.$router.push({ name: "home" }).then(() => {
+            location.reload();
+          });
+
 
         } else {
-          this.toastMessage = response.data.message; 
+          this.toastMessage = response.data.message;
           this.toastColor = "danger";
           this.toast = true;
           setTimeout(() => {

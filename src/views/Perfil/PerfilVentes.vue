@@ -122,15 +122,16 @@ export default {
     this.getVentes();
   },
   methods: {
-    getVentes() {
+    async getVentes() {
       const userID = localStorage.getItem("userID");
       this.usuari = JSON.parse(localStorage.getItem("user"));
 
       try {
         // Suponiendo que el backend devuelve las ventes con el artículo relacionado
-        const response = axiosConn.get(`/getVentesClient/${userID}`);
-        if (response.status === 200) {
-          this.ventes = response.data;
+        const res = await axiosConn.get(`/getVentesClient/${userID}`);
+
+        if (res.status === 200) {
+          this.ventes = res.data;
 
           // Formatear la fecha
           this.ventes.forEach((venta) => {

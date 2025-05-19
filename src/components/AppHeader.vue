@@ -31,7 +31,7 @@
           </ul>
         </template>
         <template v-else>
-          <div class="d-flex gap-2 justify-content-center w-100 w-md-auto">
+          <div class="d-flex gap-2 justify-content-end w-100 w-md-auto">
             <Button color="white" variant="outline" @click="$router.push('/login')">Iniciar sessió</Button>
             <Button color="white" variant="fill" @click="$router.push('/registre')">Registra't</Button>
           </div>

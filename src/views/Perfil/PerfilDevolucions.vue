@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid mt-4">
-    <div class="row">
+    <div class="row mb-4">
       <!-- Menú lateral -->
       <div class="col-md-3 border-end">
         <ul class="nav flex-column nav-pills">
@@ -12,106 +12,45 @@
         </ul>
       </div>
 
+      <!-- Comandes -->
       <div class="col-md-9">
-        <div class="row">
-          <div class="col-2">
-            <div class="text-center mb-4">
-              <img :src="usuari.foto_perfil || 'https://via.placeholder.com/150'" alt="Foto de perfil"
-                class="rounded-circle" height="100px" width="100px" />
-            </div>
-            <!-- Boton editar foto -->
-            <Button class="w-100 mt-1" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
-          </div>
-          <div class="col-10">
-            <h2 class="mb-4">{{ usuari.nom }} {{ usuari.cognoms }}</h2>
-          </div>
+        <h1 class="mb-4">Les meves comandes</h1>
+        <div v-if="comandes.length === 0" class="text-center text-muted mt-5">
+          Encara no tens cap comanda.
         </div>
+        <div v-else class="row gy-4">
+          <div class="col-12" v-for="comanda in comandes" :key="comanda.id_comanda">
+            <div
+              class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
+              <img :src="comanda.foto" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
+              <div class="flex-grow-1">
+                <p class="mb-1 text-muted">
+                  <strong>Preu:</strong> {{ comanda.preu_mes }}€/mes
+                  &nbsp; | &nbsp;
+                  <strong>Duració:</strong> {{ comanda.mesos }} mesos
+                  &nbsp; | &nbsp;
+                  <strong>Venedor:</strong>
+                  <a @click="verPerfil(comanda.vendedor_username)" class="username-link">@{{ comanda.vendedor_username
+                    }}</a>
 
-        <div class="row text-left mt-5 border-top pt-3 p-5">
-          <h2>Dades Personals</h2>
-          <form @submit.prevent="updateUser" class="d-flex flex-column gap-3 mb-5">
-            <!-- Formulario con los datos del usuario -->
-            <div>
-              <label class="form-label">Username</label>
-              <Input v-model="usuari.username" required :disabled="disableDades" />
-            </div>
-            <div>
-              <label class="form-label">Nom</label>
-              <Input v-model="usuari.nom" required :disabled="disableDades" />
-            </div>
-            <div>
-              <label class="form-label">Cognom</label>
-              <Input v-model="usuari.cognoms" required :disabled="disableDades" />
-            </div>
-            <div>
-              <label class="form-label">Correu electrònic</label>
-              <Input v-model="usuari.email" type="email" required :disabled="disableDades" />
-            </div>
-            <div>
-              <label class="form-label">DNI</label>
-              <Input v-model="usuari.dni" required :disabled="disableDades" />
-            </div>
-            <div>
-              <label class="form-label">Data Naixement</label>
-              <Input type="date" v-model="usuari.data_naixement" required :disabled="disableDades" />
-            </div>
+                </p>
+                <p class="mb-1">
+                  <strong>Estat: </strong>
+                  <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
+                  <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
+                </p>
+                <p class="mb-1">
+                  <strong>Data Order:</strong> {{ comanda.data_order }}<br>
+                  <span>
+                    <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}
+                    <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
+                  </span>
+                </p>
+                <p class="mb-1">
+                  <strong>Preu Total</strong> {{ comanda.preu_total }}€<br>
+                </p>
 
-            <div class="row text-center mt-3">
-              <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="danger" variant="" v-if="disableDades" @click="openDeactivateModal">
-                  Desactivar Compte
-                </Button>
-              </div>
-              <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="blue" variant="outline" v-if="disableDades" @click="modificarDades">
-                  Modificar Dades
-                </Button>
-                <Button class="w-100" color="blue" variant="fill" type="submit" v-if="!disableDades" @click="guardarDades">
-                  Guardar Dades
-                </Button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <!-- Modal for Deactivating Account -->
-        <div class="modal fade" id="desactivarCompteModal" tabindex="-1" aria-labelledby="desactivarCompteModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="desactivarCompteModalLabel">Desactivar Compte</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <p>Estàs segur que vols desactivar el teu compte? Aquesta acció no es pot desfer.</p>
-              </div>
-              <div class="modal-footer">
-                <Button color="secondary" variant="outline" data-bs-dismiss="modal">Cancel·lar</Button>
-                <Button color="danger" variant="fill" @click="desactivarCompte">Desactivar</Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal for editing profile picture -->
-        <div class="modal fade" id="editPhotoModal" tabindex="-1" aria-labelledby="editPhotoModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editPhotoModalLabel">Editar Foto de Perfil</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <form @submit.prevent="updatePhoto">
-                  <div class="mb-3">
-                    <label for="profilePhoto" class="form-label">Selecciona una nova foto</label>
-                    <input type="file" class="form-control" id="profilePhoto" @change="onFileChange" accept="image/"/>
-                  </div>
-                  <div class="text-center">
-                    <Button color="blue" variant="fill" type="submit">Actualitzar Foto</Button>
-                  </div>
-                </form>
               </div>
             </div>
           </div>
@@ -129,174 +68,142 @@
 
 <script>
 import axiosConn from "@/axios/axios";
-import Input from "@/components/Input.vue";
-import Button from "@/components/Button.vue";
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js"; 
-
 export default {
-  components: {
-    Input,
-    Button,
-  },
   data() {
     return {
-      currentView: "dadesPersonals",
       usuari: {},
-      menuItems: [
-        { label: "Dades Personals", path: `/perfil/${this.username}-${this.userID}` },
-        { label: "Articles Preferits", path: `/perfil/${this.username}-${this.userID}/preferits` },
-        { label: "Les meves Comandes", path: `/perfil/${this.username}-${this.userID}/comandes` },
-        { label: "Els meus Articles", path: `/perfil/${this.username}-${this.userID}/articles` },
-        { label: "Les meves Valoracions", path: `/perfil/${this.username}-${this.userID}/valoracions` },
-      ],
-      username: "",
-      userID: "",
-      disableDades: true,
+      comandes: [],
       toast: false,
       toastMessage: "",
       toastColor: "success",
-      selectedFile: null,
     };
   },
+  computed: {
+    menuItems() {
+      return [
+        { label: "Dades Personals", path: `/perfil/${this.usuari.username || ""}` },
+        { label: "Articles", path: `/perfilArticles/${this.usuari.username || ""}` },
+        { label: "Comandes", path: `/perfilComandes/${this.usuari.username || ""}` },
+        { label: "Devolucions", path: `/perfilDevolucions/${this.usuari.username || ""}` },
+        { label: "Ventes", path: `/perfilVentes/${this.usuari.username || ""}` },
+        { label: "Valoracions", path: `/perfilValoracions/${this.usuari.username || ""}` },
+        { label: "Preferits", path: `/preferits/${this.usuari.username || ""}` },
+      ];
+    },
+  },
   mounted() {
-    this.getData();
+    this.getComandes();
   },
   methods: {
-    async getData() {
+    async getComandes() {
       const userID = localStorage.getItem("userID");
-      try {
-        const res = await axiosConn.get(`/infoUsuario/${userID}`);
-        this.usuari = res.data.usuari;
-        this.usuari.data_naixement = new Date(this.usuari.data_naixement).toISOString().split("T")[0];
-        
-        // Gestionamos la imagen 
-        
+      this.usuari = JSON.parse(localStorage.getItem("user"));
 
-      } catch (err) {
-        console.error("Error carregant usuari:", err);
-      }
-    },
-    modificarDades() {
-      this.disableDades = false
-    },
-    guardarDades() {
-      this.disableDades = true
-      axiosConn.put(`/updateUser`,
-        {
-          user_id: this.usuari.ID,
-          username: this.usuari.username,
-          nom: this.usuari.nom,
-          cognoms: this.usuari.cognoms,
-          email: this.usuari.email,
-          dni: this.usuari.dni,
-          data_naixement: this.usuari.data_naixement,
-        }
-      )
-        .then(response => {
-          if (response.status === 200) {
-            this.toast = true;
-            this.toastMessage = "Usuari actualitzat amb èxit!";
-            this.toastColor = "success";
-            setTimeout(() => {
-              this.toast = false;
-            }, 2000);
-          } else {
-            this.toast = true;
-            this.toastMessage = "Error actualitzant usuari";
-            this.toastColor = "danger";
-          }
-        })
-        .catch(error => {
-          console.error("Error actualitzant usuari:", error);
-          this.toast = true;
-          this.toastMessage = "Error actualitzant usuari";
+      try {
+        // Suponiendo que el backend devuelve las comandes con el artículo relacionado
+        const response = await axiosConn.get(`/getComandesClient/${userID}`);
+        if (response.status === 200) {
+          this.comandes = response.data;
+          // Formatear la fecha
+          this.comandes.forEach((comanda) => {
+            // Verificamos si 'data_inici' no está vacío o es una fecha válida
+            if (comanda.data_inici) {
+              const dataInici = new Date(comanda.data_inici);
+              // Verificamos si la fecha es válida
+              if (!isNaN(dataInici)) {
+                comanda.data_inici = dataInici.toLocaleDateString("ca-ES");
+              } else {
+                comanda.data_inici = "Data no vàlida"; // O cualquier valor predeterminado que prefieras
+              }
+            } else {
+              comanda.data_inici = "";
+            }
+
+            // Hacemos lo mismo con 'data_order'
+            if (comanda.data_order) {
+              const dataOrder = new Date(comanda.data_order);
+              if (!isNaN(dataOrder)) {
+                comanda.data_order = dataOrder.toLocaleString("ca-ES", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                });
+              } else {
+                comanda.data_order = "Data no vàlida";
+              }
+            } else {
+              comanda.data_order = "";
+            }
+
+            if (comanda.data_fi) {
+              const dataFi = new Date(comanda.data_fi);
+              if (!isNaN(dataFi)) {
+                comanda.data_fi = dataFi.toLocaleDateString("ca-ES");
+              } else {
+                comanda.data_fi = "Data no vàlida";
+              }
+            } else {
+              comanda.data_fi = "";
+            }
+          });
+
+        } else {
+          this.toastMessage = "Error al carregar les comandes";
           this.toastColor = "danger";
-        });
-    },
-    openModal() {
-      const modal = new bootstrap.Modal(document.getElementById("editPhotoModal"));
-      modal.show();
-    },
-    onFileChange(event) {
-      this.selectedFile = event.target.files[0];
-    },
-    async updatePhoto() {
-      if (!this.selectedFile) {
-        this.toastMessage = "Selecciona una foto abans de continuar.";
+          this.toast = true;
+          setTimeout(() => {
+            this.toast = false;
+          }, 3000);
+        }
+      } catch (error) {
+        this.toastMessage = "Error al carregar les comandes";
         this.toastColor = "danger";
         this.toast = true;
         setTimeout(() => {
           this.toast = false;
-        }, 2000);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("foto_perfil", this.selectedFile);
-      formData.append("user_id", this.usuari.ID);
-
-      try {
-        const res = await axiosConn.post("/canviarFotoPerfil", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        if (res.status === 200) {
-          this.toastMessage = "Foto actualitzada amb èxit!";
-          this.toastColor = "success";
-          this.toast = true;
-          this.usuari.foto_perfil = res.data.foto_perfil;
-          window.location.reload();
-          setTimeout(() => {
-            this.toast = false;
-          }, 2000);
-        } else {
-          this.toastMessage = "Error actualitzant la foto.";
-          this.toastColor = "danger";
-          this.toast = true;
-        }
-      } catch (err) {
-        console.error("Error actualitzant la foto:", err);
-        this.toastMessage = "Error actualitzant la foto.";
-        this.toastColor = "danger";
-        this.toast = true;
+        }, 3000);
       }
     },
-    openDeactivateModal() {
-      const modal = new bootstrap.Modal(document.getElementById("desactivarCompteModal"));
-      modal.show();
-    },
-    async desactivarCompte() {
-      try {
-        const res = await axiosConn.post("/desactivarCompte", { user_id: this.usuari.ID });
-        if (res.status === 200) {
-          this.toastMessage = "Compte desactivat amb èxit!";
-          this.toastColor = "success";
-          this.toast = true;
-          setTimeout(() => {
-            this.toast = false;
-            this.$router.push("/login");
-          }, 2000);
-          window.location.reload();
-        } else {
-          this.toastMessage = "Error desactivant el compte.";
-          this.toastColor = "danger";
-          this.toast = true;
-        }
-      } catch (err) {
-        console.error("Error desactivant el compte:", err);
-        this.toastMessage = "Error desactivant el compte.";
-        this.toastColor = "danger";
-        this.toast = true;
-      }
+    verPerfil(username) {
+      this.$router.push(`/verPerfil/${username}`);
     },
   },
 };
 </script>
 
 <style scoped>
+.order-card {
+  transition: box-shadow 0.2s;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 24px 0 rgba(0, 191, 166, 0.13);
+}
+
+.order-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: #f2f2f2;
+  border: 1px solid #e6e6e6;
+}
+
+.btn-outline-primary {
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 .nav-link.active {
-  background-color: #0d6efd;
+  background-color: #578FCA;
   color: white;
+}
+
+.nav-link {
+  color: #578FCA;
 }
 </style>

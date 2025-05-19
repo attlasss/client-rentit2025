@@ -13,10 +13,13 @@
               <h1 class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</h1>
               <p>{{ usuari.email }}</p>
               <!-- Media de valoraciones -->
-              <div v-if="valoracions.length > 0" class="mb-2 d-flex align-items-center gap-2">
+              <div v-if="valoracions.length > 0" class="mb-2 d-flex align-items-center">
                 <span v-for="star in 5" :key="star" class="star" :class="{ selected: star <= valoracioMitjaRedondeada }">★</span>
                 <span class="ms-2">({{ valoracioMitja.toFixed(2) }})</span>
                 <span class="text-muted">· {{ valoracions.length }} valoracions</span>
+              </div>
+              <div v-else class="mb-2">
+                <span class="text-muted">Sense valoracions</span>
               </div>
               <div class="d-flex mt-2" v-if="puedeValorar && logedUser.id !== usuari.ID">
                 <Button color="blue" variant="outline" icon="edit-2" @click="abrirModalValoracio">Valorar</Button>
