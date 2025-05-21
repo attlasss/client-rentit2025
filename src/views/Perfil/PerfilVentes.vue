@@ -37,7 +37,8 @@
                   <span class="badge bg-success" v-if="venta.estat === 'acceptada'">Acceptada</span>
                   <span class="badge bg-danger" v-if="venta.estat === 'rebutjada'">Rebutjada</span>
                   <span class="badge bg-info" v-if="venta.estat === 'en_devolucio'">Pendent d'aprobar devolució</span>
-                  <span class="badge bg-success" v-if="venta.estat === 'devolucio_completada'">Devolució Completada</span>
+                  <span class="badge bg-success" v-if="venta.estat === 'devolucio_acceptada'">Devolució Completada</span>
+                  <span class="badge bg-success" v-if="venta.estat === 'devolucio_rebutjada'">Devolució Rebutjada</span>
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ venta.data_order }}<br>

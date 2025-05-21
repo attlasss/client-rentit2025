@@ -21,8 +21,7 @@
               devolucions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" :class="{ active: activeTab === 'gestionar' }" @click="activeTab = 'gestionar'">Per
-              gestionar</a>
+            <a class="nav-link" :class="{ active: activeTab === 'gestionar' }" @click="activeTab = 'gestionar'">Devolucions a gestionar</a>
           </li>
         </ul>
 
@@ -71,12 +70,14 @@
                   alt="Imatge devolució" class="img-thumbnail mb-3" style="max-width: 300px;">
                 <div class="mb-2">
                   <strong>Estat enviat:</strong>
-                  <p>
                     <span v-if="devolucioSeleccionada.estat_article === 'correcte'">Correcte</span>
                     <span v-if="devolucioSeleccionada.estat_article === 'com_es_va_enviar'">Com
                       es va enviar</span>
                     <span v-if="devolucioSeleccionada.estat_article === 'danyat'">Danyat</span>
                     <span v-if="devolucioSeleccionada.estat_article === 'altres'">Altres</span>
+                  <p>
+                    <strong>Comentari:</strong>
+                    <span>{{ devolucioSeleccionada.comentari }}</span>
                   </p>
                 </div>
               </div>
@@ -107,11 +108,13 @@
                     <span v-if="devolucioGestionarSeleccionada.estat_article === 'danyat'">Danyat</span>
                     <span v-if="devolucioGestionarSeleccionada.estat_article === 'altres'">Altres</span>
                   </p>
+                  <strong>Comentari:</strong>
+                    <span>{{ devolucioGestionarSeleccionada.comentari }}</span>
                 </div>
               </div>
               <div class="modal-footer">
-                <Button color="success" variant="fill" @click="aprovarDevolucio(devolucioGestionarSeleccionada)">Acceptar</Button>
-                <Button color="danger" variant="outline" @click="denegarDevolucio(devolucioGestionarSeleccionada)">Denegar</Button>
+                <Button color="success" variant="fill" @click="gestionarDevolucio('acceptada', devolucioGestionarSeleccionada.id_devolucio)">Acceptar</Button>
+                <Button color="danger" variant="outline" @click="gestionarDevolucio('denegada', devolucioGestionarSeleccionada.id_devolucio)">Denegar</Button>
               </div>
             </div>
           </div>
@@ -131,7 +134,6 @@
                   <p class="mb-1 text-muted">
                     <strong>Article:</strong> {{ devolucio.nom }}<br>
                     <strong>Estat:</strong> {{ devolucio.estat_devolucio }}<br>
-                    <strong>Data:</strong> {{ devolucio.data_devolucio }}
                   </p>
                   <div class="mt-2" v-if="devolucio.estat === 'en_devolucio'">
                     <Button color="blue" variant="outline" @click="modalGestionarDevolucio(devolucio)">Gestionar
@@ -232,48 +234,18 @@ export default {
         this.devolucionsgestionar = [];
       }
     },
-    async gestionarDevolucio(devolucio) {
+    async gestionarDevolucio(estat,id_devolucio) {
       try {
-        await axiosConn.post("/gestionarDevolucio", { id_devolucio: devolucio.id_devolucio });
+        await axiosConn.post("/gestionarDevolucio", { id_devolucio: id_devolucio, estat: estat });
         this.toastMessage = "Devolució gestionada correctament!";
         this.toastColor = "success";
         this.toast = true;
         this.getDevolucionsgestionar();
+        this.getDevolucions();
+        this.tancarModalGestionar();
         setTimeout(() => { this.toast = false; }, 2000);
       } catch (e) {
         this.toastMessage = "Error gestionant la devolució";
-        this.toastColor = "danger";
-        this.toast = true;
-        setTimeout(() => { this.toast = false; }, 2000);
-      }
-    },
-    async aprovarDevolucio(devolucio) {
-      try {
-        await axiosConn.post("/aprovarDevolucio", { id_devolucio: devolucio.id_devolucio });
-        this.toastMessage = "Devolució acceptada correctament!";
-        this.toastColor = "success";
-        this.toast = true;
-        this.getDevolucionsgestionar();
-        this.tancarModalGestionar();
-        setTimeout(() => { this.toast = false; }, 2000);
-      } catch (e) {
-        this.toastMessage = "Error acceptant la devolució";
-        this.toastColor = "danger";
-        this.toast = true;
-        setTimeout(() => { this.toast = false; }, 2000);
-      }
-    },
-    async denegarDevolucio(devolucio) {
-      try {
-        await axiosConn.post("/denegarDevolucio", { id_devolucio: devolucio.id_devolucio });
-        this.toastMessage = "Devolució denegada correctament!";
-        this.toastColor = "success";
-        this.toast = true;
-        this.getDevolucionsgestionar();
-        this.tancarModalGestionar();
-        setTimeout(() => { this.toast = false; }, 2000);
-      } catch (e) {
-        this.toastMessage = "Error denegant la devolució";
         this.toastColor = "danger";
         this.toast = true;
         setTimeout(() => { this.toast = false; }, 2000);

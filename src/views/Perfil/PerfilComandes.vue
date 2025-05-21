@@ -83,6 +83,10 @@
                 <label class="form-label">Estat del producte</label>
                 <Select v-model="estatDevolucio" :options="estatOptions" placeholder="Selecciona l'estat" required />
               </div>
+              <div class="mb-3">
+                <label class="form-label">Comentari</label>
+                <input type="text" class="form-control" v-model="comentariDevolucio" placeholder="Escriu un comentari" required />
+              </div>
             </div>
             <div class="modal-footer">
               <Button color="gray" data-bs-dismiss="modal" type="button">Cancel·lar</Button>
@@ -107,7 +111,6 @@ import axiosConn from "@/axios/axios";
 import Select from "@/components/Select.vue";
 import Button from "@/components/Button.vue";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
-
 export default {
   components: { Select, Button },
   data() {
@@ -119,6 +122,7 @@ export default {
       toastColor: "success",
       comandaSeleccionada: null,
       estatDevolucio: "",
+      comentariDevolucio: "",
       estatOptions: [
         { value: "correcte", label: "Correcte" },
         { value: "com_es_va_enviar", label: "Com es va enviar" },
@@ -238,6 +242,7 @@ export default {
         formData.append("estat", this.estatDevolucio);
         formData.append("imatge", this.imatgeDevolucio);
         formData.append("mimeType", this.imatgeDevolucio.type);
+        formData.append("comentari", this.comentariDevolucio);
 
         const res = await axiosConn.post("/tramitarDevolucio", formData, {
           headers: {
