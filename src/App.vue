@@ -61,11 +61,13 @@ html, body {
   font-family: 'Urbanist', sans-serif;
   font-weight: 400;
   font-size: 2.5rem;
+  text-decoration: none;
   color:white;
 }
 
 .logo-color {
   font-family: 'Urbanist', sans-serif;
+  text-decoration: none;
   font-weight: 400;
   font-size: 2.5rem;
   color: #578FCA;

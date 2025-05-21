@@ -45,11 +45,6 @@ const routes = [
     component: () => import("../views/Comandes/Comandes.vue"),
   },
   {
-    path: "/devolucions",
-    name: "Devolucions",
-    component: () => import("../views/Devolucions.vue"),
-  },
-  {
     path: "/perfil/:username",
     name: "Perfil",
     component: () => import("../views/Perfil/Perfil.vue"),
@@ -73,6 +68,11 @@ const routes = [
     path: "/perfilValoracions/:username",
     name: "PerfilValoracions",
     component: () => import("../views/Perfil/PerfilValoracions.vue"),
+  },
+  {
+    path: "/perfilDevolucions/:username",
+    name: "PerfilDevolucions",
+    component: () => import("../views/Perfil/PerfilDevolucions.vue"),
   },
   {
     path: "/perfilVentes/:username",

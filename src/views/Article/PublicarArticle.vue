@@ -112,14 +112,6 @@ export default {
                 || !this.article.mesos || !this.article.imatge) {
 
                 // Console log para depuración
-                console.log("Verificando campos del artículo:");
-                console.log("Nombre del artículo:", this.article.nom);
-                console.log("Descripción:", this.article.descripcio);
-                console.log("Categoría:", this.article.id_categoria);
-                console.log("Precio por mes:", this.article.preu);
-                console.log("Mesos:", this.article.mesos);
-                console.log("Imagen seleccionada:", this.article.imatge);
-
                 this.toastMessage = "Si us plau, ompliu tots els camps.";
                 this.toastColor = "danger";
                 this.toast = true;

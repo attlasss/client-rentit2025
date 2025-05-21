@@ -12,67 +12,167 @@
         </ul>
       </div>
 
-      <!-- Comandes -->
       <div class="col-md-9">
-        <h1 class="mb-4">Les meves comandes</h1>
-        <div v-if="comandes.length === 0" class="text-center text-muted mt-5">
-          Encara no tens cap comanda.
-        </div>
-        <div v-else class="row gy-4">
-          <div class="col-12" v-for="comanda in comandes" :key="comanda.id_comanda">
-            <div
-              class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
-              <img :src="comanda.foto" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
-              <div class="flex-grow-1">
-                <p class="mb-1 text-muted">
-                  <strong>Preu:</strong> {{ comanda.preu_mes }}€/mes
-                  &nbsp; | &nbsp;
-                  <strong>Duració:</strong> {{ comanda.mesos }} mesos
-                  &nbsp; | &nbsp;
-                  <strong>Venedor:</strong>
-                  <a @click="verPerfil(comanda.vendedor_username)" class="username-link">@{{ comanda.vendedor_username
-                    }}</a>
+        <h1 class="mb-4">Devolucions</h1>
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-4">
+          <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'propies' }" @click="activeTab = 'propies'">Les meves
+              devolucions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" :class="{ active: activeTab === 'gestionar' }" @click="activeTab = 'gestionar'">Per
+              gestionar</a>
+          </li>
+        </ul>
 
-                </p>
-                <p class="mb-1">
-                  <strong>Estat: </strong>
-                  <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
-                  <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
-                  <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
-                </p>
-                <p class="mb-1">
-                  <strong>Data Order:</strong> {{ comanda.data_order }}<br>
-                  <span>
-                    <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}
-                    <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
-                  </span>
-                </p>
-                <p class="mb-1">
-                  <strong>Preu Total</strong> {{ comanda.preu_total }}€<br>
-                </p>
-
+        <!-- Les meves devolucions -->
+        <div v-if="activeTab === 'propies'">
+          <div v-if="devolucionsPropies.length === 0" class="text-center text-muted mt-5">
+            Encara no tens cap devolució activa.
+          </div>
+          <div v-else class="row gy-4">
+            <div class="col-12" v-for="devolucio in devolucionsPropies" :key="devolucio.id_devolucio">
+              <div
+                class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
+                <img :src="devolucio.foto_article" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
+                <div class="flex-grow-1">
+                  <p class="mb-1 text-muted">
+                    <strong>Article:</strong> {{ devolucio.nom }}<br>
+                    <strong>Data:</strong> {{ devolucio.data }} <br>
+                    <strong>Estat Devolució:</strong>
+                    <span class="badge bg-info ms-2" v-if="devolucio.estat === 'en_devolucio'">Pendent de gestionar
+                      devolució</span>
+                    <span class="badge bg-success ms-2" v-if="devolucio.estat === 'devolucio_acceptada'">Devolució
+                      Acceptada</span>
+                      <span class="badge bg-warning ms-2" v-if="devolucio.estat === 'devolucio_rebutjada'">Devolució
+                      Rebutjada</span>
+                  </p>
+                  <Button color="blue" variant="outline" @click="abrirModalImatge(devolucio)">Veure imatge i estat
+                    devolució</Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Modal Imatge Devolució -->
+        <div class="modal fade" ref="modalImatge" tabindex="-1" aria-labelledby="modalImatgeDevolucioLabel"
+          aria-hidden="true" v-show="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalImatgeDevolucioLabel">Detall de la devolució</h5>
+                <button type="button" class="btn-close" @click="tancarModal" aria-label="Tancar"></button>
+              </div>
+              <div class="modal-body text-center" v-if="devolucioSeleccionada">
+                <h6>Detalls Devolució</h6>
+                <img v-if="devolucioSeleccionada?.devolucio_foto" :src="devolucioSeleccionada.devolucio_foto"
+                  alt="Imatge devolució" class="img-thumbnail mb-3" style="max-width: 300px;">
+                <div class="mb-2">
+                  <strong>Estat enviat:</strong>
+                  <p>
+                    <span v-if="devolucioSeleccionada.estat_article === 'correcte'">Correcte</span>
+                    <span v-if="devolucioSeleccionada.estat_article === 'com_es_va_enviar'">Com
+                      es va enviar</span>
+                    <span v-if="devolucioSeleccionada.estat_article === 'danyat'">Danyat</span>
+                    <span v-if="devolucioSeleccionada.estat_article === 'altres'">Altres</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Gestionar Devolució -->
+        <div class="modal fade" ref="modalGestionar" tabindex="-1" aria-labelledby="modalGestionarDevolucioLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalGestionarDevolucioLabel">Gestionar devolució</h5>
+                <button type="button" class="btn-close" @click="tancarModalGestionar" aria-label="Tancar"></button>
+              </div>
+              <div class="modal-body text-center" v-if="devolucioGestionarSeleccionada">
+                <h6>Detalls Devolució</h6>
+                <img v-if="devolucioGestionarSeleccionada?.devolucio_foto"
+                  :src="devolucioGestionarSeleccionada.devolucio_foto"
+                  alt="Imatge devolució"
+                  class="img-thumbnail mb-3"
+                  style="max-width: 300px;">
+                <div class="mb-2">
+                  <strong>Estat enviat:</strong>
+                  <p>
+                    <span v-if="devolucioGestionarSeleccionada.estat_article === 'correcte'">Correcte</span>
+                    <span v-if="devolucioGestionarSeleccionada.estat_article === 'com_es_va_enviar'">Com es va enviar</span>
+                    <span v-if="devolucioGestionarSeleccionada.estat_article === 'danyat'">Danyat</span>
+                    <span v-if="devolucioGestionarSeleccionada.estat_article === 'altres'">Altres</span>
+                  </p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <Button color="success" variant="fill" @click="aprovarDevolucio(devolucioGestionarSeleccionada)">Acceptar</Button>
+                <Button color="danger" variant="outline" @click="denegarDevolucio(devolucioGestionarSeleccionada)">Denegar</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Devolucions per gestionar -->
+        <div v-if="activeTab === 'gestionar'">
+          <div v-if="devolucionsgestionar.length === 0" class="text-center text-muted mt-5">
+            No tens devolucions pendents d'gestionar.
+          </div>
+          <div v-else class="row gy-4">
+            <div class="col-12" v-for="devolucio in devolucionsgestionar" :key="devolucio.id_devolucio">
+              <div
+                class="order-card border rounded-4 p-4 bg-white d-flex flex-column flex-md-row align-items-md-center shadow-sm text-start">
+                <img :src="devolucio.foto_article" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
+                <div class="flex-grow-1">
+                  <p class="mb-1 text-muted">
+                    <strong>Article:</strong> {{ devolucio.nom }}<br>
+                    <strong>Estat:</strong> {{ devolucio.estat_devolucio }}<br>
+                    <strong>Data:</strong> {{ devolucio.data_devolucio }}
+                  </p>
+                  <div class="mt-2" v-if="devolucio.estat === 'en_devolucio'">
+                    <Button color="blue" variant="outline" @click="modalGestionarDevolucio(devolucio)">Gestionar
+                      devolució</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <transition name="fade">
+          <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+            :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+            {{ toastMessage }}
+          </div>
+        </transition>
       </div>
     </div>
-    <transition name="fade">
-      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
-        {{ toastMessage }}
-      </div>
-    </transition>
   </div>
 </template>
 
 <script>
 import axiosConn from "@/axios/axios";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle";
+import Button from "@/components/Button.vue";
+
 export default {
+  components: {
+    Button,
+  },
   data() {
     return {
+      activeTab: "propies",
       usuari: {},
-      comandes: [],
+      devolucionsPropies: [],
+      devolucionsgestionar: [],
+      devolucioSeleccionada: null,
+      devolucioGestionarSeleccionada: null,
+      modalInstance: null,
+      modalGestionarInstance: null,
       toast: false,
       toastMessage: "",
       toastColor: "success",
@@ -92,83 +192,108 @@ export default {
     },
   },
   mounted() {
-    this.getComandes();
+    this.usuari = JSON.parse(localStorage.getItem("user"));
+    this.getDevolucions();
+    this.getDevolucionsgestionar();
   },
   methods: {
-    async getComandes() {
+    async getDevolucions() {
       const userID = localStorage.getItem("userID");
-      this.usuari = JSON.parse(localStorage.getItem("user"));
-
       try {
-        // Suponiendo que el backend devuelve las comandes con el artículo relacionado
-        const response = await axiosConn.get(`/getComandesClient/${userID}`);
-        if (response.status === 200) {
-          this.comandes = response.data;
-          // Formatear la fecha
-          this.comandes.forEach((comanda) => {
-            // Verificamos si 'data_inici' no está vacío o es una fecha válida
-            if (comanda.data_inici) {
-              const dataInici = new Date(comanda.data_inici);
-              // Verificamos si la fecha es válida
-              if (!isNaN(dataInici)) {
-                comanda.data_inici = dataInici.toLocaleDateString("ca-ES");
-              } else {
-                comanda.data_inici = "Data no vàlida"; // O cualquier valor predeterminado que prefieras
-              }
-            } else {
-              comanda.data_inici = "";
-            }
+        const res = await axiosConn.get(`/getDevolucionsMevesCompra/${userID}`);
+        this.devolucionsPropies = res.data;
 
-            // Hacemos lo mismo con 'data_order'
-            if (comanda.data_order) {
-              const dataOrder = new Date(comanda.data_order);
-              if (!isNaN(dataOrder)) {
-                comanda.data_order = dataOrder.toLocaleString("ca-ES", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                });
-              } else {
-                comanda.data_order = "Data no vàlida";
-              }
-            } else {
-              comanda.data_order = "";
-            }
+        this.devolucionsPropies.forEach((devolucio) => {
+          const dataOrder = new Date(devolucio.data);
+          if (!isNaN(dataOrder)) {
+            devolucio.data = dataOrder.toLocaleString("ca-ES", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            });
+          } else {
+            devolucio.data = "Data no vàlida";
+          }
+        });
+      } catch (err) {
+        console.error(err);
+      }
 
-            if (comanda.data_fi) {
-              const dataFi = new Date(comanda.data_fi);
-              if (!isNaN(dataFi)) {
-                comanda.data_fi = dataFi.toLocaleDateString("ca-ES");
-              } else {
-                comanda.data_fi = "Data no vàlida";
-              }
-            } else {
-              comanda.data_fi = "";
-            }
-          });
-
-        } else {
-          this.toastMessage = "Error al carregar les comandes";
-          this.toastColor = "danger";
-          this.toast = true;
-          setTimeout(() => {
-            this.toast = false;
-          }, 3000);
-        }
-      } catch (error) {
-        this.toastMessage = "Error al carregar les comandes";
-        this.toastColor = "danger";
-        this.toast = true;
-        setTimeout(() => {
-          this.toast = false;
-        }, 3000);
+    },
+    async getDevolucionsgestionar() {
+      const userID = localStorage.getItem("userID");
+      try {
+        const res = await axiosConn.get(`/getDevolucionsMevesVenta/${userID}`);
+        this.devolucionsgestionar = res.data;
+      } catch (e) {
+        this.devolucionsgestionar = [];
       }
     },
-    verPerfil(username) {
-      this.$router.push(`/verPerfil/${username}`);
+    async gestionarDevolucio(devolucio) {
+      try {
+        await axiosConn.post("/gestionarDevolucio", { id_devolucio: devolucio.id_devolucio });
+        this.toastMessage = "Devolució gestionada correctament!";
+        this.toastColor = "success";
+        this.toast = true;
+        this.getDevolucionsgestionar();
+        setTimeout(() => { this.toast = false; }, 2000);
+      } catch (e) {
+        this.toastMessage = "Error gestionant la devolució";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+      }
+    },
+    async aprovarDevolucio(devolucio) {
+      try {
+        await axiosConn.post("/aprovarDevolucio", { id_devolucio: devolucio.id_devolucio });
+        this.toastMessage = "Devolució acceptada correctament!";
+        this.toastColor = "success";
+        this.toast = true;
+        this.getDevolucionsgestionar();
+        this.tancarModalGestionar();
+        setTimeout(() => { this.toast = false; }, 2000);
+      } catch (e) {
+        this.toastMessage = "Error acceptant la devolució";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+      }
+    },
+    async denegarDevolucio(devolucio) {
+      try {
+        await axiosConn.post("/denegarDevolucio", { id_devolucio: devolucio.id_devolucio });
+        this.toastMessage = "Devolució denegada correctament!";
+        this.toastColor = "success";
+        this.toast = true;
+        this.getDevolucionsgestionar();
+        this.tancarModalGestionar();
+        setTimeout(() => { this.toast = false; }, 2000);
+      } catch (e) {
+        this.toastMessage = "Error denegant la devolució";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+      }
+    },
+    abrirModalImatge(devolucio) {
+      this.devolucioSeleccionada = devolucio;
+      this.modalInstance = new bootstrap.Modal(this.$refs.modalImatge);
+      this.modalInstance.show();
+    },
+    modalGestionarDevolucio(devolucio) {
+      this.devolucioGestionarSeleccionada = devolucio;
+      this.modalGestionarInstance = new bootstrap.Modal(this.$refs.modalGestionar);
+      this.modalGestionarInstance.show();
+    },
+    tancarModal() {
+      if (this.modalInstance) this.modalInstance.hide();
+    },
+    tancarModalGestionar() {
+      if (this.modalGestionarInstance) this.modalGestionarInstance.hide();
     },
   },
 };
@@ -192,12 +317,6 @@ export default {
   border: 1px solid #e6e6e6;
 }
 
-.btn-outline-primary {
-  border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
 .nav-link.active {
   background-color: #578FCA;
   color: white;
@@ -205,5 +324,9 @@ export default {
 
 .nav-link {
   color: #578FCA;
+}
+
+.toast-message {
+  z-index: 1056;
 }
 </style>

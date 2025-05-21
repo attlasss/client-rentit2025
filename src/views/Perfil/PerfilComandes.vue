@@ -32,13 +32,14 @@
                   <strong>Venedor:</strong>
                   <a @click="verPerfil(comanda.vendedor_username)" class="username-link">@{{ comanda.vendedor_username
                     }}</a>
-
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
                   <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
                   <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
                   <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
+                   <span class="badge bg-info" v-if="comanda.estat === 'en_devolucio'">Pendent d'aprovar devolució</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_completada'">Devolució Completada</span>
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>
@@ -50,13 +51,48 @@
                 <p class="mb-1">
                   <strong>Preu Total</strong> {{ comanda.preu_total }}€<br>
                 </p>
-
+                <!-- Botón para tramitar devolución si estat es acceptada -->
+              </div>
+              <div class="ms-md-4 mt-3 mt-md-0 d-flex flex-column align-items-end">
+                <div v-if="comanda.estat === 'acceptada'" class="mt-2">
+                  <Button color="blue" variant="outline" @click="abrirModalDevolucio(comanda)">Tramitar
+                    devolució</Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Modal Devolució -->
+    <div class="modal fade" id="modalDevolucio" tabindex="-1" aria-labelledby="modalDevolucioLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form @submit.prevent="tramitarDevolucio">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalDevolucioLabel">Tramitar devolució</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Imatge de l'estat del producte</label>
+                <input type="file" class="form-control" accept="image/*" @change="onFileChange" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Estat del producte</label>
+                <Select v-model="estatDevolucio" :options="estatOptions" placeholder="Selecciona l'estat" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <Button color="gray" data-bs-dismiss="modal" type="button">Cancel·lar</Button>
+              <Button color="blue" type="submit">Enviar devolució</Button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <transition name="fade">
       <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
         :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
@@ -68,7 +104,12 @@
 
 <script>
 import axiosConn from "@/axios/axios";
+import Select from "@/components/Select.vue";
+import Button from "@/components/Button.vue";
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 export default {
+  components: { Select, Button },
   data() {
     return {
       usuari: {},
@@ -76,6 +117,15 @@ export default {
       toast: false,
       toastMessage: "",
       toastColor: "success",
+      comandaSeleccionada: null,
+      estatDevolucio: "",
+      estatOptions: [
+        { value: "correcte", label: "Correcte" },
+        { value: "com_es_va_enviar", label: "Com es va enviar" },
+        { value: "danyat", label: "Danyat" },
+        { value: "altres", label: "Altres" },
+      ],
+      imatgeDevolucio: null,
     };
   },
   computed: {
@@ -100,26 +150,20 @@ export default {
       this.usuari = JSON.parse(localStorage.getItem("user"));
 
       try {
-        // Suponiendo que el backend devuelve las comandes con el artículo relacionado
         const response = await axiosConn.get(`/getComandesClient/${userID}`);
         if (response.status === 200) {
           this.comandes = response.data;
-          // Formatear la fecha
           this.comandes.forEach((comanda) => {
-            // Verificamos si 'data_inici' no está vacío o es una fecha válida
             if (comanda.data_inici) {
               const dataInici = new Date(comanda.data_inici);
-              // Verificamos si la fecha es válida
               if (!isNaN(dataInici)) {
                 comanda.data_inici = dataInici.toLocaleDateString("ca-ES");
               } else {
-                comanda.data_inici = "Data no vàlida"; // O cualquier valor predeterminado que prefieras
+                comanda.data_inici = "Data no vàlida";
               }
             } else {
               comanda.data_inici = "";
             }
-
-            // Hacemos lo mismo con 'data_order'
             if (comanda.data_order) {
               const dataOrder = new Date(comanda.data_order);
               if (!isNaN(dataOrder)) {
@@ -137,7 +181,6 @@ export default {
             } else {
               comanda.data_order = "";
             }
-
             if (comanda.data_fi) {
               const dataFi = new Date(comanda.data_fi);
               if (!isNaN(dataFi)) {
@@ -149,7 +192,6 @@ export default {
               comanda.data_fi = "";
             }
           });
-
         } else {
           this.toastMessage = "Error al carregar les comandes";
           this.toastColor = "danger";
@@ -169,6 +211,58 @@ export default {
     },
     verPerfil(username) {
       this.$router.push(`/verPerfil/${username}`);
+    },
+    abrirModalDevolucio(comanda) {
+      this.comandaSeleccionada = comanda;
+      this.estatDevolucio = "";
+      this.imatgeDevolucio = null;
+      const modal = new bootstrap.Modal(document.getElementById("modalDevolucio"));
+      modal.show();
+    },
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.imatgeDevolucio = file;
+    },
+    async tramitarDevolucio() {
+      if (!this.imatgeDevolucio || !this.estatDevolucio) {
+        this.toastMessage = "Has d'adjuntar una imatge i seleccionar un estat.";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+        return;
+      }
+      try {
+
+        const formData = new FormData();
+        formData.append("id_comanda", this.comandaSeleccionada.id_comanda);
+        formData.append("estat", this.estatDevolucio);
+        formData.append("imatge", this.imatgeDevolucio);
+        formData.append("mimeType", this.imatgeDevolucio.type);
+
+        const res = await axiosConn.post("/tramitarDevolucio", formData, {
+          headers: {
+              "Content-Type": "multipart/form-data",
+          },
+        });
+        if (res.status !== 200) {
+          this.toastMessage = "Error al tramitar la devolució";
+          this.toastColor = "danger";
+          this.toast = true;
+          setTimeout(() => { this.toast = false; }, 2000);
+          return;
+        } else {
+          this.toastMessage = "Devolució tramitada correctament!";
+          this.toastColor = "success";
+          this.toast = true;
+          bootstrap.Modal.getInstance(document.getElementById("modalDevolucio")).hide();
+          this.getComandes();
+        }
+      } catch (error) {
+        this.toastMessage = "Error al tramitar la devolució";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+      }
     },
   },
 };

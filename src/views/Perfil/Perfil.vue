@@ -79,7 +79,7 @@
                 </Button>
               </div>
               <div class="col-12 col-md-6 mb-2 mb-md-0">
-                <Button class="w-100" color="blue" variant="outline" icon="password" @click="canviarContrasenya">
+                <Button class="w-100" color="blue" variant="outline" icon="key" @click="canviarContrasenya">
                   Canviar Contrasenya
                 </Button>
               </div>
