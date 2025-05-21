@@ -21,6 +21,11 @@
             </div>
 
             <div>
+              <label class="form-label">Telèfon</label>
+              <Input v-model="form.telefon" type="tel" placeholder="Introdueix el teu número de telèfon" required />
+            </div>
+
+            <div>
               <label class="form-label">Data de naixement</label>
               <Input v-model="form.data_naixement" type="date" placeholder="Selecciona la teva data de naixement"
                 required />
@@ -76,6 +81,7 @@ export default {
         data_naixement: "",
         username: "",
         password: "",
+        telefon: "",
       },
       confirmPassword: "",
       toast: false,
@@ -114,6 +120,16 @@ export default {
       }
       if (edad < 16) {
         this.toastMessage = "Has de ser major de 16 anys";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+        return;
+      }
+
+      // Validar teléfono (opcional: solo números y mínimo 9 dígitos)
+      const phoneRegex = /^[0-9]{9,15}$/;
+      if (!phoneRegex.test(this.form.telefon)) {
+        this.toastMessage = "El telèfon ha de tenir entre 9 i 15 dígits numèrics.";
         this.toastColor = "danger";
         this.toast = true;
         setTimeout(() => { this.toast = false; }, 2000);

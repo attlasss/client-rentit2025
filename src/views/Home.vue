@@ -32,22 +32,21 @@
           <div class="col-12 col-md-2 mb-4" v-for="article in articles" :key="article.id_article">
             <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
               :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
-              :userID="article.user_id" :is_favorite="article.is_favorite"  @toggleFav="toggleFav(article.id_article)"
-              :estat="article.estat" @verMas="viewMore(article.id_article)"/>
+              :userID="article.user_id" :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)"
+              :estat="article.estat" @verMas="viewMore(article.id_article)" />
           </div>
         </div>
       </div>
 
       <div class="my-5">
         <h2 class="text-center fs-1 m-5">Qui som?</h2>
-        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center"
-          style="background-color: #f1f1f1; border-radius: 1%; width: 90%; margin: 0 auto;">
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
           <!-- Texto -->
-          <div class="px-4 me-md-5 mb-3 mb-md-0 fs-5" style="max-width: 600px;">
+          <div class="px-4 me-md-5 mb-3 mb-md-0 fs-5">
             <p class="text-center mb-0">
-              Rent It es una plataforma que permite a los usuarios alquilar productos electrónicos de forma fácil y
-              segura. Conecta a personas que ofrecen dispositivos como móviles, cámaras o portátiles con quienes los
-              necesitan temporalmente, promoviendo un intercambio accesible y confiable.
+              Rent It és una plataforma que permet als usuaris llogar productes electrònics de manera fàcil i segura.
+              Connecta persones que ofereixen dispositius com mòbils, càmeres o portàtils amb aquelles que els
+              necessiten temporalment, fomentant un intercanvi accessible i de confiança.
             </p>
           </div>
 
@@ -62,11 +61,11 @@
     </div>
   </div>
   <transition name="fade">
-      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
-        {{ toastMessage }}
-      </div>
-    </transition>
+    <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+      :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+      {{ toastMessage }}
+    </div>
+  </transition>
 </template>
 
 <script>
