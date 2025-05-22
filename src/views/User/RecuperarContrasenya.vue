@@ -142,8 +142,18 @@ export default {
                 return;
             }
 
+            const password = this.novaContrasenya;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                this.toastMessage = "La contrasenya ha de tenir almenys 8 caràcters, una majúscula, una minúscula i un número.";
+                this.toastColor = "danger";
+                this.toast = true;
+                setTimeout(() => { this.toast = false; }, 3000);
+                return;
+            }
+
             try {
-                
+
                 const res = await axiosConn.post("/actualitzarContrasenya", {
                     email: this.email,
                     contrasenya: this.novaContrasenya,

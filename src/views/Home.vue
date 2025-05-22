@@ -59,22 +59,43 @@
         </div>
       </div>
     </div>
-  </div>
-  <transition name="fade">
-    <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-      :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
-      {{ toastMessage }}
+
+    <!-- Modal login requerido -->
+    <div class="modal fade" id="modalLoginRequired" tabindex="-1" aria-labelledby="modalLoginRequiredLabel" aria-hidden="true" ref="modalLoginRequired">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLoginRequiredLabel">Inici de sessió requerit</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+          </div>
+          <div class="modal-body">
+            Has d'estar logejat per afegir a favorits. Vols iniciar sessió ara?
+          </div>
+          <div class="modal-footer">
+            <Button type="button" color="danger" data-bs-dismiss="modal">No</Button>
+            <Button type="button" color="blue" variant="fill" @click="goToLogin">Sí, iniciar sessió</Button>
+          </div>
+        </div>
+      </div>
     </div>
-  </transition>
+
+    <transition name="fade">
+      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+        {{ toastMessage }}
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
 import ArticleCard from "@/components/ArticleCard.vue";
 import axiosConn from "../axios/axios";
-
+import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
+import Button from "@/components/Button.vue";
 export default {
   components: {
-    ArticleCard
+    ArticleCard, Button
   },
   data() {
     return {
@@ -84,6 +105,7 @@ export default {
       toast: false,
       toastMessage: "",
       toastColor: "success",
+      modalLoginInstance: null,
     };
   },
   mounted() {
@@ -109,7 +131,14 @@ export default {
     viewMore(article) {
       this.$router.push(`/article/${article}`);
     },
-    toggleFav(article) {
+    async toggleFav(article) {
+      if (!this.usuari || !this.usuari.ID) {
+        if (!this.modalLoginInstance) {
+          this.modalLoginInstance = new bootstrap.Modal(this.$refs.modalLoginRequired);
+        }
+        this.modalLoginInstance.show();
+        return;
+      }
       axiosConn.post("/afegirArticlesPreferits", {
         id_article: article,
         id_usuari: this.usuari.ID,
@@ -123,8 +152,6 @@ export default {
               this.toastMessage = "Article eliminat de favorits";
               this.toastColor = "danger";
             }
-
-            // Mostrar el toast
             this.toast = true;
             setTimeout(() => {
               this.toast = false;
@@ -140,10 +167,20 @@ export default {
         })
         .catch((error) => {
           console.error("Error adding favorite:", error);
-          this.showToast("Error al afegir a favorits");
+          this.toast = true;
+          this.toastMessage = "Error al afegir a favorits";
+          this.toastColor = "danger";
+          setTimeout(() => {
+            this.toast = false;
+          }, 2000);
         });
     },
-
+    goToLogin() {
+      if (this.modalLoginInstance) {
+        this.modalLoginInstance.hide();
+      }
+      this.$router.push({ name: "Login" });
+    }
   }
 };
 </script>

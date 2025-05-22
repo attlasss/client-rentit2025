@@ -13,14 +13,14 @@
       </div>
 
       <div class="col-md-9 text-start mt-5">
-        <div class="row align-items-center ps-0 ps-md-5">
+        <div class="row align-items-center ps-0 ps-md-5 justify-content-center">
           <div class="col-12 col-sm-3 col-md-2 text-center text-md-start mb-3 mb-sm-0">
             <img
               :src="usuari.foto_perfil || 'https://via.placeholder.com/150'"
               alt="Foto de perfil"
               class="rounded-circle profile-img"
-              height="100"
-              width="100"
+              height="150"
+              width="150"
             />
             <!-- Botón editar foto siempre centrado -->
             <div class="d-flex justify-content-center mt-2">
@@ -31,7 +31,7 @@
             <h1 class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</h1>
             <p>{{ usuari.email }}</p>
             <p>@{{ usuari.username }}</p>
-            <div v-if="valoracions.length > 0" class="mb-2 d-flex align-items-center">
+            <div class="mb-2 d-flex align-items-center">
                 <span v-for="star in 5" :key="star" class="star" :class="{ selected: star <= valoracioMitjaRedondeada }">★</span>
                 <span class="ms-2">({{ valoracioMitja.toFixed(2) }})</span>
                 <span class="text-muted">· {{ valoracions.length }} valoracions</span>
@@ -58,6 +58,10 @@
             <div>
               <label class="form-label">Correu electrònic</label>
               <Input v-model="usuari.email" type="email" required disabled />
+            </div>
+            <div>
+              <label class="form-label">Telefon</label>
+              <Input v-model="usuari.telefon" type="tel" required :disabled="disableDades" />
             </div>
             <div>
               <label class="form-label">DNI</label>
@@ -127,7 +131,7 @@
           </div>
         </div>
 
-        <!-- Modal for editing profile picture -->
+        <!-- Modal para la foto de perfil -->
         <div class="modal fade" id="editPhotoModal" tabindex="-1" aria-labelledby="editPhotoModalLabel"
           aria-hidden="true">
           <div class="modal-dialog">
@@ -249,6 +253,7 @@ export default {
           nom: this.usuari.nom,
           cognoms: this.usuari.cognoms,
           email: this.usuari.email,
+          telefon: this.usuari.telefon,
           dni: this.usuari.dni,
           data_naixement: this.usuari.data_naixement,
         }
@@ -275,6 +280,9 @@ export default {
           this.toast = true;
           this.toastMessage = "Error actualitzant usuari";
           this.toastColor = "danger";
+          setTimeout(() => {
+              this.toast = false;
+            }, 2000);
         });
     },
     openModal() {

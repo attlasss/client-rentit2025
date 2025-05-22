@@ -17,13 +17,13 @@
               <p class="price"><strong>Preu:</strong> {{ article.preu }}€/mes</p>
               <p class="duration"><strong>Duració màxima:</strong> {{ article.mesos }} mesos</p>
               <p class="description"><strong>Descripció:</strong> {{ article.descripcio || 'No disponible' }}</p>
-              <p class="description"><strong>Estat: </strong> 
+              <p class="description"><strong>Estat: </strong>
                 <span class="badge bg-success" v-if="article.estat === 'disponible'">Disponible</span>
                 <span class="badge bg-warning" v-if="article.estat === 'en_lloguer'">En lloguer</span>
                 <span class="badge bg-danger" v-if="article.estat === 'inactiu'">Inactiu</span>
                 <span class="badge bg-info" v-if="article.estat === 'pendent'">Pendent</span>
-              </p>	
-              
+              </p>
+
               <!-- <p class="seller">
                 <strong>Venedor:</strong>
                 <router-link :to="`/verPerfil/${article.username}`">@{{ article.username }}</router-link>
@@ -75,6 +75,7 @@
                 <p><strong>Nom:</strong> {{ vendedor.nom }} {{ vendedor.cognom }}</p>
                 <p><strong>Username:</strong> {{ vendedor.username || 'No disponible' }}</p>
                 <p><strong>Email:</strong> {{ vendedor.email || 'No disponible' }}</p>
+                
               </div>
               <div class="col-12 text-center text-md-right">
                 <Button @click="viewProfile" color="blue" variant="outline">Veure perfil</Button>
@@ -191,7 +192,15 @@ export default {
             setTimeout(() => {
               this.toast = false;
             }, 2000);
-          } else {
+          } if (response.status === 401 || response.status === 403) {
+            this.toastMessage = "No has iniciat sessió";
+            this.toastColor = "danger";
+            this.toast = true;
+            setTimeout(() => {
+              this.toast = false;
+            }, 2000);
+          }
+          else {
             this.toast = true;
             this.toastMessage = "Error al afegir a favorits";
             this.toastColor = "danger";

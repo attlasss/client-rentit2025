@@ -7,7 +7,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <nav class="collapse navbar-collapse justify-content-lg-end" id="navbarNav">
+      <nav class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <template v-if="isLoggedIn">
           <ul class="navbar-nav">
             <li class="nav-item">

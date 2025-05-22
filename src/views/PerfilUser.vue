@@ -21,11 +21,12 @@
               <div v-else class="mb-2">
                 <span class="text-muted">Sense valoracions</span>
               </div>
-              <div class="d-flex mt-2" v-if="puedeValorar && logedUser.id !== usuari.ID">
+              <!-- Puede valorar si tiene el permiso y esta logeado -->
+              <div class="d-flex mt-2" v-if="puedeValorar && logedUser.id !== usuari.ID && logedUser">
                 <Button color="blue" variant="outline" icon="edit-2" @click="abrirModalValoracio">Valorar</Button>
               </div>
               <div class="d-flex mt-2" v-if="haValorat && logedUser.id !== usuari.ID">
-                <Button color="blue" variant="outline" icon="eye" @click="abrirModalVerValoracio">Ver valoració</Button>
+                <Button color="blue" variant="outline" icon="eye" @click="abrirModalVerValoracio">Veure valoració</Button>
               </div>
             </div>
           </div>
@@ -161,7 +162,7 @@ export default {
       usuari: {},
       valoracions: [],
       articles: [],
-      logedUser: JSON.parse(localStorage.getItem("user")),
+      logedUser: JSON.parse(localStorage.getItem("user")) || {},
       puedeValorar: false,
       haValorat: false,
       toast: false,

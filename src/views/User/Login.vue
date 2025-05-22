@@ -1,18 +1,11 @@
 <template>
-  <div class="container-fluid vh-100">
-    <div class="row h-100">
-      <!-- Left Column with Image -->
-      <div class="col-12 col-md-6 p-0">
-        <div class="image-container h-100">
-          <!-- <img src="your-image-path.jpg" alt="Login Image" class="img-fluid h-100 w-100" /> -->
-        </div>
-      </div>
-
-      <!-- Right Column with Login Form -->
+  <div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 justify-content-center">
+      <!-- Login Form Centered -->
       <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
-        <div class="login-container p-4 w-75">
-          <h2 class="text-center mb-4">Iniciar Sessió</h2>
-          <form @submit.prevent="loginUser" class="d-flex flex-column gap-3">
+        <div class="login-container p-5 w-100">
+          <h1 class="text-center mb-5">Iniciar Sessió</h1>
+          <form @submit.prevent="loginUser" class="d-flex flex-column gap-3 p-1">
             <div>
               <label class="form-label">Nom d'usuari o Correu electrònic</label>
               <Input v-model="identifier" placeholder="Introdueix el teu nom d'usuari o correu electrònic" required />
@@ -20,7 +13,6 @@
             <div>
               <label class="form-label">Contrasenya</label>
               <Input v-model="password" type="password" placeholder="************" required />
-              <!-- Has olvidado la contraseña -->
               <p>
                 <a href="/recuperar-contrasenya"
                   class="text-start fst-italic text-primary text-decoration-none d-block">
@@ -28,7 +20,6 @@
                 </a>
               </p>
             </div>
-
             <div class="row text-center mt-3">
               <div class="col-12 col-md-6 mb-2 mb-md-0">
                 <Button class="w-100" color="blue" variant="outline"
@@ -38,7 +29,6 @@
                 <Button class="w-100" color="blue" variant="fill" type="submit">Iniciar sessió</Button>
               </div>
             </div>
-
           </form>
         </div>
       </div>
