@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-
+    <h1 class="logo-color">RENT IT</h1>
     <!-- Carrusel -->
     <div class="my-5">
       <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">

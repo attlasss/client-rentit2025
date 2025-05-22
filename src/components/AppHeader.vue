@@ -88,8 +88,9 @@ export default {
       this.isLoggedIn = !!token;
     },
     buscarProducte() {
-      // Redirige a la página de búsqueda con el término de búsqueda
-      this.$router.push({ name: "Buscar", params: { query: this.searchQuery } });
+      // Si está vacío, envía un espacio
+      const query = this.searchQuery && this.searchQuery.trim() !== "" ? this.searchQuery : " ";
+      this.$router.push({ name: "Buscar", params: { query } });
     },
   },
 };
