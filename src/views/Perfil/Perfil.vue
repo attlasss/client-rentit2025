@@ -14,13 +14,13 @@
 
       <div class="col-md-9 text-start mt-5">
         <div class="row align-items-center ps-0 ps-md-5 justify-content-center">
-          <div class="col-12 col-sm-3 col-md-2 text-center text-md-start mb-3 mb-sm-0">
+          <div class="col-12 col-sm-3 col-md-2 text-center text-md-center mb-3 mb-sm-0">
             <img
               :src="usuari.foto_perfil || 'https://via.placeholder.com/150'"
               alt="Foto de perfil"
               class="rounded-circle profile-img"
-              height="150"
-              width="150"
+              height="200"
+              width="200"
             />
             <!-- Botón editar foto siempre centrado -->
             <div class="d-flex justify-content-center mt-2">

@@ -31,15 +31,15 @@
                   &nbsp; | &nbsp;
                   <strong>Venedor:</strong>
                   <a @click="verPerfil(comanda.vendedor_username)" class="username-link">@{{ comanda.vendedor_username
-                    }}</a>
+                  }}</a>
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
                   <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
                   <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
                   <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
-                   <span class="badge bg-info" v-if="comanda.estat === 'en_devolucio'">Pendent d'aprovar devolució</span>
-                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_completada'">Devolució Completada</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_acceptada'">Devolució Completada</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_rebutjada'">Devolució Rebutjada</span>
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>
@@ -85,7 +85,8 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Comentari</label>
-                <input type="text" class="form-control" v-model="comentariDevolucio" placeholder="Escriu un comentari" required />
+                <input type="text" class="form-control" v-model="comentariDevolucio" placeholder="Escriu un comentari"
+                  required />
               </div>
             </div>
             <div class="modal-footer">
@@ -246,7 +247,7 @@ export default {
 
         const res = await axiosConn.post("/tramitarDevolucio", formData, {
           headers: {
-              "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data",
           },
         });
         if (res.status !== 200) {

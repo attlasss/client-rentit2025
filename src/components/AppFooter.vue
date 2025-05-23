@@ -18,6 +18,8 @@
             <li><router-link :to="`/perfil/${username}`" class="footer-link">Perfil</router-link></li>
             <li><router-link :to="`/preferits/${username}`" class="footer-link">Preferits</router-link></li>
             <li><router-link :to="`/perfilComandes/${username}`" class="footer-link">Comandes</router-link></li>
+            <li><router-link :to="`/perfilVentes/${username}`" class="footer-link">Ventes</router-link></li>
+            <li><router-link :to="`/perfilDevolucions/${username}`" class="footer-link">Comandes</router-link></li>
           </ul>
         </div>
 
@@ -56,13 +58,12 @@
 
 <script>
 export default {
-  computed: {
-    username() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.username) {
-        return user.username
-      }
-    }
-  }
+  name: 'AppFooter',
+  data() {
+    return {
+      // Retorna de localStorage el username de l'usuari logejat
+      username: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).username : '',
+    };
+  },
 };
 </script>

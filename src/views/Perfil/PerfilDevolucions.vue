@@ -21,7 +21,8 @@
               devolucions</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" :class="{ active: activeTab === 'gestionar' }" @click="activeTab = 'gestionar'">Devolucions a gestionar</a>
+            <a class="nav-link" :class="{ active: activeTab === 'gestionar' }"
+              @click="activeTab = 'gestionar'">Devolucions a gestionar</a>
           </li>
         </ul>
 
@@ -37,14 +38,19 @@
                 <img :src="devolucio.foto_article" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
                 <div class="flex-grow-1">
                   <p class="mb-1 text-muted">
-                    <strong>Article:</strong> {{ devolucio.nom }}<br>
+                    <strong>Article:</strong> {{ devolucio.nom }}
+                    &nbsp; | &nbsp;
+                    <strong>Venedor:</strong>
+                    <a @click="verPerfil(devolucio.username)" class="username-link">@{{ devolucio.username }}</a>
+                  </p>
+                  <p class="mb-1">
                     <strong>Data:</strong> {{ devolucio.data }} <br>
                     <strong>Estat Devolució:</strong>
                     <span class="badge bg-info ms-2" v-if="devolucio.estat === 'en_devolucio'">Pendent de gestionar
                       devolució</span>
                     <span class="badge bg-success ms-2" v-if="devolucio.estat === 'devolucio_acceptada'">Devolució
                       Acceptada</span>
-                      <span class="badge bg-warning ms-2" v-if="devolucio.estat === 'devolucio_rebutjada'">Devolució
+                    <span class="badge bg-warning ms-2" v-if="devolucio.estat === 'devolucio_rebutjada'">Devolució
                       Rebutjada</span>
                   </p>
                   <Button color="blue" variant="outline" @click="abrirModalImatge(devolucio)">Veure imatge i estat
@@ -70,11 +76,11 @@
                   alt="Imatge devolució" class="img-thumbnail mb-3" style="max-width: 300px;">
                 <div class="mb-2">
                   <strong>Estat enviat:</strong>
-                    <span v-if="devolucioSeleccionada.estat_article === 'correcte'">Correcte</span>
-                    <span v-if="devolucioSeleccionada.estat_article === 'com_es_va_enviar'">Com
-                      es va enviar</span>
-                    <span v-if="devolucioSeleccionada.estat_article === 'danyat'">Danyat</span>
-                    <span v-if="devolucioSeleccionada.estat_article === 'altres'">Altres</span>
+                  <span v-if="devolucioSeleccionada.estat_article === 'correcte'">Correcte</span>
+                  <span v-if="devolucioSeleccionada.estat_article === 'com_es_va_enviar'">Com
+                    es va enviar</span>
+                  <span v-if="devolucioSeleccionada.estat_article === 'danyat'">Danyat</span>
+                  <span v-if="devolucioSeleccionada.estat_article === 'altres'">Altres</span>
                   <p>
                     <strong>Comentari:</strong>
                     <span>{{ devolucioSeleccionada.comentari }}</span>
@@ -86,7 +92,8 @@
         </div>
 
         <!-- Modal Gestionar Devolució -->
-        <div class="modal fade" ref="modalGestionar" tabindex="-1" aria-labelledby="modalGestionarDevolucioLabel" aria-hidden="true">
+        <div class="modal fade" ref="modalGestionar" tabindex="-1" aria-labelledby="modalGestionarDevolucioLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
@@ -96,25 +103,61 @@
               <div class="modal-body text-center" v-if="devolucioGestionarSeleccionada">
                 <h6>Detalls Devolució</h6>
                 <img v-if="devolucioGestionarSeleccionada?.devolucio_foto"
-                  :src="devolucioGestionarSeleccionada.devolucio_foto"
-                  alt="Imatge devolució"
-                  class="img-thumbnail mb-3"
+                  :src="devolucioGestionarSeleccionada.devolucio_foto" alt="Imatge devolució" class="img-thumbnail mb-3"
                   style="max-width: 300px;">
                 <div class="mb-2">
                   <strong>Estat enviat:</strong>
                   <p>
                     <span v-if="devolucioGestionarSeleccionada.estat_article === 'correcte'">Correcte</span>
-                    <span v-if="devolucioGestionarSeleccionada.estat_article === 'com_es_va_enviar'">Com es va enviar</span>
+                    <span v-if="devolucioGestionarSeleccionada.estat_article === 'com_es_va_enviar'">Com es va
+                      enviar</span>
                     <span v-if="devolucioGestionarSeleccionada.estat_article === 'danyat'">Danyat</span>
                     <span v-if="devolucioGestionarSeleccionada.estat_article === 'altres'">Altres</span>
                   </p>
                   <strong>Comentari:</strong>
-                    <span>{{ devolucioGestionarSeleccionada.comentari }}</span>
+                  <span>{{ devolucioGestionarSeleccionada.comentari }}</span>
                 </div>
               </div>
               <div class="modal-footer">
-                <Button color="success" variant="fill" @click="gestionarDevolucio('acceptada', devolucioGestionarSeleccionada.id_devolucio)">Acceptar</Button>
-                <Button color="danger" variant="outline" @click="gestionarDevolucio('denegada', devolucioGestionarSeleccionada.id_devolucio)">Denegar</Button>
+                <Button color="success" variant="fill"
+                  @click="gestionarDevolucio('acceptada', devolucioGestionarSeleccionada.id_devolucio)">Acceptar</Button>
+                <Button color="danger" variant="outline"
+                  @click="gestionarDevolucio('denegada', devolucioGestionarSeleccionada.id_devolucio)">Denegar</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Ver Detalls Devolució Gestionada -->
+        <div class="modal fade" ref="modalVerGestionada" tabindex="-1" aria-labelledby="modalVerGestionadaLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalVerGestionadaLabel">Detall de la devolució</h5>
+                <button type="button" class="btn-close" @click="tancarModalVerGestionada" aria-label="Tancar"></button>
+              </div>
+              <div class="modal-body text-center" v-if="devolucioVerGestionada">
+                <h6>Detalls Devolució</h6>
+                <img v-if="devolucioVerGestionada?.devolucio_foto" :src="devolucioVerGestionada.devolucio_foto"
+                  alt="Imatge devolució" class="img-thumbnail mb-3" style="max-width: 300px;">
+                <div class="mb-2">
+                  <strong>Estat enviat:</strong>
+                  <span v-if="devolucioVerGestionada.estat_article === 'correcte'">Correcte</span>
+                  <span v-if="devolucioVerGestionada.estat_article === 'com_es_va_enviar'">Com es va enviar</span>
+                  <span v-if="devolucioVerGestionada.estat_article === 'danyat'">Danyat</span>
+                  <span v-if="devolucioVerGestionada.estat_article === 'altres'">Altres</span>
+                  <p>
+                    <strong>Comentari:</strong>
+                    <span>{{ devolucioVerGestionada.comentari }}</span>
+                  </p>
+                </div>
+                <div>
+                  <span class="badge bg-success"
+                    v-if="devolucioVerGestionada.estat === 'devolucio_acceptada'">Acceptada</span>
+                  <span class="badge bg-warning"
+                    v-if="devolucioVerGestionada.estat === 'devolucio_rebutjada'">Rebutjada</span>
+                </div>
               </div>
             </div>
           </div>
@@ -132,12 +175,26 @@
                 <img :src="devolucio.foto_article" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
                 <div class="flex-grow-1">
                   <p class="mb-1 text-muted">
-                    <strong>Article:</strong> {{ devolucio.nom }}<br>
-                    <strong>Estat:</strong> {{ devolucio.estat_devolucio }}<br>
+                    <strong>Article:</strong> {{ devolucio.nom }}
+                    &nbsp; | &nbsp;
+                    <strong>Venedor:</strong>
+                    <a @click="verPerfil(devolucio.username)" class="username-link">@{{ devolucio.username }}</a>
+                  </p>
+                  <p>
+                    <strong>Estat: </strong>
+                    <span class="badge bg-success" v-if="devolucio.estat === 'devolucio_acceptada'">Acceptada</span>
+                    <span class="badge bg-warning" v-if="devolucio.estat === 'devolucio_rebutjada'">Rebutjada</span>
+
                   </p>
                   <div class="mt-2" v-if="devolucio.estat === 'en_devolucio'">
                     <Button color="blue" variant="outline" @click="modalGestionarDevolucio(devolucio)">Gestionar
                       devolució</Button>
+                  </div>
+                  <div class="mt-2"
+                    v-else-if="devolucio.estat === 'devolucio_acceptada' || devolucio.estat === 'devolucio_rebutjada'">
+                    <Button color="blue" variant="outline" @click="abrirModalVerGestionada(devolucio)">
+                      Veure detall devolució
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -173,8 +230,10 @@ export default {
       devolucionsgestionar: [],
       devolucioSeleccionada: null,
       devolucioGestionarSeleccionada: null,
+      devolucioVerGestionada: null,
       modalInstance: null,
       modalGestionarInstance: null,
+      modalVerGestionadaInstance: null,
       toast: false,
       toastMessage: "",
       toastColor: "success",
@@ -234,7 +293,7 @@ export default {
         this.devolucionsgestionar = [];
       }
     },
-    async gestionarDevolucio(estat,id_devolucio) {
+    async gestionarDevolucio(estat, id_devolucio) {
       try {
         await axiosConn.post("/gestionarDevolucio", { id_devolucio: id_devolucio, estat: estat });
         this.toastMessage = "Devolució gestionada correctament!";
@@ -261,11 +320,22 @@ export default {
       this.modalGestionarInstance = new bootstrap.Modal(this.$refs.modalGestionar);
       this.modalGestionarInstance.show();
     },
+    abrirModalVerGestionada(devolucio) {
+      this.devolucioVerGestionada = devolucio;
+      this.modalVerGestionadaInstance = new bootstrap.Modal(this.$refs.modalVerGestionada);
+      this.modalVerGestionadaInstance.show();
+    },
     tancarModal() {
       if (this.modalInstance) this.modalInstance.hide();
     },
     tancarModalGestionar() {
       if (this.modalGestionarInstance) this.modalGestionarInstance.hide();
+    },
+    tancarModalVerGestionada() {
+      if (this.modalVerGestionadaInstance) this.modalVerGestionadaInstance.hide();
+    },
+    verPerfil(username) {
+      this.$router.push(`/verPerfil/${username}`);
     },
   },
 };
