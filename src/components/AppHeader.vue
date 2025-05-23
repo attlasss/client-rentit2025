@@ -3,7 +3,7 @@
     <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
       <router-link class="logo mb-2 mb-lg-0" to="/">Rent IT</router-link>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <button class="navbar-toggler border-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -13,21 +13,28 @@
             <li class="nav-item">
               <router-link class="nav-link text-white" to="/">Home</router-link>
             </li>
+
             <li class="nav-item">
-              <router-link class="nav-link text-white" :to="`/preferits/${this.username}`">
-                <span data-feather="heart"></span>
+              <router-link class="nav-link text-white" :to="`/allArticles/${this.userID}`">
+                Articles
               </router-link>
             </li>
+
             <li class="nav-item">
               <router-link class="nav-link text-white" :to="`/perfil/${this.username}`">
                 El meu Compte
               </router-link>
             </li>
-            
+            <li class="nav-item">
+              <router-link class="nav-link text-white" :to="`/preferits/${this.username}`">
+                Preferits
+              </router-link>
+            </li>
+
             <li class="nav-item ms-4">
               <Button color="white" variant="fill" @click="$router.push('/publicar-article')">Publicar Article</Button>
             </li>
-            
+
           </ul>
         </template>
         <template v-else>
@@ -40,17 +47,13 @@
       <!-- Buscador -->
     </div>
   </header>
-  
-<div class="input-icon-wrapper position-relative" v-if="isLoggedIn">
-  <Input
-  type="text"
-  class="form-control search-input"
-  placeholder="Cerca un producte..."
-  v-model="searchQuery"
-  @keyup.enter="buscarProducte"
-  />
-  <span data-feather="search" class="search-icon"></span>
-</div>
+
+  <!-- Buscador solo si está logeado y NO está en Home -->
+  <div class="input-icon-wrapper position-relative" v-if="isLoggedIn && $route.name !== 'home'">
+    <Input type="text" class="form-control search-input" placeholder="Cerca un producte..." v-model="searchQuery"
+      @keyup.enter="buscarProducte" />
+    <span data-feather="search" class="search-icon"></span>
+  </div>
 
 </template>
 
@@ -82,6 +85,7 @@ export default {
       // Mira si esta inciado sesion para mostrar el menu correcto 
       const token = localStorage.getItem("token");
       const username = localStorage.getItem("user");
+      this.userID = localStorage.getItem("userID");
       if (username) {
         this.username = JSON.parse(username).username;
       }
@@ -127,32 +131,41 @@ li {
 .search-icon {
   position: absolute;
   top: 50%;
-  left: 15px; /* Posiciona el ícono a la izquierda dentro del input */
+  left: 15px;
+  /* Posiciona el ícono a la izquierda dentro del input */
   transform: translateY(-50%);
   color: #6C6B6B;
   font-size: 1.2rem;
-  pointer-events: none; /* Evita que el ícono interfiera con el clic */
+  pointer-events: none;
+  /* Evita que el ícono interfiera con el clic */
   z-index: 2;
 }
 
 .search-input {
-  padding-left: 2.5rem; /* Asegura espacio para el ícono dentro del input */
+  padding-left: 2.5rem;
+  /* Asegura espacio para el ícono dentro del input */
 }
 
 /* Responsive */
 @media (max-width: 991px) {
   .header {
     padding: 30px 50px;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .navbar-toggler {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
   }
 }
 
 @media (max-width: 576px) {
   .header {
     padding: 20px 30px;
-  }
-  .navbar-collapse > .d-flex {
-    justify-content: center !important;
-    width: 100%;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 </style>

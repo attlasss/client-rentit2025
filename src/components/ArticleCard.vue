@@ -1,19 +1,18 @@
 <template>
   <div class="vinted-card">
-    <div class="image-container">
+    <div class="image-container position-relative">
       <img :src="foto" :alt="nom" v-if="foto" />
+      <!-- Botón de Favorito dentro de la imagen -->
+      <button class="fav-button-heart" @click.stop="toggleFav">
+        <span v-if="is_favorite" data-feather="heart" class="color-red"></span>
+        <span v-else data-feather="heart"></span>
+      </button>
     </div>
 
     <div class="info text-start">
       <div class="header">
         <!-- Título en una columna -->
         <h3 class="title">{{ nom }}</h3>
-
-        <!-- Botón de Favorito en la segunda columna  -->
-        <button class="fav-button" @click="toggleFav">
-          <span v-if="is_favorite" data-feather="heart" class="color-red"></span>
-          <span v-else data-feather="heart"></span>
-        </button>
       </div>
       <p class="price mb-0">{{ preu }}€/mes</p>
       <p class="duration mb-0">{{ mesos }} mesos disponibles</p>
@@ -107,6 +106,34 @@ export default {
   object-fit: cover;
 }
 
+.fav-button-heart {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #aaa;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 2;
+  transition: color 0.2s, background 0.2s;
+}
+
+.fav-button-heart:hover {
+  color: red;
+  background: #fff;
+}
+
+.color-red {
+  color: red;
+}
+
 .info {
   padding: 1rem;
   display: flex;
@@ -125,23 +152,6 @@ export default {
   font-weight: 600;
   margin: 0;
   color: #578FCA;
-}
-
-.fav-button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #aaa;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.fav-button:hover {
-  color: red;
-}
-
-.color-red {
-  color: red;
 }
 
 .price {
@@ -166,5 +176,4 @@ export default {
 .username-link:hover {
   text-decoration: underline;
 }
-
 </style>

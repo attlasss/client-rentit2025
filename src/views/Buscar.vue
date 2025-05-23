@@ -1,6 +1,7 @@
 <template>
   <div class="container my-5">
-    <h2 class="mb-4">Resultats de la cerca</h2>
+    <h1 class="mb-4">Resultats de la cerca</h1>
+    <p>Resultats de la cerca </p>
     <div v-if="articles.length === 0" class="text-center text-muted mt-5">
       No s'han trobat articles.
     </div>

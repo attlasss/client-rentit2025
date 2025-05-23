@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
-    <h1 class="logo-color">RENT IT</h1>
-    <!-- Carrusel -->
-    <div class="my-5">
-      <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner text-center"> <!-- Centramos el contenido -->
-          <div class="carousel-item active">
-            <img
-              src="https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              class="img-fluid mx-auto d-block" style="max-width: 80%; height: auto;" alt="slide 1">
-          </div>
-          <div class="carousel-item">
-            <img
-              src="https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              class="img-fluid mx-auto d-block" style="max-width: 80%; height: auto;" alt="slide 2">
-          </div>
-          <div class="carousel-item">
-            <img
-              src="https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              class="img-fluid mx-auto d-block" style="max-width: 80%; height: auto;" alt="slide 3">
+    <div class="carousel slide carousel-fullscreen" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active position-relative">
+          <img
+            src="https://images.pexels.com/photos/38568/apple-imac-ipad-workplace-38568.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            class="d-block w-100 img-fullscreen img-opacity" alt="Imagen portada ordenador" />
+          <div class="carousel-caption-custom d-flex flex-column align-items-center justify-content-center w-100 h-100">
+            <div class="text-center w-100">
+              <h1 class="logo mb-3">Rent IT</h1>
+              <p class="lead mb-4">Lloga i publica dispositius electrònics fàcilment.</p>
+              <div class="d-flex justify-content-center">
+                <input v-model="searchQuery" @keyup.enter="buscarArticle" type="text"
+                  class="form-control form-control-lg search-bar" placeholder="iPhone, Samsung..."
+                   />
+                <Button color="blue" class="ms-3" @click="buscarProducte">
+                  Busca
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -29,13 +29,14 @@
       <div v-if="articles.length === 0">No hi articles</div>
       <div v-else>
         <div class="row justify-content-center g-3">
-          <div class="col-12 col-md-2 mb-4" v-for="article in articles" :key="article.id_article">
+          <div class="col-10 col-sm-6 col-md-4 col-lg-2-4 mb-4" v-for="article in articles" :key="article.id_article">
             <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
               :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
               :userID="article.user_id" :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)"
               :estat="article.estat" @verMas="viewMore(article.id_article)" />
           </div>
         </div>
+
       </div>
 
       <div class="my-5">
@@ -49,19 +50,19 @@
               necessiten temporalment, fomentant un intercanvi accessible i de confiança.
             </p>
           </div>
-
           <!-- Imagen -->
           <div>
             <img
               src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              alt="Imagen ejemplo" class="img-fluid rounded">
+              alt="Imagen ordenador " class="img-fluid rounded">
           </div>
         </div>
       </div>
     </div>
 
     <!-- Modal login requerido -->
-    <div class="modal fade" id="modalLoginRequired" tabindex="-1" aria-labelledby="modalLoginRequiredLabel" aria-hidden="true" ref="modalLoginRequired">
+    <div class="modal fade" id="modalLoginRequired" tabindex="-1" aria-labelledby="modalLoginRequiredLabel"
+      aria-hidden="true" ref="modalLoginRequired">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -88,6 +89,97 @@
   </div>
 </template>
 
+<style scoped>
+.carousel-fullscreen {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.img-fullscreen {
+  object-fit: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+.img-opacity {
+  opacity: 1;
+  filter: brightness(0.4);
+}
+
+.carousel-caption-custom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  color: white;
+  text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
+  background: none;
+}
+
+.search-bar {
+  min-width: 220px;
+  max-width: 400px;
+  border-radius: 30px;
+  padding-left: 20px;
+  font-size: 1.1rem;
+}
+
+@media (min-width: 992px) {
+  .col-lg-2-4 {
+    flex: 0 0 auto;
+    width: 20%; /* 100 / 5 */
+  }
+}
+
+@media (max-width: 767px) {
+  .carousel-fullscreen,
+  .img-fullscreen {
+    height: 70vh !important;
+    min-height: 200px !important;
+    max-height: 400px !important;
+  }
+  .carousel-caption-custom {
+    min-height: 50vh !important;
+    height: 50vh !important;
+    width: 100vw !important;
+    padding: 1.5rem 1.5rem 2.5rem 1.5rem;
+    align-items: flex-end;
+    justify-content: flex-end !important;
+  }
+  .carousel-caption-custom .text-center {
+    width: 100%;
+    text-align: start !important;
+  }
+  .logo {
+    font-size: 2rem !important;
+    text-align: start !important;
+  }
+  .lead {
+    font-size: 1rem !important;
+    text-align: start !important;
+  }
+  .d-flex.justify-content-center {
+    justify-content: flex-end !important;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  .search-bar {
+    max-width: 70vw;
+    min-width: 120px;
+    font-size: 1rem;
+  }
+  Button.ms-3 {
+    margin-left: 0 !important;
+    flex-shrink: 0;
+  }
+}
+</style>
+
 <script>
 import ArticleCard from "@/components/ArticleCard.vue";
 import axiosConn from "../axios/axios";
@@ -106,6 +198,7 @@ export default {
       toastMessage: "",
       toastColor: "success",
       modalLoginInstance: null,
+      searchQuery: "",
     };
   },
   mounted() {
@@ -180,7 +273,12 @@ export default {
         this.modalLoginInstance.hide();
       }
       this.$router.push({ name: "Login" });
-    }
+    },
+    buscarProducte() {
+      // Si está vacío, envía un espacio
+      const query = this.searchQuery && this.searchQuery.trim() !== "" ? this.searchQuery : " ";
+      this.$router.push({ name: "Buscar", params: { query } });
+    },
   }
 };
 </script>

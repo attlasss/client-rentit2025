@@ -26,10 +26,20 @@ export default {
 </script>
 
 <style>
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  body {
+  font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  /* font-size: 0rem !important; */
+}
+
 }
 
 #app {
@@ -58,17 +68,17 @@ html, body {
 }
 
 .logo {
-  font-family: 'Urbanist', sans-serif;
-  font-weight: 400;
+  font-family: 'Pacifico', sans-serif;
+  font-weight: 300;
   font-size: 2.5rem;
   text-decoration: none;
   color:white;
 }
 
 .logo-color {
-  font-family: 'Urbanist', sans-serif;
+  font-family: 'Pacifico', sans-serif;
   text-decoration: none;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 2.5rem;
   color: #578FCA;
 }
@@ -90,5 +100,9 @@ html, body {
 
 .username-link:hover {
   text-decoration: underline;
+}
+
+.no-display {
+  display: none;
 }
 </style>

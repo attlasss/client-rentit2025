@@ -29,7 +29,8 @@
                   &nbsp; | &nbsp;
                   <strong>Duració:</strong> {{ venta.mesos }} mesos
                   &nbsp; | &nbsp;
-                  <strong>Comprador:</strong> @{{ venta.comprador_username }}
+                  <a @click="verPerfil(venta.comprador_username )" class="username-link">@{{ venta.comprador_username 
+                    }}</a>
                 </p>
                 <p class="mb-1">
                   <strong>Estat: </strong>
@@ -242,6 +243,9 @@ export default {
           this.toast = false;
         }, 3000);
       }
+    },
+    verPerfil(username) {
+      this.$router.push(`/verPerfil/${username}`);
     },
   },
 };

@@ -8,29 +8,16 @@
     </div>
 
     <!-- Artículos -->
-    <div class="row justify-content-center g-3">
-      <div
-        class="d-flex justify-content-center align-items-stretch mb-4 col-12 col-sm-6 col-md-4 col-lg-3"
-        v-for="(article, index) in articles"
-        :key="article.id_article"
-      >
-        <ArticleCard 
-          :username="article.username" 
-          :nom="article.nom" 
-          :preu="article.preu" 
-          :mesos="article.mesos"
-          :foto="article.foto" 
-          :mimeType="article.mimeType" 
-          :id_article="article.id_article" 
-          :userID="article.user_id"
-          :is_favorite="article.is_favorite" 
-          :estat="article.estat"
-          @toggleFav="toggleFav(article.id_article, index)" 
-          @verMas="viewMore(article.id_article)"
-          class="w-100"
-        />
+    <div class="row justify-content-center g-2 mx-5">
+      <div class="d-flex justify-content-center align-items-stretch col-6 col-sm-4 col-md-3 col-lg-2"
+        v-for="(article, index) in articles" :key="article.id_article">
+        <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
+          :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="article.user_id"
+          :is_favorite="article.is_favorite" :estat="article.estat" @toggleFav="toggleFav(article.id_article, index)"
+          @verMas="viewMore(article.id_article)" class="w-100" />
       </div>
     </div>
+
 
     <!-- Mensaje tipo toast -->
     <transition name="fade">

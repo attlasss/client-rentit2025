@@ -15,9 +15,9 @@ const routes = [
     component: () => import("../views/Home.vue"),
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/Casa.vue"),
+    path: "/sobre-nosaltres",
+    name: "SobreNosaltres",
+    component: () => import("../views/SobreNosaltres.vue"),
   },
   {
     path: "/registre",
@@ -103,6 +103,11 @@ const routes = [
     path: "/buscar/:query",
     name: "Buscar",
     component: () => import("../views/Buscar.vue"),
+  }, 
+  {
+    path: "/allArticles/:id",
+    name: "AllArticles",
+    component: () => import("../views/Article/AllArticles.vue"),
   }
 ];
 

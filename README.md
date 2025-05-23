@@ -1,11 +1,11 @@
 # client-rentit2025
 
-## Project setup
+## Instalar projecte
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Run project
 ```
 npm run serve
 ```

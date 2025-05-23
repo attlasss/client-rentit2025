@@ -1,8 +1,8 @@
 import axios from "axios";
 
 let axiosConn = axios.create({
-  baseURL: "http://localhost:3000",
-  // baseURL: "https://backend-theta-cyan.vercel.app",
+  // baseURL: "http://localhost:3000",
+  baseURL: "https://backend-theta-cyan.vercel.app",
   // baseURL: "https://backend-admin-jn39ihzl0-carolinamv1234s-projects.vercel.app",
 });
 
