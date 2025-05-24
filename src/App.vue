@@ -83,6 +83,13 @@ html, body {
   color: #578FCA;
 }
 
+/* Logo en responsive */
+@media (max-width: 576px) {
+  .logo {
+    font-size: 1.8rem;
+  }
+}
+
 .form-label {
   text-align: left;
   display: block;

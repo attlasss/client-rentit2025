@@ -12,8 +12,7 @@
               <p class="lead mb-4">Lloga i publica dispositius electrònics fàcilment.</p>
               <div class="d-flex justify-content-center">
                 <input v-model="searchQuery" @keyup.enter="buscarArticle" type="text"
-                  class="form-control form-control-lg search-bar" placeholder="iPhone, Samsung..."
-                   />
+                  class="form-control form-control-lg search-bar" placeholder="iPhone, Samsung..." />
                 <Button color="blue" class="ms-3" @click="buscarProducte">
                   Busca
                 </Button>
@@ -29,7 +28,7 @@
       <div v-if="articles.length === 0">No hi articles</div>
       <div v-else>
         <div class="row justify-content-center g-3">
-          <div class="col-10 col-sm-6 col-md-4 col-lg-2-4 mb-4" v-for="article in articles" :key="article.id_article">
+          <div class="col-6 col-sm-6 col-md-4 col-lg-2-4 mb-4" v-for="article in articles" :key="article.id_article">
             <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
               :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
               :userID="article.user_id" :is_favorite="article.is_favorite" @toggleFav="toggleFav(article.id_article)"
@@ -132,17 +131,20 @@
 @media (min-width: 992px) {
   .col-lg-2-4 {
     flex: 0 0 auto;
-    width: 20%; /* 100 / 5 */
+    width: 20%;
+    /* 100 / 5 */
   }
 }
 
 @media (max-width: 767px) {
+
   .carousel-fullscreen,
   .img-fullscreen {
     height: 70vh !important;
     min-height: 200px !important;
     max-height: 400px !important;
   }
+
   .carousel-caption-custom {
     min-height: 50vh !important;
     height: 50vh !important;
@@ -151,28 +153,29 @@
     align-items: flex-end;
     justify-content: flex-end !important;
   }
+
   .carousel-caption-custom .text-center {
     width: 100%;
     text-align: start !important;
   }
-  .logo {
-    font-size: 2rem !important;
-    text-align: start !important;
-  }
+
   .lead {
     font-size: 1rem !important;
     text-align: start !important;
   }
+
   .d-flex.justify-content-center {
     justify-content: flex-end !important;
     gap: 0.5rem;
     flex-wrap: nowrap;
   }
+
   .search-bar {
     max-width: 70vw;
     min-width: 120px;
     font-size: 1rem;
   }
+
   Button.ms-3 {
     margin-left: 0 !important;
     flex-shrink: 0;

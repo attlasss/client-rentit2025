@@ -31,7 +31,7 @@
               </router-link>
             </li>
 
-            <li class="nav-item ms-4">
+            <li class="nav-item ">
               <Button color="white" variant="fill" @click="$router.push('/publicar-article')">Publicar Article</Button>
             </li>
 
@@ -62,6 +62,7 @@
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import feather from "feather-icons";
+
 export default {
   components: {
     Button, Input,
@@ -105,8 +106,6 @@ export default {
   background: linear-gradient(90deg, #21339A 0%, #2064AB 43%, #659FF1 79%);
   color: white;
   text-align: center;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 15px 75px;
 }
@@ -117,56 +116,61 @@ li {
 
 .navbar-toggler {
   border-color: rgba(255, 255, 255, 0.5);
+  background: transparent;
+  box-shadow: none;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
-.input-icon-wrapper {
-  width: 100%;
-  position: relative;
+
+@media (min-width: 992px) {
+  .navbar-nav {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .navbar-nav .nav-item {
+    width: auto;
+  }
+  .navbar-collapse {
+    justify-content: flex-end !important;
+  }
 }
 
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 15px;
-  /* Posiciona el ícono a la izquierda dentro del input */
-  transform: translateY(-50%);
-  color: #6C6B6B;
-  font-size: 1.2rem;
-  pointer-events: none;
-  /* Evita que el ícono interfiera con el clic */
-  z-index: 2;
-}
-
-.search-input {
-  padding-left: 2.5rem;
-  /* Asegura espacio para el ícono dentro del input */
-}
-
-/* Responsive */
 @media (max-width: 991px) {
   .header {
-    padding: 30px 50px;
+    padding: 15px 10px;
     border: none !important;
     box-shadow: none !important;
   }
-
+  .navbar-collapse {
+    justify-content: flex-start !important;
+  }
+  .navbar-nav {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
   .navbar-toggler {
-    border: none !important;
-    box-shadow: none !important;
-    background: transparent !important;
+    border:none;
+  }
+  .navbar-nav .nav-item {
+    width: 100%;
   }
 }
 
 @media (max-width: 576px) {
   .header {
-    padding: 20px 30px;
-    height: 6rem;
+    padding: 10px 5px;
     border: none !important;
     box-shadow: none !important;
   }
 }
+
+
 </style>
