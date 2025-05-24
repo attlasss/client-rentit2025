@@ -1,5 +1,5 @@
 <template>
-  <header class="header navbar navbar-expand-lg">
+  <header class="header navbar navbar-expand-lg justify-content-between align-items-center">
     <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
       <router-link class="logo mb-2 mb-lg-0" to="/">Rent IT</router-link>
 
@@ -164,6 +164,7 @@ li {
 @media (max-width: 576px) {
   .header {
     padding: 20px 30px;
+    height: 6rem;
     border: none !important;
     box-shadow: none !important;
   }
