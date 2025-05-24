@@ -3,12 +3,16 @@
     <div class="row">
       <div class="col-12">
         <h1 class="text-center mb-4">Articles Preferits</h1>
-        <p class="text-center">Els teus articles preferits. </p>
+        <p class="text-center no-display">Els teus articles preferits. </p>
       </div>
     </div>
 
     <!-- Artículos -->
-    <div class="row justify-content-center g-2 mx-5">
+    <div v-if="articles.length === 0" class="text-center my-4">
+      <p>Encara no tens cap article preferit. </p>
+    </div>
+
+    <div v-else class="row justify-content-center g-2 mx-5">
       <div class="d-flex justify-content-center align-items-stretch col-6 col-sm-4 col-md-3 col-lg-2"
         v-for="(article, index) in articles" :key="article.id_article">
         <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
@@ -124,10 +128,6 @@ export default {
 </script>
 
 <style scoped>
-.toast-message {
-  animation: fade-in 0.5s ease-out;
-}
-
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -136,14 +136,5 @@ export default {
   100% {
     opacity: 1;
   }
-}
-
-.nav-link.active {
-  background-color: #578FCA;
-  color: white;
-}
-
-.nav-link {
-  color: #578FCA;
 }
 </style>

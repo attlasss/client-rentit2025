@@ -13,7 +13,7 @@
               <div class="d-flex justify-content-center">
                 <input v-model="searchQuery" @keyup.enter="buscarArticle" type="text"
                   class="form-control form-control-lg search-bar" placeholder="iPhone, Samsung..." />
-                <Button color="blue" class="ms-3" @click="buscarProducte">
+                <Button color="blue" class="ms-3" icon="search" @click="buscarProducte">
                   Busca
                 </Button>
               </div>

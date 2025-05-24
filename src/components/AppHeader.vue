@@ -49,10 +49,19 @@
   </header>
 
   <!-- Buscador solo si está logeado y NO está en Home -->
-  <div class="input-icon-wrapper position-relative" v-if="isLoggedIn && $route.name !== 'home'">
-    <Input type="text" class="form-control search-input" placeholder="Cerca un producte..." v-model="searchQuery"
-      @keyup.enter="buscarProducte" />
-    <span data-feather="search" class="search-icon"></span>
+  <div class="w-100"  v-if="isLoggedIn && $route.name !== 'home'">
+    <div class="d-flex m-2">
+      <Input
+        type="text"
+        class="w-100 search-bar no-border"
+        placeholder="Cerca un producte..."
+        v-model="searchQuery"
+        @keyup.enter="buscarProducte"
+      />
+      <Button color="blue" variant="fill" class="ms-2" icon="search" @click="buscarProducte">
+        Buscar
+      </Button>
+    </div>
   </div>
 
 </template>
@@ -108,6 +117,11 @@ export default {
   text-align: center;
   align-items: center;
   padding: 15px 75px;
+}
+
+.no-border {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 li {

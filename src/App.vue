@@ -37,7 +37,6 @@ html, body {
   padding: 0;
   body {
   font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-  /* font-size: 0rem !important; */
 }
 
 }
@@ -112,4 +111,10 @@ html, body {
 .no-display {
   display: none;
 }
+
+.no-border {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 </style>
