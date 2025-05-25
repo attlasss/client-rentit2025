@@ -44,32 +44,32 @@
           <form @submit.prevent="updateUser" class="d-flex flex-column gap-3 mb-5 w-100">
             <!-- Formulario con los datos del usuario -->
             <div>
-              <label class="form-label">Username</label>
-              <Input v-model="usuari.username" required :disabled="disableDades" />
+              <label class="form-label" for="username">Username</label>
+              <Input v-model="usuari.username" id="username" name="username" required :disabled="disableDades" />
             </div>
             <div>
-              <label class="form-label">Nom</label>
-              <Input v-model="usuari.nom" required :disabled="disableDades" />
+              <label class="form-label" for="nom">Nom</label>
+              <Input v-model="usuari.nom" id="nom" name="nom" required :disabled="disableDades" />
             </div>
             <div>
-              <label class="form-label">Cognom</label>
-              <Input v-model="usuari.cognoms" required :disabled="disableDades" />
+              <label class="form-label" for="cognoms">Cognom</label>
+              <Input v-model="usuari.cognoms" id="cognoms" name="cognoms" required :disabled="disableDades" />
             </div>
             <div>
-              <label class="form-label">Correu electrònic</label>
-              <Input v-model="usuari.email" type="email" required disabled />
+              <label class="form-label" for="email">Correu electrònic</label>
+              <Input v-model="usuari.email" id="email" name="email" type="email" required disabled />
             </div>
             <div>
-              <label class="form-label">Telefon</label>
-              <Input v-model="usuari.telefon" type="tel" required :disabled="disableDades" />
+              <label class="form-label" for="telefon">Telefon</label>
+              <Input v-model="usuari.telefon" id="telefon" name="telefon" type="tel" required :disabled="disableDades" />
             </div>
             <div>
-              <label class="form-label">DNI</label>
-              <Input v-model="usuari.dni" required :disabled="disableDades" />
+              <label class="form-label" for="dni">DNI</label>
+              <Input v-model="usuari.dni" id="dni" name="dni" required :disabled="disableDades" />
             </div>
             <div>
-              <label class="form-label">Data Naixement</label>
-              <Input type="date" v-model="usuari.data_naixement" required :disabled="disableDades" />
+              <label class="form-label" for="data_naixement">Data Naixement</label>
+              <Input type="date" v-model="usuari.data_naixement" id="data_naixement" name="data_naixement" required :disabled="disableDades" />
             </div>
 
             <div class="row text-center mt-3">

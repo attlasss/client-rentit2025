@@ -7,12 +7,12 @@
           <h1 class="text-center mb-5">Iniciar Sessió</h1>
           <form @submit.prevent="loginUser" class="d-flex flex-column gap-3 p-1">
             <div>
-              <label class="form-label">Nom d'usuari o Correu electrònic</label>
-              <Input v-model="identifier" placeholder="Introdueix el teu nom d'usuari o correu electrònic" required />
+              <label class="form-label" for="identifier">Nom d'usuari o Correu electrònic</label>
+              <Input v-model="identifier" name="identifier" placeholder="Introdueix el teu nom d'usuari o correu electrònic" required />
             </div>
             <div>
-              <label class="form-label">Contrasenya</label>
-              <Input v-model="password" type="password" placeholder="************" required />
+              <label class="form-label" for="password">Contrasenya</label>
+              <Input v-model="password" type="password" name="password" placeholder="************" required />
               <p>
                 <a href="/recuperar-contrasenya"
                   class="text-start fst-italic text-primary text-decoration-none d-block">

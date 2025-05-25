@@ -24,18 +24,16 @@
                 <span class="badge bg-info" v-if="article.estat === 'pendent'">Pendent</span>
               </p>
 
-              <!-- <p class="seller">
-                <strong>Venedor:</strong>
-                <router-link :to="`/verPerfil/${article.username}`">@{{ article.username }}</router-link>
-              </p> -->
-
+            
               <!-- Select para meses -->
               <div class="mb-3">
                 <label for="mesesSelect" class="form-label">Selecciona els mesos de lloguer</label>
                 <Select v-model="mesesSeleccionados" :options="Array.from({ length: article.mesos }, (_, i) => ({
                   value: i + 1,
                   label: `${i + 1} mesos`
-                }))" placeholder="Selecciona una durada" required />
+                }))" placeholder="Selecciona una durada"
+                name="mesos"
+                required />
               </div>
 
               <!-- Precio calculado -->

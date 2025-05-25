@@ -14,6 +14,7 @@
             <!-- Buscador abajo y alineado a la izquierda en móvil -->
             <div class="search-bar-container mt-4 w-100 d-flex justify-content-center">
               <div class="d-flex justify-content-center w-100">
+                <label for="searchQuery" class="no-display">Busqueda</label>
                 <input v-model="searchQuery" @keyup.enter="buscarArticle" type="text"
                   class="form-control form-control-lg search-bar" placeholder="iPhone, Samsung..." />
                 <Button color="blue" class="ms-3" icon="search" @click="buscarProducte">

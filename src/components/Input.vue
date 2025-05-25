@@ -1,6 +1,9 @@
 <template>
   <div>
     <input
+      v-bind="$attrs"
+      :id="id"
+      :name="name"
       :type="type"
       class="input"
       :placeholder="placeholder"
@@ -15,6 +18,7 @@
 
 <script>
 export default {
+  inheritAttrs: false, // <-- importante para usar $attrs sin duplicar
   props: {
     modelValue: {
       type: [String, Number],
@@ -43,6 +47,14 @@ export default {
     noFocus: {
       type: Boolean,
       default: false,
+    },
+    id: {
+      type: String,
+      default: null,
+    },
+    name: {
+      type: String,
+      default: null,
     },
   },
   computed: {

@@ -10,10 +10,12 @@
         <!-- Filtro por categoria -->
         <div class="row mb-4">
             <div class="col-12 col-md-4 mx-auto">
-                <label class="form-label">Categoria</label>
+                <label class="form-label" for="categoria">Categoria</label>
                 <Select v-model="categoriaSeleccionada"
                     :options="categories.map(category => ({ value: category.id_categoria, label: category.nom }))"
-                    placeholder="Selecciona una categoria" required />
+                    placeholder="Selecciona una categoria" 
+                    name="categoria"
+                    required />
             </div>
         </div>
 

@@ -1,8 +1,13 @@
 <template>
   <div class="vinted-card">
     <div class="image-container position-relative">
-      <img :src="foto" :alt="nom" v-if="foto" height="75"/>
+      <img :src="foto" :alt="nom" v-if="foto" height="75" />
       <!-- Botón de Favorito dentro de la imagen -->
+      <!-- Tengo el error con el corazón de favoritos que no se cambia de color sin reiniciar 
+       la página porque estoy usando un elemento de vue que no es reactivo. 
+       Es decir, las propiedades no pueden ser dinamicas y se carga entero cuando se carga la página. 
+       He probado de diferentes maneras editarlo pero no me ha sido posible. 
+        -->
       <button class="fav-button-heart" @click.stop="toggleFav">
         <span v-if="is_favorite" data-feather="heart" class="color-red"></span>
         <span v-else data-feather="heart"></span>
@@ -77,14 +82,21 @@ export default {
 </script>
 
 <style scoped>
-
-span, h1, h2, h3, p, a, button {
+span,
+h1,
+h2,
+h3,
+p,
+a,
+button {
   font-family: inherit !important;
   font-size: inherit !important;
   line-height: inherit !important;
 }
 
-:host, .vinted-card, .vinted-card * {
+:host,
+.vinted-card,
+.vinted-card * {
   font-size: 0.93rem !important;
   font-family: inherit !important;
   line-height: 1.3 !important;

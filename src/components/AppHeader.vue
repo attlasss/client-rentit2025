@@ -51,12 +51,15 @@
   <!-- Buscador solo si está logeado y NO está en Home -->
   <div class="w-100"  v-if="isLoggedIn && $route.name !== 'home' && $route.name !== 'Login' && $route.name !== 'Registre'">
     <div class="d-flex m-2" >
+      <label for="searchQuery" class="no-display">Busqueda</label>
       <Input
         type="text"
         class="w-100 search-bar no-border"
         placeholder="Cerca un producte..."
         v-model="searchQuery"
         @keyup.enter="buscarProducte"
+        id="searchQuery"
+        name="searchQuery"
       />
       <Button color="blue" variant="fill" class="ms-2" icon="search" @click="buscarProducte">
         Buscar

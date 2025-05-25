@@ -5,17 +5,17 @@
                 <h1 class="text-center mb-5">Editar Article</h1>
                 <form @submit.prevent="editarArticle" class="d-flex flex-column gap-3">
                     <div>
-                        <label class="form-label">Nom del article</label>
-                        <Input v-model="article.nom" placeholder="Introdueix el nom" required />
+                        <label class="form-label" for="nom">Nom del article</label>
+                        <Input v-model="article.nom" id="nom" placeholder="Introdueix el nom" required />
                     </div>
 
                     <div>
-                        <label class="form-label">Descripció</label>
-                        <Input v-model="article.descripcio" placeholder="Introdueix una descripció" required />
+                        <label class="form-label" for="descripcio">Descripció</label>
+                        <Input v-model="article.descripcio" id="descripcio" placeholder="Introdueix una descripció" required />
                     </div>
 
                     <div>
-                        <label class="form-label">Categoría</label>
+                        <label class="form-label" for="id_categoria">Categoría</label>
                         <!-- Select de las categorias -->
                         <Select v-model="article.id_categoria"
                             :options="categories.map(category => ({ value: category.id_categoria, label: category.nom }))"
@@ -23,13 +23,13 @@
                     </div>
 
                     <div>
-                        <label class="form-label">Preu per mes</label>
-                        <Input v-model="article.preu" type="number" min="0" placeholder="Ex: 15€" required />
+                        <label class="form-label" for="preu">Preu per mes</label>
+                        <Input v-model="article.preu" id="preu" type="number" min="0" placeholder="Ex: 15€" required />
 
                     </div>
 
                     <div>
-                        <label class="form-label">Mesos</label>
+                        <label class="form-label" for="mesos">Mesos</label>
                         <Select v-model="article.mesos"
                             :options="Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: `${i + 1} mesos` }))"
                             placeholder="Selecciona una durada" required />
@@ -37,7 +37,7 @@
                     </div>
 
                     <div>
-                        <label class="form-label">Imatge</label>
+                        <label class="form-label" for="imatge">Imatge</label>
                         <div class="input-container">
                             <div class="image-upload">
                                 <input type="file" class="d-none" id="image-upload" @change="previewImage"

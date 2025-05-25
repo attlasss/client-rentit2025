@@ -6,44 +6,44 @@
           <h1 class="text-center mb-5">Crear Compte</h1>
           <form @submit.prevent="registrarUsuari" class="d-flex flex-column gap-3">
             <div>
-              <label class="form-label">Nom</label>
-              <Input v-model="form.nom" placeholder="Introdueix el teu nom" required />
+              <label class="form-label" for="nom">Nom</label>
+              <Input v-model="form.nom" id="nom" name="nom" placeholder="Introdueix el teu nom" required />
             </div>
 
             <div>
-              <label class="form-label">Cognoms</label>
-              <Input v-model="form.cognoms" placeholder="Introdueix els teus cognoms" required />
+              <label class="form-label" for="cognoms">Cognoms</label>
+              <Input v-model="form.cognoms" id="cognoms" name="cognoms" placeholder="Introdueix els teus cognoms" required />
             </div>
 
             <div>
-              <label class="form-label">Email</label>
-              <Input v-model="form.email" type="email" placeholder="Introdueix el teu correu electrònic" required />
+              <label class="form-label" for="email">Email</label>
+              <Input v-model="form.email" id="email" name="email" type="email" placeholder="Introdueix el teu correu electrònic" required />
             </div>
 
             <div>
-              <label class="form-label">Telèfon</label>
-              <Input v-model="form.telefon" type="tel" placeholder="Introdueix el teu número de telèfon" required />
+              <label class="form-label" for="telefon">Telèfon</label>
+              <Input v-model="form.telefon" id="telefon" name="telefon" type="tel" placeholder="Introdueix el teu número de telèfon" required />
             </div>
 
             <div>
-              <label class="form-label">Data de naixement</label>
-              <Input v-model="form.data_naixement" type="date" placeholder="Selecciona la teva data de naixement"
+              <label class="form-label" for="data_naixement">Data de naixement</label>
+              <Input v-model="form.data_naixement" id="data_naixement" name="data_naixement" type="date" placeholder="Selecciona la teva data de naixement"
                 required />
             </div>
 
             <div>
-              <label class="form-label">Nom d'usuari</label>
-              <Input v-model="form.username" placeholder="Introdueix el teu nom d'usuari" required />
+              <label class="form-label" for="username">Nom d'usuari</label>
+              <Input v-model="form.username" id="username" name="username" placeholder="Introdueix el teu nom d'usuari" required />
             </div>
 
             <div>
-              <label class="form-label">Contrasenya</label>
-              <Input v-model="form.password" type="password" placeholder="Introdueix la teva contrasenya" required />
+              <label class="form-label" for="password">Contrasenya</label>
+              <Input v-model="form.password" id="password" name="password" type="password" placeholder="Introdueix la teva contrasenya" required />
             </div>
 
             <div>
-              <label class="form-label">Confirma la contrasenya</label>
-              <Input v-model="confirmPassword" type="password" placeholder="Confirma la teva contrasenya" required />
+              <label class="form-label" for="confirmPassword">Confirma la contrasenya</label>
+              <Input v-model="confirmPassword" id="confirmPassword" name="confirmPassword" type="password" placeholder="Confirma la teva contrasenya" required />
             </div>
 
             <div class="text-center mt-3">

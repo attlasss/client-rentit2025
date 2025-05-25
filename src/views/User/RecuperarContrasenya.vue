@@ -7,8 +7,8 @@
                     <form @submit.prevent="enviarCorreuRecuperacio" v-if="!codigoEnviado && !codigoVerificado"
                         class="d-flex flex-column gap-3">
                         <div>
-                            <label class="form-label">Correu electrònic</label>
-                            <Input v-model="email" type="email" placeholder="Introdueix el teu correu" required />
+                            <label class="form-label" for="email">Correu electrònic</label>
+                            <Input v-model="email" id="email" name="email" type="email" placeholder="Introdueix el teu correu" required />
                             <span v-if="emailError" class="text-danger">{{ emailError }}</span>
                         </div>
                         <div class="text-center mt-3">
@@ -19,8 +19,8 @@
                     <form @submit.prevent="verificarCodigo" v-if="codigoEnviado && !codigoVerificado"
                         class="d-flex flex-column gap-3">
                         <div>
-                            <label class="form-label">Codi de confirmació</label>
-                            <Input v-model="codigo" type="text" placeholder="Introdueix el codi de confirmació"
+                            <label class="form-label" for="codigo">Codi de confirmació</label>
+                            <Input v-model="codigo" id="codigo" name="codigo" type="text" placeholder="Introdueix el codi de confirmació"
                                 required />
                         </div>
                         <div class="text-center mt-3">
@@ -31,13 +31,13 @@
                     <form @submit.prevent="actualitzarContrasenya" v-if="codigoVerificado"
                         class="d-flex flex-column gap-3">
                         <div>
-                            <label class="form-label">Nova contrasenya</label>
-                            <Input v-model="novaContrasenya" type="password"
+                            <label class="form-label" for="novaContrasenya">Nova contrasenya</label>
+                            <Input v-model="novaContrasenya" id="novaContrasenya" name="novaContrasenya" type="password"
                                 placeholder="Introdueix la nova contrasenya" required />
                         </div>
                         <div>
-                            <label class="form-label">Confirma la nova contrasenya</label>
-                            <Input v-model="confirmaContrasenya" type="password"
+                            <label class="form-label" for="confirmaContrasenya">Confirma la nova contrasenya</label>
+                            <Input v-model="confirmaContrasenya" id="confirmaContrasenya" name="confirmaContrasenya" type="password"
                                 placeholder="Confirma la nova contrasenya" required />
                         </div>
                         <div class="text-center mt-3">
