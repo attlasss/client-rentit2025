@@ -10,7 +10,10 @@
             <div class="text-center w-100">
               <h1 class="logo mb-3">Rent IT</h1>
               <p class="lead mb-4">Lloga i publica dispositius electrònics fàcilment.</p>
-              <div class="d-flex justify-content-center">
+            </div>
+            <!-- Buscador abajo y alineado a la izquierda en móvil -->
+            <div class="search-bar-container mt-4 w-100 d-flex justify-content-center">
+              <div class="d-flex justify-content-center w-100">
                 <input v-model="searchQuery" @keyup.enter="buscarArticle" type="text"
                   class="form-control form-control-lg search-bar" placeholder="iPhone, Samsung..." />
                 <Button color="blue" class="ms-3" icon="search" @click="buscarProducte">
@@ -169,6 +172,36 @@ h2 {
   font-size: 1.1rem;
 }
 
+@media (max-width: 767px) {
+  .carousel-caption-custom {
+    justify-content: flex-end !important;
+    padding-bottom: 2.5rem;
+  }
+  .search-bar-container {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-end !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  .search-bar,
+  .ms-3 {
+    width: calc(100vw - 24px) !important;
+    max-width: 100% !important;
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+  }
+  .ms-3 {
+    margin-top: 10px !important; 
+  }
+  .d-flex.justify-content-center {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+  }
+}
+
 @media (min-width: 992px) {
   .col-lg-2-4 {
     flex: 0 0 auto;
@@ -177,39 +210,6 @@ h2 {
   }
 }
 
-@media (max-width: 767px) {
-  .search-bar {
-    margin-left: 10px !important;
-    margin-right: 10px !important;
-    margin-bottom: 10px !important;
-    font-size: 1rem !important;
-    height: 2.5rem !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box;
-    border-radius: 30px;
-  }
-  .ms-3 {
-    margin-left: 10px !important;
-    margin-right: 10px !important;
-    margin-bottom: 10px !important;
-    margin-top: 0 !important;
-    font-size: 0.95rem !important;
-    height: 2.2rem !important;
-    min-height: 2.2rem !important;
-    max-height: 2.2rem !important;
-    line-height: 1rem !important;
-    padding-top: 0.25rem !important;
-    padding-bottom: 0.25rem !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block;
-  }
-  .d-flex.justify-content-center {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-}
 </style>
 
 <script>
