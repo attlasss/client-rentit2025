@@ -15,6 +15,7 @@
       <!-- Comandes -->
       <div class="col-md-9">
         <h1 class="mb-4">Les meves comandes</h1>
+        <p class="d-none">Les comandes de l'usuari</p>
         <div v-if="comandes.length === 0" class="text-center text-muted mt-5">
           Encara no tens cap comanda.
         </div>
@@ -25,6 +26,7 @@
               <img :src="comanda.foto" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
               <div class="flex-grow-1">
                 <p class="mb-1 text-muted">
+                  <strong>Article:</strong> {{ comanda.nom_article }}<br>
                   <strong>Preu:</strong> {{ comanda.preu_mes }}€/mes
                   &nbsp; | &nbsp;
                   <strong>Duració:</strong> {{ comanda.mesos }} mesos
@@ -38,6 +40,7 @@
                   <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
                   <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
                   <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
+                  <span class="badge bg-info" v-if="comanda.estat === 'en_devolucio'">Devolució Pendent</span>
                   <span class="badge bg-success" v-if="comanda.estat === 'devolucio_acceptada'">Devolució Completada</span>
                   <span class="badge bg-success" v-if="comanda.estat === 'devolucio_rebutjada'">Devolució Rebutjada</span>
                 </p>
@@ -260,6 +263,7 @@ export default {
           this.toastMessage = "Devolució tramitada correctament!";
           this.toastColor = "success";
           this.toast = true;
+          setTimeout(() => { this.toast = false; }, 2000);
           bootstrap.Modal.getInstance(document.getElementById("modalDevolucio")).hide();
           this.getComandes();
         }

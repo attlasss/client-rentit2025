@@ -55,7 +55,9 @@
               </Button>
 
               <!-- Botón para cambiar el estado de favorito -->
-              <Button @click="toggleFav(article.id_article)" class="w-100" color="blue" variant="outline">
+              <Button @click="toggleFav(article.id_article)" class="w-100" color="blue" variant="outline"
+              
+              >
                 <span v-if="article.is_favorite">Treure de Preferits</span>
                 <span v-else>Afegir a preferits</span>
               </Button>

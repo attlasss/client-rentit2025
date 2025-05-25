@@ -25,6 +25,7 @@
               <img :src="venta.foto" alt="Imatge article" class="order-img me-md-4 mb-3 mb-md-0" />
               <div class="flex-grow-1">
                 <p class="mb-1 text-muted">
+                  <strong>Article:</strong> {{ venta.nom_article }}<br>
                   <strong>Preu:</strong> {{ venta.preu_mes }}€/mes
                   &nbsp; | &nbsp;
                   <strong>Duració:</strong> {{ venta.mesos }} mesos

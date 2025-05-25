@@ -24,7 +24,62 @@ export default {
   }
 };
 </script>
+<style>
 
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Fonts */
+#app {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.no-display {
+  display: none;
+}
+
+.no-border {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.form-label {
+  text-align: left;
+  display: block;
+  font-weight: 600;
+}
+
+.username-link {
+  text-decoration: none;
+  color: #578FCA;
+  font-style: italic;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.username-link:hover {
+  text-decoration: underline;
+}
+
+</style>
 <style scoped>
 * {
   font-size: 1rem !important;
@@ -84,8 +139,6 @@ h1 {
   font-weight: 400 !important;
   font-size: 2rem !important;
 }
-
-
 
 .form-label {
   text-align: left;

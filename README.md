@@ -1,24 +1,15 @@
-# client-rentit2025
+# Projecte final RENT IT por Laureano Martínez i Carolina Morillo
 
-## Instalar projecte
-```
-npm install
-```
+Este es un proyecto construido con **Vue.js**.
 
-### Run project
-```
-npm run serve
-```
+## Instalación
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Requisitos
 
-### Lints and fixes files
-```
-npm run lint
-```
+- Node.js (>= 14.x.x)
+- npm (>= 6.x.x)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Clonar el repositorio
+
+```bash
+git clone https://github.com/tu-usuario/tu-repositorio.git

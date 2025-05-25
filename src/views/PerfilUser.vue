@@ -30,7 +30,7 @@
                   <Button color="blue" variant="outline" icon="eye" @click="abrirModalVerValoracio">Veure valoració</Button>
                 </div>
                 <div>
-                  <Button color="danger" variant="outline" icon="alert-triangle" @click="abrirModalReportar">
+                  <Button color="danger" variant="outline" icon="alert-triangle" @click="abrirModalReportar" v-if="logedUser.id !== usuari.ID">
                     Reportar usuari
                   </Button>
                 </div>

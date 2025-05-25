@@ -45,8 +45,8 @@
           <div class="flex-shrink-0 d-none d-md-block">
             <img
               src="https://i.pinimg.com/736x/79/87/fd/7987fd25d12fd7ad3822bc8b3b17ece2.jpg"
-              alt="Imagen ordinador"
-              class="img-fluid rounded shadow-sm qui-img"
+              alt="Imatge Samsung Galaxy S23" height="300" width="300"
+              class="img-fluid rounded shadow-sm" 
             >
           </div>
 
@@ -102,6 +102,33 @@
 
 <style scoped>
 
+template {
+  font-size: 1rem !important;
+}
+
+p, ArticleCard {
+  font-size: 1rem !important;
+}
+
+h2 {
+  font-size: 2rem !important;
+}
+.logo {
+  font-family: 'Pacifico', sans-serif;
+  font-weight: 300;
+  font-size: 2rem !important;
+  text-decoration: none;
+  color:white;
+}
+
+.logo-color {
+  font-family: 'Pacifico', sans-serif;
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 2rem !important;
+  color: #578FCA;
+}
+
 
 .carousel-fullscreen {
   height: 100vh;
@@ -142,12 +169,6 @@
   font-size: 1.1rem;
 }
 
-.qui-img {
-  max-width: 500px;
-  width: 100%;
-  height: auto;
-}
-
 @media (min-width: 992px) {
   .col-lg-2-4 {
     flex: 0 0 auto;
@@ -161,15 +182,25 @@
     margin-left: 10px !important;
     margin-right: 10px !important;
     margin-bottom: 10px !important;
+    font-size: 1rem !important;
+    height: 2.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    border-radius: 30px;
   }
   .ms-3 {
     margin-left: 10px !important;
     margin-right: 10px !important;
     margin-bottom: 10px !important;
     margin-top: 0 !important;
-  }
-  .search-bar,
-  .ms-3 {
+    font-size: 0.95rem !important;
+    height: 2.2rem !important;
+    min-height: 2.2rem !important;
+    max-height: 2.2rem !important;
+    line-height: 1rem !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
     width: 100% !important;
     max-width: 100% !important;
     display: block;

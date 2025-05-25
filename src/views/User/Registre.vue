@@ -175,7 +175,8 @@ export default {
         }
       } catch (error) {
         console.error("Error al registrar usuari:", error);
-        this.toastMessage = "Error al crear l'usuari";
+        this.toastMessage = "Error al crear l'usuari: " + error.response.data.message;
+
         this.toastColor = "danger";
         this.toast = true;
         setTimeout(() => {

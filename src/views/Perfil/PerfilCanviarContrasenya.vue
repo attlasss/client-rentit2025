@@ -4,13 +4,16 @@
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-container p-4">
                     <h1 class="text-center mb-4">Canviar Contrasenya</h1>
-                    <form @submit.prevent="verificarAntigaContrasenya" class="d-flex flex-column gap-3" v-if="!isAntigaContrasenyaCorrecta">
+                    <form @submit.prevent="verificarAntigaContrasenya" class="d-flex flex-column gap-3"
+                        v-if="!isAntigaContrasenyaCorrecta">
                         <div>
                             <label class="form-label">Contrasenya antiga</label>
                             <Input v-model="antigaContrasenya" type="password"
                                 placeholder="Introdueix la contrasenya antiga" required />
+                            <p>Si no recordes la teva contrasenya, pots <a href="/recuperar-contrasenya"
+                                    class="username-link">reiniciar-la aquí</a>.</p>
                         </div>
-                        <div class="text-center mt-3">
+                        <div class="text-center mt-3 justify-content-center">
                             <Button color="blue" variant="fill" type="submit">Comprovar contrasenya</Button>
                         </div>
                     </form>
@@ -75,7 +78,13 @@ export default {
     },
     methods: {
         async getData() {
-            this.usuari = JSON.parse(localStorage.getItem("user"));
+            const userID = localStorage.getItem("userID");
+            try {
+                const res = await axiosConn.get(`/infoUsuario/${userID}`);
+                this.usuari = res.data.usuari;
+            } catch (err) {
+                console.error("Error carregant usuari:", err);
+            }
         },
         // Función para verificar la contrasenya antiga
         async verificarAntigaContrasenya() {

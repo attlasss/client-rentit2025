@@ -1,7 +1,7 @@
 <template>
   <div class="vinted-card">
     <div class="image-container position-relative">
-      <img :src="foto" :alt="nom" v-if="foto" />
+      <img :src="foto" :alt="nom" v-if="foto" height="75"/>
       <!-- Botón de Favorito dentro de la imagen -->
       <button class="fav-button-heart" @click.stop="toggleFav">
         <span v-if="is_favorite" data-feather="heart" class="color-red"></span>
@@ -77,6 +77,13 @@ export default {
 </script>
 
 <style scoped>
+
+span, h1, h2, h3, p, a, button {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
 :host, .vinted-card, .vinted-card * {
   font-size: 0.93rem !important;
   font-family: inherit !important;

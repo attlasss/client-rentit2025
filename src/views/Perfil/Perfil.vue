@@ -19,12 +19,12 @@
               :src="usuari.foto_perfil || 'https://via.placeholder.com/150'"
               alt="Foto de perfil"
               class="rounded-circle profile-img"
-              height="200"
-              width="200"
+              height="100"
+              width="100"
             />
             <!-- Botón editar foto siempre centrado -->
             <div class="d-flex justify-content-center mt-2">
-              <Button icon="edit" color="blue" variant="outline" @click="openModal">Editar Foto</Button>
+              <Button icon="edit" color="blue" variant="outline" @click="openModal">Editar</Button>
             </div>
           </div>
           <div class="col-12 col-sm-9 col-md-10 text-center text-md-start">
@@ -65,7 +65,7 @@
             </div>
             <div>
               <label class="form-label">DNI</label>
-              <Input v-model="usuari.dni" required disabled/>
+              <Input v-model="usuari.dni" required :disabled="disableDades" />
             </div>
             <div>
               <label class="form-label">Data Naixement</label>
@@ -223,8 +223,6 @@ export default {
         const res = await axiosConn.get(`/infoUsuario/${userID}`);
         this.usuari = res.data.usuari;
         this.usuari.data_naixement = new Date(this.usuari.data_naixement).toISOString().split("T")[0];
-
-        // Gestionamos la imagen
       } catch (err) {
         console.error("Error carregant usuari:", err);
       }
@@ -245,7 +243,7 @@ export default {
       this.disableDades = false
     },
     guardarDades() {
-      this.disableDades = true
+      this.disableDades = true;
       axiosConn.put(`/updateUser`,
         {
           user_id: this.usuari.ID,
@@ -258,31 +256,35 @@ export default {
           data_naixement: this.usuari.data_naixement,
         }
       )
-        .then(response => {
-          if (response.status === 200) {
+        .then(res => {
+          if (res.status === 200) {
             this.toast = true;
             this.toastMessage = "Usuari actualitzat amb èxit!";
             this.toastColor = "success";
+            this.getData(); // Recarregamos los datos del usuario
             setTimeout(() => {
               this.toast = false;
             }, 2000);
           } else {
             this.toast = true;
-            this.toastMessage = "Error actualitzant usuari";
+            this.toastMessage = res.data?.message || "Error actualitzant usuari";
             this.toastColor = "danger";
+            this.getData();
+            this.disableDades = true;
             setTimeout(() => {
               this.toast = false;
             }, 2000);
           }
         })
         .catch(error => {
-          console.error("Error actualitzant usuari:", error);
           this.toast = true;
-          this.toastMessage = "Error actualitzant usuari";
+          this.toastMessage = error.response?.data?.message || "Error actualitzant usuari: " + error.message;
           this.toastColor = "danger";
+          this.getData();
+          this.disableDades = true;
           setTimeout(() => {
-              this.toast = false;
-            }, 2000);
+            this.toast = false;
+          }, 2000);
         });
     },
     openModal() {

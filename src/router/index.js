@@ -127,44 +127,5 @@ const router = createRouter({
   linkActiveClass: "active",
 });
 
-// Guardias de navegación globales
-// router.beforeEach((to, from, next) => {
-//   // Obtener el token desde localStorage
-//   const token = localStorage.getItem("token");
-
-//   if (token) {
-//     try {
-//       // Decodificar el token JWT
-//       const decodedToken = jwt_decode(token);
-
-//       // Verificar si el token ha expirado
-//       const currentTime = Date.now() / 1000; // Tiempo actual en segundos
-//       if (decodedToken.exp < currentTime) {
-//         // Si el token ha expirado, eliminarlo y redirigir al login
-//         localStorage.removeItem("token");
-//         localStorage.removeItem("user");
-//         localStorage.removeItem("userID");
-//         next({ name: "Login" });
-//       } else {
-//         // Si el token es válido, continuar con la navegación
-//         next();
-//       }
-//     } catch (error) {
-//       // Si hay algún error al decodificar el token, redirigir al login
-//       console.error("Error al decodificar el token:", error);
-//       localStorage.removeItem("token");
-//       localStorage.removeItem("user");
-//       localStorage.removeItem("userID");
-//       next({ name: "Login" });
-//     }
-//   } else {
-//     // Si no hay token y la ruta requiere autenticación, redirigir al login
-//     if (to.name !== "Login" && to.name !== "Registre") {
-//       next({ name: "Login" });
-//     } else {
-//       next(); // Si la ruta es de login o registro, seguir
-//     }
-//   }
-// });
 
 export default router;

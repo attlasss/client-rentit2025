@@ -49,7 +49,7 @@
   </header>
 
   <!-- Buscador solo si está logeado y NO está en Home -->
-  <div class="w-100"  v-if="isLoggedIn && $route.name !== 'home'">
+  <div class="w-100"  v-if="isLoggedIn && $route.name !== 'home' && $route.name !== 'Login' && $route.name !== 'Registre'">
     <div class="d-flex m-2" >
       <Input
         type="text"
