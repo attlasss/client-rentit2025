@@ -2,7 +2,7 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-8 col-xl-7">
-                <h2 class="text-center mb-5">Editar Article</h2>
+                <h1 class="text-center mb-5">Editar Article</h1>
                 <form @submit.prevent="editarArticle" class="d-flex flex-column gap-3">
                     <div>
                         <label class="form-label">Nom del article</label>

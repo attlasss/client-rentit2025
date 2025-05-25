@@ -101,6 +101,8 @@
 </template>
 
 <style scoped>
+
+
 .carousel-fullscreen {
   height: 100vh;
   overflow: hidden;

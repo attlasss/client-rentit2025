@@ -13,7 +13,7 @@
           <div class="row">
             <!-- Sección de información del artículo -->
             <div class="col-12 mb-4 border rounded-4 p-4 bg-white">
-              <h2 class="article-title">{{ article.nom }}</h2>
+              <h1 class="article-title">{{ article.nom }}</h1>
               <p class="price"><strong>Preu:</strong> {{ article.preu }}€/mes</p>
               <p class="duration"><strong>Duració màxima:</strong> {{ article.mesos }} mesos</p>
               <p class="description"><strong>Descripció:</strong> {{ article.descripcio || 'No disponible' }}</p>

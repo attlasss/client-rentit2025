@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="form-container p-4">
-                    <h2 class="text-center mb-4">Recuperar Contrasenya</h2>
+                    <h1 class="text-center mb-4">Recuperar Contrasenya</h1>
                     <form @submit.prevent="enviarCorreuRecuperacio" v-if="!codigoEnviado && !codigoVerificado"
                         class="d-flex flex-column gap-3">
                         <div>

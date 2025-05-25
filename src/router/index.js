@@ -55,11 +55,6 @@ const routes = [
     component: () => import("../views/Perfil/PerfilCanviarContrasenya.vue"),
   },
   {
-    path: "/comandes",
-    name: "Comandes",
-    component: () => import("../views/Comandes/Comandes.vue"),
-  },
-  {
     path: "/perfil/:username",
     name: "Perfil",
     component: () => import("../views/Perfil/Perfil.vue"),

@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-container p-4">
-          <h2 class="text-center mb-5">Crear Compte</h2>
+          <h1 class="text-center mb-5">Crear Compte</h1>
           <form @submit.prevent="registrarUsuari" class="d-flex flex-column gap-3">
             <div>
               <label class="form-label">Nom</label>

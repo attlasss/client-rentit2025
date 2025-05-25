@@ -41,7 +41,7 @@
 
 <style scoped>
 .footer, .footer * {
-  font-size: 0.75rem !important;
+  font-size: 1rem !important;
 }
 
 
@@ -60,6 +60,22 @@
 }
 
 .footer-link:hover {
+  color: #578FCA;
+}
+
+.logo {
+  font-family: 'Pacifico', sans-serif;
+  font-weight: 300;
+  font-size: 2rem !important;
+  text-decoration: none;
+  color:white;
+}
+
+.logo-color {
+  font-family: 'Pacifico', sans-serif;
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 2rem !important;
   color: #578FCA;
 }
 </style>
