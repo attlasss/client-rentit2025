@@ -27,18 +27,15 @@ export default {
 
 <style>
 * {
-  font-family: 'Poppins', sans-serif;
+  font-size: 1rem !important;
 }
-
 
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  body {
   font-family: 'Poppins', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-}
-
+  font-size: 1rem !important;
 }
 
 #app {
@@ -69,7 +66,7 @@ html, body {
 .logo {
   font-family: 'Pacifico', sans-serif;
   font-weight: 300;
-  font-size: 2.5rem;
+  font-size: 2rem !important;
   text-decoration: none;
   color:white;
 }
@@ -78,12 +75,14 @@ html, body {
   font-family: 'Pacifico', sans-serif;
   text-decoration: none;
   font-weight: 300;
-  font-size: 2.5rem;
+  font-size: 2rem !important;
   color: #578FCA;
 }
 
 h1 {
   font-family: 'Urbanist', sans-serif;
+  font-weight: 400 !important;
+  font-size: 2rem !important;
 }
 
 

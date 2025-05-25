@@ -41,6 +41,10 @@
 </template>
 
 <style scoped>
+* {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem !important;
+}
 .footer-title {
   font-weight: 600;
   color: #929292;

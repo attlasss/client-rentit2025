@@ -38,54 +38,66 @@
 
       </div>
 
-      <div class="my-5">
-        <h2 class="text-center fs-1 m-5">Qui som?</h2>
-        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
-          <!-- Texto -->
-          <div class="px-4 me-md-5 mb-3 mb-md-0 fs-5">
-            <p class="text-center mb-0">
-              Rent It és una plataforma que permet als usuaris llogar productes electrònics de manera fàcil i segura.
-              Connecta persones que ofereixen dispositius com mòbils, càmeres o portàtils amb aquelles que els
-              necessiten temporalment, fomentant un intercanvi accessible i de confiança.
-            </p>
-          </div>
-          <!-- Imagen -->
-          <div>
+      <div class="my-5 py-4 px-3 bg-light rounded shadow-sm">
+        <h2 class="text-center fs-1 mb-5 fw-bold text-main-blue">Qui som?</h2>
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-4">
+          <!-- Imagen SOLO visible en md o más (no en móvil) -->
+          <div class="flex-shrink-0 d-none d-md-block">
             <img
-              src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-              alt="Imagen ordenador " class="img-fluid rounded">
+              src="https://i.pinimg.com/736x/79/87/fd/7987fd25d12fd7ad3822bc8b3b17ece2.jpg"
+              alt="Imagen ordinador"
+              class="img-fluid rounded shadow-sm qui-img"
+            >
+          </div>
+
+          <!-- Texto -->
+          <div class="fs-5 text-center text-md-start px-md-4" style="max-width: 600px;">
+            <p>
+              A <strong>Rent IT</strong>, creem connexions reals a través de la tecnologia. Som una plataforma pensada
+              per
+              fer que <strong>llogar dispositius electrònics sigui còmode, segur i intel·ligent</strong>.
+            </p>
+            <p>
+              Ja siguis estudiant, professional o creatiu, aquí pots accedir a productes com portàtils, mòbils o càmeres
+              sense complicacions. <strong>Comparteix, estalvia i confia</strong> amb nosaltres.
+            </p>
+            <div class="mt-4">
+              <Button color="blue" variant="fill" icon="arrow-right" @click="$router.push('/sobre-nosaltres')">
+                Saber més sobre nosaltres
+              </Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+</div>
 
-    <!-- Modal login requerido -->
-    <div class="modal fade" id="modalLoginRequired" tabindex="-1" aria-labelledby="modalLoginRequiredLabel"
-      aria-hidden="true" ref="modalLoginRequired">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLoginRequiredLabel">Inici de sessió requerit</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
-          </div>
-          <div class="modal-body">
-            Has d'estar logejat per afegir a favorits. Vols iniciar sessió ara?
-          </div>
-          <div class="modal-footer">
-            <Button type="button" color="danger" data-bs-dismiss="modal">No</Button>
-            <Button type="button" color="blue" variant="fill" @click="goToLogin">Sí, iniciar sessió</Button>
+      <!-- Modal login requerido -->
+      <div class="modal fade" id="modalLoginRequired" tabindex="-1" aria-labelledby="modalLoginRequiredLabel"
+        aria-hidden="true" ref="modalLoginRequired">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLoginRequiredLabel">Inici de sessió requerit</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+            </div>
+            <div class="modal-body">
+              Has d'estar logejat per afegir a favorits. Vols iniciar sessió ara?
+            </div>
+            <div class="modal-footer">
+              <Button type="button" color="danger" data-bs-dismiss="modal">No</Button>
+              <Button type="button" color="blue" variant="fill" @click="goToLogin">Sí, iniciar sessió</Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <transition name="fade">
-      <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
-        :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
-        {{ toastMessage }}
-      </div>
-    </transition>
-  </div>
+      <transition name="fade">
+        <div v-if="toast" class="toast-message text-white px-3 py-2 rounded shadow position-fixed bottom-0 end-0 m-4"
+          :class="toastColor === 'success' ? 'bg-success' : 'bg-danger'">
+          {{ toastMessage }}
+        </div>
+      </transition>
+    </div>
 </template>
 
 <style scoped>
@@ -128,6 +140,12 @@
   font-size: 1.1rem;
 }
 
+.qui-img {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+}
+
 @media (min-width: 992px) {
   .col-lg-2-4 {
     flex: 0 0 auto;
@@ -137,48 +155,22 @@
 }
 
 @media (max-width: 767px) {
-
-  .carousel-fullscreen,
-  .img-fullscreen {
-    height: 70vh !important;
-    min-height: 200px !important;
-    max-height: 400px !important;
+  .qui-img {
+    display: none !important;
   }
-
-  .carousel-caption-custom {
-    min-height: 50vh !important;
-    height: 50vh !important;
-    width: 100vw !important;
-    padding: 1.5rem 1.5rem 2.5rem 1.5rem;
-    align-items: flex-end;
-    justify-content: flex-end !important;
-  }
-
-  .carousel-caption-custom .text-center {
-    width: 100%;
-    text-align: start !important;
-  }
-
-  .lead {
+  .fs-5,
+  .qui-som-text,
+  .text-md-start,
+  .text-center {
     font-size: 1rem !important;
-    text-align: start !important;
   }
-
-  .d-flex.justify-content-center {
-    justify-content: flex-end !important;
-    gap: 0.5rem;
-    flex-wrap: nowrap;
+  .fs-1,
+  h2,
+  .fw-bold {
+    font-size: 1.4rem !important;
   }
-
-  .search-bar {
-    max-width: 70vw;
-    min-width: 120px;
-    font-size: 1rem;
-  }
-
-  Button.ms-3 {
-    margin-left: 0 !important;
-    flex-shrink: 0;
+  .lead {
+    font-size: 0.95rem !important;
   }
 }
 </style>
