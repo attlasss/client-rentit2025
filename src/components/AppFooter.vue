@@ -29,7 +29,6 @@
         <div class="col-6 col-md-2">
           <h6 class="footer-title">Suport</h6>
           <ul class="list-unstyled">
-            <li><router-link to="/contacto" class="footer-link">Contacte</router-link></li>
             <li><span class="footer-link">+34 600 123 456</span></li>
             <li><span class="footer-link">info@rentit.com</span></li>
           </ul>
@@ -41,10 +40,11 @@
 </template>
 
 <style scoped>
-* {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem !important;
+.footer, .footer * {
+  font-size: 0.75rem !important;
 }
+
+
 .footer-title {
   font-weight: 600;
   color: #929292;

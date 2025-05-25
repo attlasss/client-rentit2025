@@ -155,22 +155,26 @@
 }
 
 @media (max-width: 767px) {
-  .qui-img {
-    display: none !important;
+  .search-bar {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
   }
-  .fs-5,
-  .qui-som-text,
-  .text-md-start,
-  .text-center {
-    font-size: 1rem !important;
+  .ms-3 {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    margin-bottom: 10px !important;
+    margin-top: 0 !important;
   }
-  .fs-1,
-  h2,
-  .fw-bold {
-    font-size: 1.4rem !important;
+  .search-bar,
+  .ms-3 {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block;
   }
-  .lead {
-    font-size: 0.95rem !important;
+  .d-flex.justify-content-center {
+    flex-direction: column !important;
+    align-items: stretch !important;
   }
 }
 </style>

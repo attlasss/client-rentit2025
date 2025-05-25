@@ -77,6 +77,12 @@ export default {
 </script>
 
 <style scoped>
+:host, .vinted-card, .vinted-card * {
+  font-size: 0.93rem !important;
+  font-family: inherit !important;
+  line-height: 1.3 !important;
+}
+
 .vinted-card {
   width: 100%;
   max-width: 300px;
