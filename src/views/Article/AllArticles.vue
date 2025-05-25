@@ -18,16 +18,36 @@
         </div>
 
         <!-- Artículos -->
-        <div class="row justify-content-center g-2 mx-5">
-            <div class="d-flex justify-content-center align-items-stretch col-6 col-sm-4 col-md-3 col-lg-2"
-                v-for="(article, index) in articlesFiltrats" :key="article.id_article">
-                <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-                    :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article"
-                    :userID="article.user_id" :is_favorite="article.is_favorite" :estat="article.estat"
-                    @toggleFav="toggleFav(article.id_article, index)" @verMas="viewMore(article.id_article)"
-                    class="w-100" />
-            </div>
+        <div v-if="articles.length === 0" class="text-center my-4">
+      <p>No hi ha cap article encara. </p>
+    </div>
+
+    <div v-else>
+      <div class="row g-3 justify-content-center mx-0 mx-xl-5">
+        <div
+          class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex align-items-stretch"
+          v-for="(article, index) in articlesFiltrats"
+          :key="article.id_article"
+        >
+          <ArticleCard
+            :username="article.username"
+            :nom="article.nom"
+            :preu="article.preu"
+            :mesos="article.mesos"
+            :foto="article.foto"
+            :mimeType="article.mimeType"
+            :id_article="article.id_article"
+            :userID="article.user_id"
+            :is_favorite="article.is_favorite"
+            @toggleFav="toggleFav(article.id_article, index)"
+            :estat="article.estat"
+            @verMas="viewMore(article.id_article)"
+            class="w-100"
+          />
         </div>
+      </div>
+    </div>
+
 
         <!-- Mensaje tipo toast -->
         <transition name="fade">
@@ -162,26 +182,10 @@ export default {
 </script>
 
 <style scoped>
-.toast-message {
-    animation: fade-in 0.5s ease-out;
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.nav-link.active {
-    background-color: #578FCA;
-    color: white;
-}
-
-.nav-link {
-    color: #578FCA;
+@media (min-width: 1200px) {
+  .col-lg-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%; /* 100 / 6 = 16.66... */
+  }
 }
 </style>

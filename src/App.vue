@@ -82,12 +82,11 @@ html, body {
   color: #578FCA;
 }
 
-/* Logo en responsive */
-@media (max-width: 576px) {
-  .logo {
-    font-size: 1.8rem;
-  }
+h1 {
+  font-family: 'Urbanist', sans-serif;
 }
+
+
 
 .form-label {
   text-align: left;
@@ -115,6 +114,14 @@ html, body {
 .no-border {
   border: none !important;
   box-shadow: none !important;
+}
+
+
+/* Logo en responsive */
+@media (max-width: 576px) {
+  .logo {
+    font-size: 1.8rem;
+  }
 }
 
 </style>

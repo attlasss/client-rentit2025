@@ -1,170 +1,82 @@
 <template>
-  <section class="sobre-nosotros">
-    <div class="hero">
-      <h1>Sobre Rent IT</h1>
-      <p class="subtitulo">Revolucionando la forma de alquilar tecnología</p>
-    </div>
+  <div class="about-us p-5">
+    <h1 class="mb-4">SOBRE NOSALTRES</h1>
 
-    <div class="contenido container">
-      <div class="mision">
-        <h2>Nuestra misión</h2>
-        <p>
-          En Rent IT, creemos que la tecnología debe estar al alcance de todos,
-          sin complicaciones ni altos costos. Nuestra misión es facilitar el acceso a dispositivos electrónicos
-          mediante un sistema de alquiler ágil, confiable y sostenible.
-        </p>
+    <p class="lead">
+      A Rent IT, creiem en un futur on la tecnologia és accessible, responsable i compartida. Som una empresa jove però amb una visió clara: <strong>fer que llogar tecnologia sigui fàcil, sostenible i intel·ligent</strong>.
+    </p>
+
+    <h2 class="mt-5">Els Nostres Valors</h2>
+
+    <div class="row g-4 mt-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="value-section h-100 p-3 shadow-sm rounded text-center">
+          <h4 class="fw-bold mb-2">🌀 Accessibilitat per a tothom</h4>
+          <p>
+            Volem eliminar les barreres d’entrada a la tecnologia. Tant si ets estudiant com emprenedor, a Rent IT pots accedir a dispositius de qualitat sense necessitat de comprar-los. <strong>La tecnologia no hauria de ser un luxe, sinó una eina.</strong>
+          </p>
+        </div>
       </div>
-
-      <div class="valores">
-        <h2>Valores que nos guían</h2>
-        <ul>
-          <li><strong>Sostenibilidad:</strong> Promovemos el consumo responsable y la reutilización.</li>
-          <li><strong>Innovación:</strong> Buscamos siempre soluciones tecnológicas simples y efectivas.</li>
-          <li><strong>Confianza:</strong> Garantizamos seguridad y transparencia en cada alquiler.</li>
-          <li><strong>Comunidad:</strong> Trabajamos para crear una red de usuarios satisfechos y conectados.</li>
-        </ul>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="value-section h-100 p-3 shadow-sm rounded text-center">
+          <h4 class="fw-bold mb-2">🌱 Sostenibilitat real</h4>
+          <p>
+            Allarguem la vida útil dels dispositius promovent el lloguer responsable. D’aquesta manera, contribuïm a la reducció de residus electrònics i fomentem un <strong>model circular més amable amb el planeta</strong>.
+          </p>
+        </div>
       </div>
-
-      <div class="equipo">
-        <h2>Conoce al equipo</h2>
-        <div class="team-cards">
-          <div class="card" v-for="member in team" :key="member.name">
-            <img :src="member.photo" :alt="`Foto de ${member.name}`" />
-            <h3>{{ member.name }}</h3>
-            <p class="role">{{ member.role }}</p>
-          </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="value-section h-100 p-3 shadow-sm rounded text-center">
+          <h4 class="fw-bold mb-2">🤝 Comunitat i confiança</h4>
+          <p>
+            Cada article a la nostra plataforma ve amb una història i una persona al darrere. Apostem per una <strong>comunitat segura</strong>, amb valoracions reals i comunicació clara, on el respecte és fonamental.
+          </p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="value-section h-100 p-3 shadow-sm rounded text-center">
+          <h4 class="fw-bold mb-2">🚀 Innovació amb sentit</h4>
+          <p>
+            No volem només seguir la tecnologia, sinó donar-li un propòsit. Millorem constantment la nostra plataforma perquè l’experiència sigui <strong>fluïda, útil i humana</strong>.
+          </p>
         </div>
       </div>
     </div>
-  </section>
+
+    <h2 class="mt-5">Una nova manera de connectar amb la tecnologia</h2>
+    <p>
+      Rent IT és molt més que una empresa de lloguer. És un moviment cap a un consum més conscient, una alternativa intel·ligent per a un món que canvia ràpid. 
+    </p>
+
+    <p class="fw-semibold mt-4">
+      Uneix-te a nosaltres i forma part del canvi 💙
+    </p>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "SobreNosotros",
-  data() {
-    return {
-      team: [
-        {
-          name: "Laura Martínez",
-          role: "CEO & Fundadora",
-          photo: "https://randomuser.me/api/portraits/women/44.jpg",
-        },
-        {
-          name: "Carlos Pérez",
-          role: "CTO",
-          photo: "https://randomuser.me/api/portraits/men/34.jpg",
-        },
-        {
-          name: "Sara Gómez",
-          role: "Diseñadora UX/UI",
-          photo: "https://randomuser.me/api/portraits/women/68.jpg",
-        },
-      ],
-    };
-  },
+  name: "SobreNosaltres",
 };
 </script>
 
 <style scoped>
-.sobre-nosotros {
-  font-family: "Poppins", sans-serif;
+.about-us {
+  max-width: 1100px;
+  margin: auto;
+  font-size: 1.05rem;
+  line-height: 1.8;
   color: #333;
-  padding: 3rem 1rem;
-  background: #fafafa;
 }
-
-.hero {
-  text-align: center;
-  margin-bottom: 3rem;
-  color: #0f4c81;
+.value-section h4 {
+  color: #21339A;
 }
-
-.hero h1 {
-  font-weight: 700;
-  font-size: 2.5rem;
-  letter-spacing: 1.5px;
-  margin-bottom: 0.3rem;
+.lead {
+  font-size: 1.2rem;
 }
-
-.subtitulo {
-  font-weight: 400;
-  font-size: 1.25rem;
-  color: #4a6fa5;
-}
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-h2 {
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #145374;
-}
-
-.mision p,
-.valores ul,
-.equipo {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #555;
-}
-
-.valores ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-.valores li {
-  margin-bottom: 0.8rem;
-}
-
-.valores strong {
-  color: #0f4c81;
-}
-
-.team-cards {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
-.card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(15, 76, 129, 0.15);
-  width: 180px;
-  text-align: center;
-  padding: 1.5rem 1rem;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-}
-
-.card img {
-  border-radius: 50%;
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  margin-bottom: 1rem;
-  border: 3px solid #0f4c81;
-}
-
-.card h3 {
-  margin-bottom: 0.3rem;
-  font-weight: 600;
-  color: #0f4c81;
-}
-
-.role {
-  font-size: 0.9rem;
-  color: #777;
-  font-style: italic;
+@media (max-width: 991px) {
+  .value-section {
+    margin-bottom: 1.5rem;
+  }
 }
 </style>

@@ -25,6 +25,21 @@ const routes = [
     component: () => import("../views/User/Registre.vue"),
   },
   {
+    path: "/avis-legal",
+    name: "AvisLegal",
+    component: () => import("../views/Legal/AvisLegal.vue"),
+  },
+  {
+    path: "/condicions-us",
+    name: "CondicionsUs",
+    component: () => import("../views/Legal/CondicionsDUs.vue"),
+  },
+  {
+    path: "/politica-privacitat",
+    name: "PoliticaPrivacitat",
+    component: () => import("../views/Legal/PoliticaPrivacitat.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("../views/User/Login.vue"),

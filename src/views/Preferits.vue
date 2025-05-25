@@ -12,13 +12,29 @@
       <p>Encara no tens cap article preferit. </p>
     </div>
 
-    <div v-else class="row justify-content-center g-2 mx-5">
-      <div class="d-flex justify-content-center align-items-stretch col-6 col-sm-4 col-md-3 col-lg-2"
-        v-for="(article, index) in articles" :key="article.id_article">
-        <ArticleCard :username="article.username" :nom="article.nom" :preu="article.preu" :mesos="article.mesos"
-          :foto="article.foto" :mimeType="article.mimeType" :id_article="article.id_article" :userID="article.user_id"
-          :is_favorite="article.is_favorite" :estat="article.estat" @toggleFav="toggleFav(article.id_article, index)"
-          @verMas="viewMore(article.id_article)" class="w-100" />
+    <div v-else>
+      <div class="row g-3 justify-content-center mx-0 mx-xl-5">
+        <div
+          class="col-6 col-sm-6 col-md-4 col-lg-2 d-flex align-items-stretch"
+          v-for="(article, index) in articles"
+          :key="article.id_article"
+        >
+          <ArticleCard
+            :username="article.username"
+            :nom="article.nom"
+            :preu="article.preu"
+            :mesos="article.mesos"
+            :foto="article.foto"
+            :mimeType="article.mimeType"
+            :id_article="article.id_article"
+            :userID="article.user_id"
+            :is_favorite="article.is_favorite"
+            @toggleFav="toggleFav(article.id_article, index)"
+            :estat="article.estat"
+            @verMas="viewMore(article.id_article)"
+            class="w-100"
+          />
+        </div>
       </div>
     </div>
 
@@ -33,7 +49,15 @@
   </div>
 </template>
 
+<style scoped>
 
+@media (min-width: 1200px) {
+  .col-lg-2 {
+    flex: 0 0 auto;
+    width: 16.66666667%; /* 100 / 6 = 16.66... */
+  }
+}
+</style>
 <script>
 import ArticleCard from "@/components/ArticleCard.vue"; // Importar el componente ArticleCard
 import axiosConn from "@/axios/axios";

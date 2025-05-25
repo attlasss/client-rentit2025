@@ -22,11 +22,18 @@
                 <span class="text-muted">Sense valoracions</span>
               </div>
               <!-- Puede valorar si tiene el permiso y esta logeado -->
-              <div class="d-flex mt-2" v-if="puedeValorar && logedUser.id !== usuari.ID && logedUser">
-                <Button color="blue" variant="outline" icon="edit-2" @click="abrirModalValoracio">Valorar</Button>
-              </div>
-              <div class="d-flex mt-2" v-if="haValorat && logedUser.id !== usuari.ID">
-                <Button color="blue" variant="outline" icon="eye" @click="abrirModalVerValoracio">Veure valoració</Button>
+              <div class="d-flex mt-2 align-items-center gap-2">
+                <div v-if="puedeValorar && logedUser.id !== usuari.ID && logedUser">
+                  <Button color="blue" variant="outline" icon="edit-2" @click="abrirModalValoracio">Valorar</Button>
+                </div>
+                <div v-if="haValorat && logedUser.id !== usuari.ID">
+                  <Button color="blue" variant="outline" icon="eye" @click="abrirModalVerValoracio">Veure valoració</Button>
+                </div>
+                <div>
+                  <Button color="danger" variant="outline" icon="alert-triangle" @click="abrirModalReportar">
+                    Reportar usuari
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -131,6 +138,29 @@
             </div>
           </div>
 
+          <!-- Modal Reportar Usuari -->
+          <div class="modal fade" id="modalReportarUsuari" tabindex="-1" aria-labelledby="modalReportarUsuariLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form @submit.prevent="enviarReport">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalReportarUsuariLabel">Reportar usuari</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tancar"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="mb-3">
+                      <label for="motiuReport" class="form-label">Motiu del report</label>
+                      <textarea id="motiuReport" v-model="motiuReport" class="form-control" rows="3" required placeholder="Explica breument el motiu..."></textarea>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <Button color="danger" variant="fill" type="submit">Enviar report</Button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
           <!-- Toast -->
           <transition name="fade">
             <div v-if="toast"
@@ -171,6 +201,7 @@ export default {
       puntuacio: 0,
       comentari: "",
       valoracioMeva: null,
+      motiuReport: "",
     };
   },
   computed: {
@@ -331,6 +362,37 @@ export default {
         this.toast = true;
         setTimeout(() => { this.toast = false; }, 2000);
       }
+    },
+    async enviarReport() {
+      if (!this.motiuReport.trim()) {
+        this.toastMessage = "Has d'escriure un motiu per al report.";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+        return;
+      }
+      try {
+        await axiosConn.post("/addReport", {
+          id_usuari: this.logedUser.id,
+          id_to: this.usuari.ID,
+          motiu: this.motiuReport,
+        });
+        this.toastMessage = "Report enviat correctament.";
+        this.toastColor = "success";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+        bootstrap.Modal.getInstance(document.getElementById("modalReportarUsuari")).hide();
+      } catch (e) {
+        this.toastMessage = "Error enviant el report.";
+        this.toastColor = "danger";
+        this.toast = true;
+        setTimeout(() => { this.toast = false; }, 2000);
+      }
+    },
+    abrirModalReportar() {
+      this.motiuReport = "";
+      const modal = new bootstrap.Modal(document.getElementById("modalReportarUsuari"));
+      modal.show();
     },
     verPerfil(username) {
       this.articles = [];

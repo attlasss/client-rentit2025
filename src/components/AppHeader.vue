@@ -50,7 +50,7 @@
 
   <!-- Buscador solo si está logeado y NO está en Home -->
   <div class="w-100"  v-if="isLoggedIn && $route.name !== 'home'">
-    <div class="d-flex m-2">
+    <div class="d-flex m-2" >
       <Input
         type="text"
         class="w-100 search-bar no-border"

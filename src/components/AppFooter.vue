@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer py-5 border-top">
+  <footer class="footer py-5 border-top mt-5">
     <div class="container">
       <div class="row">
         <div class="col-12 col-md-4 mb-4 mb-md-0">
@@ -10,6 +10,9 @@
           <h6 class="footer-title">Empresa</h6>
           <ul class="list-unstyled">
             <li><router-link to="/sobre-nosaltres" class="footer-link">Sobre Nosaltres</router-link></li>
+            <li><router-link to="/avis-legal" class="footer-link">Avís Legal</router-link></li>
+            <li><router-link to="/condicions-us" class="footer-link">Condicions d'ús</router-link></li>
+            <li><router-link to="/politica-privacitat" class="footer-link">Política de Privacitat</router-link></li>
           </ul>
         </div>
         <div class="col-6 col-md-2">
@@ -27,10 +30,11 @@
           <h6 class="footer-title">Suport</h6>
           <ul class="list-unstyled">
             <li><router-link to="/contacto" class="footer-link">Contacte</router-link></li>
-            <li><router-link to="/privacidad" class="footer-link">Privacitat</router-link></li>
-            <li><router-link to="/terminos" class="footer-link">Termes</router-link></li>
+            <li><span class="footer-link">+34 600 123 456</span></li>
+            <li><span class="footer-link">info@rentit.com</span></li>
           </ul>
         </div>
+
       </div>
     </div>
   </footer>
