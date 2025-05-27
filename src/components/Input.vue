@@ -5,7 +5,7 @@
       :id="id"
       :name="name"
       :type="type"
-      class="input"
+      class='input'
       :placeholder="placeholder"
       :disabled="disabled"
       :required="isRequired"
@@ -18,7 +18,6 @@
 
 <script>
 export default {
-  inheritAttrs: false, // <-- importante para usar $attrs sin duplicar
   props: {
     modelValue: {
       type: [String, Number],
