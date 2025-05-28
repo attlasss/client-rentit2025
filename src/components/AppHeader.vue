@@ -54,7 +54,7 @@
       <label for="searchQuery" class="no-display">Busqueda</label>
       <Input
         type="text"
-        class="w-100 search-bar no-border"
+        class="w-100 search-bar"
         placeholder="Cerca un producte..."
         v-model="searchQuery"
         @keyup.enter="buscarProducte"
