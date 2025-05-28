@@ -1,3 +1,5 @@
+HOSTING `https://rentit2025.vercel.app/login`
+
 ### Manual d'instal·lació per al projecte Vue (Rent-IT)
 
 ## Requisits Prèvis
