@@ -31,7 +31,7 @@
             <h1 class="mb-4 h2">{{ usuari.nom }} {{ usuari.cognoms }}</h1>
             <p>{{ usuari.email }}</p>
             <p>@{{ usuari.username }}</p>
-            <div class="mb-2 d-flex justify-content-center align-items-center flex-wrap">
+            <div class="mb-2 d-flex justify-content-center justify-content-md-start align-items-center flex-wrap">
               <span v-for="star in 5" :key="star" class="star" :class="{ selected: star <= valoracioMitjaRedondeada }">★</span>
               <span class="ms-2">({{ valoracioMitja.toFixed(2) }})</span>
               <span class="text-muted">· {{ valoracions.length }} valoracions</span>
@@ -262,6 +262,18 @@ export default {
             this.toastMessage = "Usuari actualitzat amb èxit!";
             this.toastColor = "success";
             this.getData(); // Recarregamos los datos del usuario
+            // Recargamos la pagina entera con los params bien            
+            this.$router.push(`/perfil/${this.usuari.username || ""}`);
+
+            // Si se ha cambiado el username, devolvemos a iniciar sesion 
+            if (this.usuari.username !== this.username) {
+              localStorage.setItem("user", JSON.stringify(this.usuari));
+              localStorage.setItem("userID", this.usuari.ID);
+              localStorage.removeItem("token");
+              this.$router.push({ name: "Login" }).then(() => {
+                location.reload();
+              });
+            }
             setTimeout(() => {
               this.toast = false;
             }, 2000);

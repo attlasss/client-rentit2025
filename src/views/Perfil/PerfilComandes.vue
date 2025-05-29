@@ -34,22 +34,24 @@
                   <strong>Venedor:</strong>
                   <a @click="verPerfil(comanda.vendedor_username)" class="username-link">@{{ comanda.vendedor_username
                   }}</a>
+
                 </p>
                 <p class="mb-1">
+                  <strong>Direccio: </strong> {{ comanda.direccio }}<br>
                   <strong>Estat: </strong>
                   <span class="badge bg-info" v-if="comanda.estat === 'pendent'">Pendent</span>
                   <span class="badge bg-success" v-if="comanda.estat === 'acceptada'">Acceptada</span>
                   <span class="badge bg-danger" v-if="comanda.estat === 'rebutjada'">Rebutjada</span>
                   <span class="badge bg-info" v-if="comanda.estat === 'en_devolucio'">Devolució Pendent</span>
-                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_acceptada'">Devolució Completada</span>
-                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_rebutjada'">Devolució Rebutjada</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_acceptada'">Devolució
+                    Completada</span>
+                  <span class="badge bg-success" v-if="comanda.estat === 'devolucio_rebutjada'">Devolució
+                    Rebutjada</span>
                 </p>
                 <p class="mb-1">
                   <strong>Data Order:</strong> {{ comanda.data_order }}<br>
-                  <span>
-                    <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}
-                    <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
-                  </span>
+                  <strong v-if="comanda.data_inici">Data inici:</strong> {{ comanda.data_inici }}
+                  <strong v-if="comanda.data_fi">Data fi:</strong> {{ comanda.data_fi }}
                 </p>
                 <p class="mb-1">
                   <strong>Preu Total</strong> {{ comanda.preu_total }}€<br>

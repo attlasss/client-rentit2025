@@ -91,10 +91,16 @@ export default {
                     this.toastColor = "success";
                     this.toast = true;
                     this.codigoEnviado = true;
+                    setTimeout(() => {
+                    this.toast = false;
+                }, 2500);
                 } else {
                     this.toastMessage = "Error al enviar el correu.";
                     this.toastColor = "error";
                     this.toast = true;
+                    setTimeout(() => {
+                    this.toast = false;
+                }, 2500);
                 }
 
             } catch (error) {
@@ -117,10 +123,16 @@ export default {
                         this.toastMessage = "Codi verificat amb èxit!";
                         this.toastColor = "success";
                         this.toast = true;
+                        setTimeout(() => {
+                    this.toast = false;
+                }, 2500);
                     } else {
                         this.toastMessage = "Codi incorrecte.";
                         this.toastColor = "error";
                         this.toast = true;
+                        setTimeout(() => {
+                    this.toast = false;
+                }, 2500);
                     }
                 })
                 .catch((error) => {
@@ -169,6 +181,9 @@ export default {
                     this.toastMessage = "No s'ha pogut actualitzar la contrasenya.";
                     this.toastColor = "danger";
                     this.toast = true;
+                    setTimeout(() => {
+                    this.toast = false;
+                }, 2500);
                 }
             } catch (err) {
                 console.error("Error al actualitzar la contrasenya:", err);
